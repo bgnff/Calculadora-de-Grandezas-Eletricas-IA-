@@ -17,6 +17,9 @@ import {
 
 interface VoltivaShellProps {
   children: ReactNode;
+  onEditProfile?: () => void;
+  profileIncomplete?: boolean;
+  onResumeProfile?: () => void;
 }
 
 const navItems = [
@@ -28,7 +31,7 @@ const navItems = [
   { label: 'Relatórios', icon: FileText },
 ];
 
-export function VoltivaShell({ children }: VoltivaShellProps) {
+export function VoltivaShell({ children, onEditProfile, profileIncomplete = false, onResumeProfile }: VoltivaShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [notice, setNotice] = useState('');
   const reducedMotion = Boolean(useReducedMotion());
@@ -42,7 +45,7 @@ export function VoltivaShell({ children }: VoltivaShellProps) {
   return (
     <div className="flex min-h-[100dvh] bg-transparent text-foreground">
       <aside className="hidden w-[252px] shrink-0 flex-col bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))] md:flex">
-        <SidebarContent onNavigate={showComingSoon} reducedMotion={reducedMotion} />
+        <SidebarContent onNavigate={showComingSoon} onEditProfile={onEditProfile} reducedMotion={reducedMotion} />
       </aside>
 
       <AnimatePresence>
@@ -69,7 +72,7 @@ export function VoltivaShell({ children }: VoltivaShellProps) {
                   <X size={19} />
                 </button>
               </div>
-               <SidebarContent onNavigate={showComingSoon} reducedMotion={reducedMotion} />
+               <SidebarContent onNavigate={showComingSoon} onEditProfile={onEditProfile} reducedMotion={reducedMotion} />
             </motion.aside>
           </>
         )}
@@ -96,7 +99,7 @@ export function VoltivaShell({ children }: VoltivaShellProps) {
               <span className="size-1.5 rounded-full bg-[#3bab83]" />
               Sistema operacional
             </div>
-            <button onClick={() => showComingSoon('Configurações')} className="rounded-xl border border-[hsl(var(--border))] bg-white p-2 text-[hsl(var(--muted-foreground))] shadow-sm transition hover:border-[#a8c6c3] hover:text-[hsl(var(--primary))]" aria-label="Abrir configurações" data-testid="button-open-settings">
+            <button onClick={onEditProfile ?? (() => showComingSoon('Configurações'))} className="rounded-xl border border-[hsl(var(--border))] bg-white p-2 text-[hsl(var(--muted-foreground))] shadow-sm transition hover:border-[#a8c6c3] hover:text-[hsl(var(--primary))]" aria-label="Editar perfil" data-testid="button-open-settings">
               <Settings2 size={18} />
             </button>
             <div className="grid size-9 place-items-center rounded-full bg-[#d9edf0] text-sm font-bold text-[#17617a]" aria-label="Perfil de usuário" data-testid="avatar-user">MC</div>
@@ -105,6 +108,17 @@ export function VoltivaShell({ children }: VoltivaShellProps) {
 
         <main className="voltiva-grid relative flex-1 overflow-hidden">
           <div className="mx-auto w-full max-w-[1440px] px-5 py-7 md:px-9 md:py-10">
+            {profileIncomplete && onResumeProfile && (
+              <div className="mb-5 flex flex-col gap-3 rounded-2xl border border-[#d8e3df] bg-[#f2f8f6] p-4 sm:flex-row sm:items-center sm:justify-between" data-testid="banner-profile-paused">
+                <div>
+                  <p className="text-sm font-bold text-[#27736d]">Seu perfil está pausado</p>
+                  <p className="mt-1 text-xs leading-5 text-[#5c7e7b]">As respostas estão salvas neste dispositivo. Retome quando quiser para concluir o perfil.</p>
+                </div>
+                <button onClick={onResumeProfile} className="focus-ring inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#277d7a] px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-[#1d6968]" data-testid="button-resume-profile">
+                  Retomar perfil <ChevronRight size={15} />
+                </button>
+              </div>
+            )}
             {children}
           </div>
         </main>
@@ -120,7 +134,7 @@ export function VoltivaShell({ children }: VoltivaShellProps) {
   );
 }
 
-function SidebarContent({ onNavigate, reducedMotion }: { onNavigate: (label: string) => void; reducedMotion: boolean }) {
+function SidebarContent({ onNavigate, onEditProfile, reducedMotion }: { onNavigate: (label: string) => void; onEditProfile?: () => void; reducedMotion: boolean }) {
   return (
     <>
       <div className="flex h-[72px] items-center gap-3 border-b border-white/10 px-7">
@@ -163,7 +177,7 @@ function SidebarContent({ onNavigate, reducedMotion }: { onNavigate: (label: str
         </nav>
         <div className="my-7 h-px bg-white/10" />
         <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">Gerencie</p>
-        <button onClick={() => onNavigate('Configurações')} className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition hover:bg-white/8 hover:text-white" data-testid="button-nav-configuracoes">
+        <button onClick={onEditProfile ?? (() => onNavigate('Configurações'))} className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition hover:bg-white/8 hover:text-white" data-testid="button-nav-configuracoes">
           <Settings2 size={17} strokeWidth={1.8} className="text-white/45 group-hover:text-[#5bd9d7]" />
           Configurações
         </button>

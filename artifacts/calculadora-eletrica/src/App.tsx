@@ -6,6 +6,9 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import CalculatorPage from '@/pages/calculator';
 import { VoltivaShell } from '@/components/voltiva-shell';
+import { ProfileOnboarding } from '@/components/profile-onboarding';
+import { useEnergyProfile } from '@/hooks/use-energy-profile';
+import { useState } from 'react';
 import {
   Route,
   Switch,
@@ -16,7 +19,39 @@ import {
 const queryClient = new QueryClient();
 
 function Home() {
-  return <VoltivaShell><CalculatorPage /></VoltivaShell>;
+  const { profile, draft, updateDraft, beginEditing, completeProfile } = useEnergyProfile();
+  const [editing, setEditing] = useState(false);
+  const [skippedThisSession, setSkippedThisSession] = useState(false);
+
+  if ((!profile && !skippedThisSession) || editing) {
+    return (
+      <ProfileOnboarding
+        draft={draft}
+        editing={editing}
+        onDraftChange={updateDraft}
+        onComplete={(nextDraft) => {
+          completeProfile(nextDraft);
+          setEditing(false);
+          setSkippedThisSession(false);
+        }}
+        onCancel={() => setEditing(false)}
+        onSkip={() => setSkippedThisSession(true)}
+      />
+    );
+  }
+
+  return (
+    <VoltivaShell
+      profileIncomplete={!profile}
+      onResumeProfile={() => setSkippedThisSession(false)}
+      onEditProfile={() => {
+        beginEditing();
+        setEditing(true);
+      }}
+    >
+      <CalculatorPage />
+    </VoltivaShell>
+  );
 }
 
 function Router() {
