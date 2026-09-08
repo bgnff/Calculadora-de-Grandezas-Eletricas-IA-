@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Calculadora Elétrica"
+description = "Dashboard responsivo para calcular tensão, corrente, resistência e potência, com conversão automática de resistência em código de cores e resistor SVG dinâmico."
+version = "1.0.0"
+id = "artifacts/calculadora-eletrica"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21387
+
+[services.development]
+run = "pnpm --filter @workspace/calculadora-eletrica run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/calculadora-eletrica", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/calculadora-eletrica/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21387"
+BASE_PATH = "/"

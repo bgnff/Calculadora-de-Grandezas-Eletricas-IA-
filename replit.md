@@ -1,6 +1,6 @@
-# [Project name]
+# Voltiva — Calculadora Elétrica
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Dashboard responsivo para calcular grandezas elétricas e identificar automaticamente resistores de 4 bandas.
 
 ## Run & Operate
 
@@ -22,23 +22,32 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/calculadora-eletrica/src/components/voltiva-shell.tsx` — shell responsivo, header e navegação.
+- `artifacts/calculadora-eletrica/src/pages/calculator.tsx` — tela principal da calculadora.
+- `artifacts/calculadora-eletrica/src/lib/electricity.ts` — fórmulas, validação de entrada, formatação e conversão para bandas.
+- `artifacts/calculadora-eletrica/src/components/resistor-visual.tsx` — resistor SVG dinâmico e animado.
+- `artifacts/calculadora-eletrica/src/index.css` — tokens visuais, tipografia, grid de fundo e responsividade.
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- A primeira versão é frontend-only para manter o escopo visual e funcional enxuto; não há persistência, autenticação ou APIs externas.
+- A resistência é convertida automaticamente em quatro bandas, com tolerância fixa de ±5% em dourado.
+- A calculadora limpa o resultado ao trocar grandeza ou editar entradas, evitando exibir resultados desatualizados.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Calcula tensão, corrente, resistência e potência usando as fórmulas de Ohm.
+- Valida entradas vazias, caracteres inválidos e divisões por zero com mensagens em português.
+- Exibe o valor calculado e, para resistência, o código de cores e um resistor SVG atualizado automaticamente.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Nesta etapa, manter somente interface principal, calculadora e resistor automático; não implementar login, cadastro, banco, consumo, economia, relatórios, tarifas, CEP ou APIs externas.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- A aplicação web é o artifact `@workspace/calculadora-eletrica` e usa o workflow gerenciado `artifacts/calculadora-eletrica: web`.
+- Para validar localmente, use `pnpm --filter @workspace/calculadora-eletrica run typecheck`.
 
 ## Pointers
 
