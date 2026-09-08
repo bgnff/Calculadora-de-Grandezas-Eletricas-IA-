@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import type { ColorBand } from '@/lib/electricity';
 
 interface ResistorVisualProps {
@@ -11,6 +11,7 @@ interface ResistorVisualProps {
 }
 
 export function ResistorVisual({ bands }: ResistorVisualProps) {
+  const reducedMotion = Boolean(useReducedMotion());
   const colors = bands ? [bands.first.color, bands.second.color, bands.multiplier.color, bands.tolerance.color] : [];
   const key = colors.join('-');
 
@@ -35,9 +36,9 @@ export function ResistorVisual({ bands }: ResistorVisualProps) {
         <path d="M148 69 H372 M148 121 H372" stroke="#fff8" strokeWidth="3" />
         <motion.g
           key={key}
-          initial={{ opacity: 0.4, scale: 0.985 }}
+          initial={reducedMotion ? false : { opacity: 0.4, scale: 0.985 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
           style={{ transformOrigin: '260px 95px' }}
         >
           {[174, 218, 262, 342].map((x, index) => (

@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
   Activity,
   BarChart3,
@@ -31,6 +31,7 @@ const navItems = [
 export function VoltivaShell({ children }: VoltivaShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [notice, setNotice] = useState('');
+  const reducedMotion = Boolean(useReducedMotion());
 
   const showComingSoon = (label: string) => {
     setNotice(`${label} estará disponível em uma próxima versão.`);
@@ -41,7 +42,7 @@ export function VoltivaShell({ children }: VoltivaShellProps) {
   return (
     <div className="flex min-h-[100dvh] bg-transparent text-foreground">
       <aside className="hidden w-[252px] shrink-0 flex-col bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))] md:flex">
-        <SidebarContent onNavigate={showComingSoon} />
+        <SidebarContent onNavigate={showComingSoon} reducedMotion={reducedMotion} />
       </aside>
 
       <AnimatePresence>
@@ -68,7 +69,7 @@ export function VoltivaShell({ children }: VoltivaShellProps) {
                   <X size={19} />
                 </button>
               </div>
-              <SidebarContent onNavigate={showComingSoon} />
+               <SidebarContent onNavigate={showComingSoon} reducedMotion={reducedMotion} />
             </motion.aside>
           </>
         )}
@@ -119,7 +120,7 @@ export function VoltivaShell({ children }: VoltivaShellProps) {
   );
 }
 
-function SidebarContent({ onNavigate }: { onNavigate: (label: string) => void }) {
+function SidebarContent({ onNavigate, reducedMotion }: { onNavigate: (label: string) => void; reducedMotion: boolean }) {
   return (
     <>
       <div className="flex h-[72px] items-center gap-3 border-b border-white/10 px-7">
@@ -133,15 +134,30 @@ function SidebarContent({ onNavigate }: { onNavigate: (label: string) => void })
         <nav className="space-y-1" aria-label="Navegação principal">
           {navItems.map(({ label, icon: Icon }) => (
             label === 'Calculadora elétrica' ? (
-              <div key={label} className="mt-1 flex items-center gap-3 rounded-xl bg-[#2b647b] px-3 py-2.5 text-[13px] font-semibold text-white shadow-[inset_3px_0_0_#55d8d4]" aria-current="page" data-testid="nav-calculadora-ativa">
+              <motion.div
+                key={label}
+                layoutId="active-nav"
+                transition={reducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 520, damping: 34 }}
+                className="mt-1 flex items-center gap-3 rounded-xl bg-[#2b647b] px-3 py-2.5 text-[13px] font-semibold text-white shadow-[inset_3px_0_0_#55d8d4]"
+                aria-current="page"
+                data-testid="nav-calculadora-ativa"
+              >
                 <Icon size={17} className="text-[#66e1dd]" />
                 {label}
-              </div>
+              </motion.div>
             ) : (
-              <button key={label} onClick={() => onNavigate(label)} className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition hover:bg-white/8 hover:text-white" data-testid={`button-nav-${label.toLowerCase().replaceAll(' ', '-')}`}>
-                <Icon size={17} strokeWidth={1.8} className="text-white/45 transition group-hover:text-[#5bd9d7]" />
-                {label}
-              </button>
+              <motion.button
+                key={label}
+                onClick={() => onNavigate(label)}
+                whileHover={reducedMotion ? undefined : { x: 2 }}
+                whileTap={reducedMotion ? undefined : { scale: 0.985 }}
+                className="group relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition-colors hover:text-white"
+                data-testid={`button-nav-${label.toLowerCase().replaceAll(' ', '-')}`}
+              >
+                <span className="absolute inset-1 rounded-[10px] bg-white/[.08] opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true" />
+                <Icon size={17} strokeWidth={1.8} className="relative text-white/45 transition-colors duration-200 group-hover:text-[#5bd9d7]" />
+                <span className="relative">{label}</span>
+              </motion.button>
             )
           ))}
         </nav>

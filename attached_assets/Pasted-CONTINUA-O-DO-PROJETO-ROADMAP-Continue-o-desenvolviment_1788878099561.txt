@@ -1,0 +1,662 @@
+CONTINUAÇÃO DO PROJETO — ROADMAP
+
+Continue o desenvolvimento do Sistema Inteligente de Grandezas e Eficiência Elétrica a partir do estado atual.
+
+IMPORTANTE:
+NÃO recrie o projeto.
+NÃO altere desnecessariamente a Calculadora ou o resistor que já funcionam.
+Preserve a interface atual inspirada no LiteMe e evolua o sistema sobre essa base.
+
+Principal referência visual:
+https://dashboard.liteme.com
+
+Dashboard energético:
+https://liteme.com.br/dashboards/energy
+
+Referência de animações React:
+https://morphin.dev/
+
+Referência de Skills:
+https://www.aitmpl.com/skills/
+
+Trabalhe POR FASES.
+Depois de cada fase principal, teste, revise e pare para eu avaliar antes de avançar.
+Isso é importante para evitar retrabalho e consumo desnecessário de créditos.
+
+==================================================
+FASE 1 — REVISÃO DO QUE JÁ EXISTE
+==================================================
+
+Antes de criar novas funcionalidades:
+
+• testar os quatro cálculos;
+• testar o resistor automático;
+• verificar responsividade;
+• revisar sidebar;
+• revisar componentes;
+• remover duplicações óbvias;
+• preservar a identidade visual inspirada no LiteMe.
+
+Não faça grandes refatorações se o código atual estiver funcionando.
+
+==================================================
+FASE 2 — PROFISSIONALIZAR A INTERFACE
+==================================================
+
+Continue usando o LiteMe como PRINCIPAL referência.
+
+Melhore:
+
+• sidebar;
+• header;
+• cards;
+• espaçamento;
+• tipografia;
+• hierarquia;
+• estados hover;
+• focus;
+• loading;
+• empty states;
+• feedback visual;
+• responsividade.
+
+O sistema deve parecer um SaaS profissional de energia.
+
+Evite aparência genérica de template administrativo.
+
+==================================================
+FASE 3 — MORPHIN / ANIMAÇÕES
+==================================================
+
+Analise:
+https://morphin.dev/
+
+Use os componentes e padrões de movimento do Morphin como referência.
+
+NÃO adicionar animação apenas por estética.
+
+Priorize:
+
+1. NAVEGAÇÃO
+
+Adaptar o conceito de:
+Animated Navbar Menu with Morphing Hover State
+
+para a sidebar.
+
+Aplicar transição suave no item ativo e hover.
+
+2. RESULTADO DA CALCULADORA
+
+Quando um novo resultado aparecer:
+
+• fade + pequeno movimento vertical;
+• duração curta;
+• valor atualizado suavemente.
+
+3. RESISTOR
+
+Ao recalcular a resistência:
+
+• animar suavemente a mudança das bandas;
+• não fazer o resistor girar ou usar efeitos exagerados.
+
+4. TOASTS
+
+Usar como referência:
+React Ripple Animation in Toast
+
+Aplicar para:
+
+• cálculo realizado;
+• dados salvos;
+• erro;
+• aviso.
+
+O feedback deve ser curto e elegante.
+
+5. LOADING
+
+Usar inspiração do:
+Parametric Orbit Loader
+
+somente em ações assíncronas futuras como:
+
+• login;
+• CEP;
+• tarifa;
+• carregamento inicial.
+
+Utilizar versão discreta.
+
+6. DASHBOARD
+
+Quando o dashboard receber dados reais, usar como inspiração:
+
+• Animated Dashboard Performance Chart
+• Animated Dashboard Chart UI
+
+Animar entrada dos dados e atualização dos gráficos.
+
+Não exagerar nas animações.
+
+7. HISTÓRICO
+
+Usar como inspiração:
+Animated Status Badge with Table for Dashboards
+
+para histórico, estados e informações tabulares.
+
+8. RECOMENDAÇÕES FUTURAS
+
+Animated Expandable Card Stack poderá inspirar cards expansíveis de recomendações.
+
+Não implementar recomendações agora caso essa fase ainda não tenha sido iniciada.
+
+REGRAS DE MOTION:
+
+• microinterações de aproximadamente 150–300ms;
+• preferir transform e opacity;
+• evitar movimentos que mudem layout;
+• respeitar prefers-reduced-motion;
+• animações nunca podem atrasar a utilização.
+
+Se algum componente do Morphin for PRO ou não estiver disponível, NÃO tente contornar acesso.
+Apenas reproduza um padrão de movimento equivalente usando Framer Motion.
+
+==================================================
+FASE 4 — SKILLS
+==================================================
+
+Consulte:
+https://www.aitmpl.com/skills/
+
+Priorize somente estas Skills:
+
+1. UI UX PRO MAX
+creative-design/ui-ux-pro-max
+
+Usar para:
+
+• UX;
+• design system;
+• responsividade;
+• acessibilidade;
+• animação;
+• tipografia;
+• cores;
+• dashboard.
+
+2. FRONTEND DESIGN
+creative-design/frontend-design
+
+Usar para evitar aparência genérica produzida por IA e manter acabamento visual profissional.
+
+3. SENIOR FRONTEND
+development/senior-frontend
+
+Usar durante desenvolvimento React/TypeScript para:
+
+• componentes;
+• arquitetura frontend;
+• performance;
+• organização;
+• reutilização.
+
+4. SENIOR BACKEND
+development/senior-backend
+
+Ativar quando começarmos:
+
+• autenticação;
+• API;
+• banco;
+• CEP;
+• perfil energético;
+• tarifas.
+
+5. CODE REVIEWER
+development/code-reviewer
+
+Utilizar após módulos importantes.
+
+6. CODE REVIEW CHECKLIST
+development/code-review-checklist
+
+Usar antes de considerar uma fase concluída.
+
+7. SECURITY REVIEW
+development/cc-skill-security-review
+
+Ativar principalmente para:
+
+• autenticação;
+• inputs;
+• banco;
+• APIs;
+• secrets;
+• informações do usuário.
+
+IMPORTANTE:
+
+Essas Skills são referências do AI Templates/Claude Code.
+
+Se o Replit conseguir importar/adaptar Skills compatíveis, faça isso.
+
+Se não for compatível, NÃO desperdice tempo tentando executar comandos incompatíveis.
+Leia e aplique as práticas equivalentes no desenvolvimento.
+
+Não carregue dezenas de Skills.
+Use apenas as citadas acima.
+
+==================================================
+FASE 5 — LOGIN E CADASTRO
+==================================================
+
+Depois da revisão visual, desenvolver:
+
+LOGIN
+
+• e-mail;
+• senha;
+• entrar;
+• criar conta;
+• mensagens de erro;
+• loading;
+• logout.
+
+CADASTRO
+
+• nome;
+• e-mail;
+• senha;
+• confirmação.
+
+Manter exatamente o mesmo design system do restante do sistema.
+
+Não criar telas visualmente desconectadas.
+
+==================================================
+FASE 6 — ONBOARDING
+==================================================
+
+Após o cadastro:
+
+ETAPA 1
+
+“Qual é o seu principal objetivo?”
+
+Uma escolha:
+
+• Economizar energia e reduzir gastos
+• Calcular grandezas e resistores
+• Organizar e acompanhar meu consumo
+• Estudar conceitos elétricos
+• Uso profissional
+
+ETAPA 2
+
+“O que você também deseja acompanhar?”
+
+Múltipla seleção:
+
+• Grandezas
+• Resistores
+• Consumo
+• Economia
+• Equipamentos
+• Histórico
+• Gráficos
+• Relatórios
+
+ETAPA 3
+
+“Qual é seu nível de conhecimento?”
+
+• Iniciante
+• Intermediário
+• Avançado
+
+Criar onboarding elegante com indicador de progresso e animação horizontal suave entre etapas.
+
+==================================================
+FASE 7 — BANCO E BACKEND
+==================================================
+
+Somente agora implementar backend necessário.
+
+Salvar:
+
+• usuário;
+• perfil;
+• objetivo;
+• interesses;
+• nível;
+• localização futura;
+• configurações;
+• cálculos.
+
+Manter regras de negócio fora dos componentes React.
+
+Aplicar Senior Backend + Security Review.
+
+==================================================
+FASE 8 — CEP E PERFIL ENERGÉTICO
+==================================================
+
+Adicionar etapa de CEP.
+
+Fluxo:
+
+CEP
+→ endereço
+→ bairro
+→ cidade
+→ estado
+→ código IBGE.
+
+Permitir preenchimento manual caso a API falhe.
+
+Perguntar:
+
+Tipo de instalação:
+
+• residencial;
+• comercial;
+• industrial;
+• rural;
+• instituição;
+• outro.
+
+Depois criar:
+
+PERFIL ENERGÉTICO
+
+com:
+
+• localização;
+• objetivo;
+• interesses;
+• tipo de instalação;
+• distribuidora;
+• tarifa.
+
+==================================================
+FASE 9 — DISTRIBUIDORA E TARIFA
+==================================================
+
+Planejar:
+
+localização
+→ distribuidora
+→ tarifa estimada.
+
+Permitir:
+
+USAR TARIFA ESTIMADA
+
+ou
+
+INFORMAR MINHA TARIFA.
+
+Nunca apresentar uma estimativa como valor exato.
+
+Não avançar se não existir fonte confiável para identificar distribuidora/tarifa.
+
+==================================================
+FASE 10 — DASHBOARD REAL
+==================================================
+
+Agora transformar a página Dashboard em funcional.
+
+Manter forte inspiração no LiteMe.
+
+Cards iniciais:
+
+• último cálculo;
+• quantidade de cálculos;
+• resistor recente;
+• tarifa configurada;
+• perfil energético;
+• atalhos.
+
+Personalizar conforme objetivo do usuário.
+
+Se objetivo:
+
+CALCULAR
+→ priorizar Calculadora.
+
+ECONOMIZAR
+→ priorizar consumo e gastos.
+
+ORGANIZAR
+→ priorizar histórico/equipamentos.
+
+Não mostrar dados falsos como se fossem reais.
+
+==================================================
+FASE 11 — HISTÓRICO
+==================================================
+
+Salvar e mostrar cálculos anteriores.
+
+Mostrar:
+
+• data;
+• grandeza;
+• valores utilizados;
+• resultado;
+• unidade;
+• resistor relacionado.
+
+Permitir repetir um cálculo.
+
+Usar tabela/cards compatíveis com o estilo LiteMe e animações discretas do Morphin.
+
+==================================================
+FASE 12 — EQUIPAMENTOS E CONSUMO
+==================================================
+
+Após o núcleo estar estável:
+
+Cadastrar equipamento:
+
+• nome;
+• potência;
+• quantidade;
+• horas por dia;
+• dias por mês.
+
+Calcular:
+
+kWh/dia
+kWh/mês
+kWh/ano.
+
+Depois combinar com a tarifa para gerar:
+
+• custo diário;
+• custo mensal;
+• custo anual.
+
+==================================================
+FASE 13 — ECONOMIA
+==================================================
+
+Comparar:
+
+CENÁRIO ATUAL
+vs
+CENÁRIO OTIMIZADO.
+
+Mostrar:
+
+• kWh economizados;
+• R$ economizados;
+• percentual;
+• projeção mensal;
+• projeção anual.
+
+==================================================
+FASE 14 — RECOMENDAÇÕES
+==================================================
+
+Criar recomendações baseadas em regras reais.
+
+Não gerar textos aleatórios.
+
+Cada recomendação deve mostrar:
+
+• problema;
+• sugestão;
+• impacto;
+• possível economia.
+
+Utilizar cards expansíveis inspirados no Morphin.
+
+==================================================
+FASE 15 — GRÁFICOS
+==================================================
+
+Quando houver dados reais:
+
+• consumo diário;
+• consumo mensal;
+• evolução;
+• custo;
+• ranking de equipamentos.
+
+Usar padrões visuais do LiteMe.
+
+Para motion, usar inspiração dos Dashboard Charts do Morphin.
+
+As animações devem mostrar transição de dados, não servir apenas como decoração.
+
+==================================================
+FASE 16 — REVISÃO PROFISSIONAL
+==================================================
+
+Executar:
+
+UI UX Pro Max
++
+Frontend Design
++
+Senior Frontend
++
+Senior Backend
++
+Code Reviewer
++
+Code Review Checklist
++
+Security Review.
+
+Verificar:
+
+• UX;
+• responsividade;
+• acessibilidade;
+• duplicação;
+• arquitetura;
+• segurança;
+• performance;
+• inputs;
+• tratamento de erros;
+• secrets;
+• dependências.
+
+==================================================
+FASE 17 — POLIMENTO
+==================================================
+
+Revisar todas as telas lado a lado.
+
+Garantir que:
+
+• Login
+• Cadastro
+• Onboarding
+• Dashboard
+• Calculadora
+• Histórico
+• Consumo
+• Economia
+• Configurações
+
+pareçam partes do MESMO produto.
+
+Revisar novamente o LiteMe e corrigir diferenças de qualidade em:
+
+• espaçamento;
+• proporção;
+• tipografia;
+• cards;
+• sidebar;
+• alinhamento;
+• hierarquia.
+
+==================================================
+FASE 18 — TESTES E DEPLOY
+==================================================
+
+Testar:
+
+• desktop;
+• tablet;
+• celular;
+• autenticação;
+• calculadora;
+• resistor;
+• histórico;
+• CEP;
+• consumo;
+• tarifa;
+• dashboard.
+
+Executar revisão de segurança e código.
+
+Somente depois preparar deploy.
+
+==================================================
+REGRA PRINCIPAL
+==================================================
+
+Não execute todo este roadmap de uma vez.
+
+Faça:
+
+FASE
+→ TESTE
+→ REVISÃO
+→ MINHA APROVAÇÃO
+→ PRÓXIMA FASE.
+
+PRIORIDADE DE CONTINUAÇÃO:
+
+1. Revisar sistema existente
+2. Refinar interface
+3. Aplicar Morphin
+4. Login/Cadastro
+5. Onboarding
+6. Backend/Banco
+7. CEP/Perfil energético
+8. Dashboard real
+9. Histórico
+10. Consumo
+11. Economia
+12. Recomendações
+13. Revisões finais
+
+PRIMEIRA AÇÃO AGORA:
+
+1. Preserve tudo que já funciona.
+2. Analise Morphin.
+3. Analise as Skills indicadas.
+4. Refine a interface existente.
+5. Adicione somente as animações úteis à interface e Calculadora atual.
+6. Teste.
+7. PARE e mostre o resultado.
+
+NÃO inicie Login/Cadastro até eu aprovar esta primeira fase de refinamento.

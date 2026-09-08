@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useMemo, useState } from 'react';
+import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, CheckCircle2, CircleHelp, Eraser, Lightbulb, RotateCcw, Zap } from 'lucide-react';
 import { ResistorVisual } from '@/components/resistor-visual';
 import {
@@ -24,6 +24,9 @@ interface CalculationResult {
   bands?: ReturnType<typeof resistanceToColorBands>;
 }
 
+type FeedbackTone = 'success' | 'error' | 'info';
+type Feedback = { tone: FeedbackTone; message: string };
+
 const initialValues: InputValues = { voltage: '', current: '', resistance: '' };
 
 export default function CalculatorPage() {
@@ -32,15 +35,24 @@ export default function CalculatorPage() {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState('');
   const [result, setResult] = useState<CalculationResult | null>(null);
+  const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const reducedMotion = Boolean(useReducedMotion());
 
   const meta = calculationMeta[type];
   const canShowResult = Boolean(result && Number.isFinite(result.value));
+
+  useEffect(() => {
+    if (!feedback) return;
+    const timeout = window.setTimeout(() => setFeedback(null), 2800);
+    return () => window.clearTimeout(timeout);
+  }, [feedback]);
 
   const reset = (resetType = false) => {
     setValues(initialValues);
     setErrors({});
     setFormError('');
     setResult(null);
+    setFeedback({ tone: 'info', message: 'Pronto para um novo cálculo.' });
     if (resetType) setType('resistance');
   };
 
@@ -49,6 +61,7 @@ export default function CalculatorPage() {
     setErrors({});
     setFormError('');
     setResult(null);
+    setFeedback(null);
   };
 
   const handleInput = (key: InputKey, value: string) => {
@@ -80,6 +93,7 @@ export default function CalculatorPage() {
       setErrors(nextErrors);
       setFormError('Revise os campos destacados antes de calcular.');
       setResult(null);
+      setFeedback({ tone: 'error', message: 'Revise os campos destacados antes de calcular.' });
       return;
     }
 
@@ -98,6 +112,7 @@ export default function CalculatorPage() {
       setErrors(nextErrors);
       setFormError('Essa operação não pode ser dividida por zero.');
       setResult(null);
+      setFeedback({ tone: 'error', message: 'Essa operação não pode ser dividida por zero.' });
       return;
     }
 
@@ -113,6 +128,7 @@ export default function CalculatorPage() {
     if (!Number.isFinite(calculatedValue)) {
       setFormError('Não foi possível concluir com esses valores. Tente novamente.');
       setResult(null);
+      setFeedback({ tone: 'error', message: 'Não foi possível concluir com esses valores.' });
       return;
     }
 
@@ -123,6 +139,7 @@ export default function CalculatorPage() {
       type,
       bands: type === 'resistance' && calculatedValue > 0 ? resistanceToColorBands(calculatedValue) : undefined,
     });
+    setFeedback({ tone: 'success', message: 'Cálculo realizado com sucesso.' });
   };
 
   const contextualLine = useMemo(() => {
@@ -135,7 +152,7 @@ export default function CalculatorPage() {
 
   return (
     <div className="space-y-8">
-      <motion.section initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }} className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+      <motion.section initial={reducedMotion ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { duration: 0.45 }} className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
           <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[hsl(var(--primary))]">
             <span className="grid size-6 place-items-center rounded-md bg-[#d8eff0]"><Zap size={13} fill="currentColor" /></span>
@@ -157,7 +174,7 @@ export default function CalculatorPage() {
       </div>
 
       <section className="grid items-start gap-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(390px,1.05fr)]">
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08, duration: 0.45 }} className="soft-shadow rounded-2xl border border-[hsl(var(--card-border))] bg-white p-5 sm:p-7" data-testid="card-calculator-form">
+        <motion.div initial={reducedMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { delay: 0.08, duration: 0.45 }} className="soft-shadow rounded-2xl border border-[hsl(var(--card-border))] bg-white p-5 sm:p-7" data-testid="card-calculator-form">
           <div className="mb-6 flex items-start justify-between gap-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">01 / Escolha a grandeza</p>
@@ -238,7 +255,7 @@ export default function CalculatorPage() {
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16, duration: 0.45 }} className="soft-shadow min-h-[530px] rounded-2xl border border-[hsl(var(--card-border))] bg-white p-5 sm:p-7" data-testid="card-calculation-result">
+        <motion.div initial={reducedMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { delay: 0.16, duration: 0.45 }} className="soft-shadow min-h-[530px] rounded-2xl border border-[hsl(var(--card-border))] bg-white p-5 sm:p-7" data-testid="card-calculation-result">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">03 / Resultado</p>
@@ -258,11 +275,11 @@ export default function CalculatorPage() {
               <div className="mt-7 flex items-center gap-2 rounded-lg bg-[#f6f9f8] px-3 py-2 text-xs font-medium text-[hsl(var(--muted-foreground))]"><Lightbulb size={14} className="text-[#dc9d26]" /> Dica: use vírgula ou ponto decimal</div>
             </div>
           ) : (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-7">
+            <motion.div initial={reducedMotion ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { duration: 0.24 }} className="mt-7">
               <div className="rounded-2xl bg-[#edf8f5] px-5 py-6">
                 <p className="text-sm font-medium text-[#347d78]">Resultado de {calculationMeta[result.type].label.toLowerCase()}</p>
                 <div className="mt-2 flex items-end gap-3">
-                  <strong className="font-data text-[clamp(2.5rem,6vw,4.2rem)] font-medium leading-none tracking-[-0.08em] text-[#156e70]" data-testid="text-result-value">{formatNumber(result.value)}</strong>
+                  <motion.strong key={`${result.type}-${result.value}`} initial={reducedMotion ? false : { opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { duration: 0.22 }} className="font-data text-[clamp(2.5rem,6vw,4.2rem)] font-medium leading-none tracking-[-0.08em] text-[#156e70]" data-testid="text-result-value">{formatNumber(result.value)}</motion.strong>
                   <span className="mb-1.5 font-data text-lg font-medium text-[#4c8d8a]">{calculationMeta[result.type].unit}</span>
                 </div>
                 <p className="mt-4 border-t border-[#cde9e2] pt-3 font-data text-xs text-[#568b88]" data-testid="text-result-context">{calculationMeta[result.type].formula} <span className="mx-1.5 text-[#a7c9c4]">·</span> {contextualLine}</p>
@@ -319,6 +336,29 @@ export default function CalculatorPage() {
           </div>
         </div>
       </section>
+
+      <AnimatePresence>
+        {feedback && (
+          <motion.div
+            initial={reducedMotion ? false : { opacity: 0, y: 10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.98 }}
+            transition={reducedMotion ? { duration: 0 } : { duration: 0.2 }}
+            className={`fixed bottom-5 right-5 z-40 flex max-w-[calc(100vw-2.5rem)] items-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold shadow-[0_16px_36px_hsl(215_41%_17%/.14)] ${
+              feedback.tone === 'success'
+                ? 'border-[#bfe4d2] bg-[#f0fbf5] text-[#287653]'
+                : feedback.tone === 'error'
+                  ? 'border-[#efc9c7] bg-[#fff7f6] text-[#b34d49]'
+                  : 'border-[#cfe1e0] bg-white text-[#4f7070]'
+            }`}
+            role="status"
+            data-testid="toast-feedback"
+          >
+            <span className={`size-2 rounded-full ${feedback.tone === 'success' ? 'bg-[#43aa78]' : feedback.tone === 'error' ? 'bg-[#dd6c67]' : 'bg-[#39a9a2]'}`} aria-hidden="true" />
+            {feedback.message}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
