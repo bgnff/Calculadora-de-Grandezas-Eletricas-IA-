@@ -446,6 +446,41 @@
     opacity: 0.25;
     animation: walking-scroll 5s infinite linear;
   }
+
+  .walking-body > svg:first-child > g > g > path:nth-of-type(1) {
+    fill: #1e6fff !important;
+    stroke: #d7ebff !important;
+  }
+
+  .walking-body > svg:first-child > g > g > path:nth-of-type(2) {
+    fill: #0b1f3b !important;
+  }
+
+  .walking-body > svg:first-child > g > g > path:nth-of-type(5) {
+    stroke: #d7ebff !important;
+  }
+
+  .walking-head > g > g > path:nth-of-type(1) {
+    stroke: #d7ebff !important;
+  }
+
+  .walking-head > g > g > path:nth-of-type(2) {
+    fill: #1e6fff !important;
+    stroke: #d7ebff !important;
+  }
+
+  .walking-head > g > g > path:nth-of-type(3) {
+    stroke: #d7ebff !important;
+  }
+
+  .walking-head > g > g > path:nth-of-type(4) {
+    stroke: #1e6fff !important;
+  }
+
+  .walking-leg-left > g > g > path:last-of-type,
+  .walking-leg-right > g > g > path:first-of-type {
+    stroke: #1e6fff !important;
+  }
 }
 
 @keyframes band-in {
