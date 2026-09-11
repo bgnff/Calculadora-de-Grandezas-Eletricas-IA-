@@ -81,7 +81,7 @@ const clerkAppearance = {
 function LandingPage() {
   return (
     <main className="relative min-h-[100dvh] overflow-hidden bg-[#fafaf9]">
-      <Rays backgroundColor="hsl(var(--background))" style={{ zIndex: 0 }} />
+      <Rays backgroundColor="hsl(var(--background))" forceAnimation style={{ zIndex: 0 }} />
       <div className="pointer-events-none absolute -left-[340px] top-10 z-[1] size-[620px] rounded-full border-[10px] border-[#e8e6e5]/55" />
       <div className="pointer-events-none absolute -right-[380px] top-[500px] z-[1] size-[700px] rounded-full border-[10px] border-[#e8e6e5]/45" />
 

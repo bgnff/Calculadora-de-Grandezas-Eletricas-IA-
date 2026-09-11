@@ -7,6 +7,7 @@ type RaysProps = {
   opacity?: number;
   className?: string;
   style?: CSSProperties;
+  forceAnimation?: boolean;
 };
 
 export default function Rays({
@@ -15,6 +16,7 @@ export default function Rays({
   opacity = 0.18,
   className,
   style,
+  forceAnimation = false,
 }: RaysProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reducedMotion = useReducedMotion();
@@ -46,7 +48,10 @@ export default function Rays({
 
       const sourceX = width * 0.48;
       const sourceY = height * 0.97;
-      const drift = reducedMotion ? 0 : Math.sin(time * 0.00035) * width * 0.025;
+      const shouldAnimate = forceAnimation || !reducedMotion;
+      const sweep = shouldAnimate ? Math.sin(time * 0.00085) * 0.14 : 0;
+      const drift = shouldAnimate ? Math.sin(time * 0.0011) * width * 0.055 : 0;
+      const pulse = shouldAnimate ? 0.84 + Math.sin(time * 0.0014) * 0.16 : 1;
       const rayCount = 11;
 
       context.save();
@@ -54,9 +59,9 @@ export default function Rays({
 
       for (let index = 0; index < rayCount; index += 1) {
         const progress = index / (rayCount - 1);
-        const angle = -Math.PI * 0.94 + progress * Math.PI * 0.88;
+        const angle = -Math.PI * 0.94 + progress * Math.PI * 0.88 + sweep;
         const length = Math.max(width, height) * 1.4;
-        const spread = 0.035 + Math.sin(progress * Math.PI) * 0.12;
+        const spread = 0.035 + Math.sin(progress * Math.PI) * 0.12 * pulse;
         const startX = sourceX + drift;
         const startY = sourceY;
         const leftX = startX + Math.cos(angle - spread) * length;
@@ -64,8 +69,8 @@ export default function Rays({
         const endY = startY + Math.sin(angle) * length;
         const gradient = context.createLinearGradient(startX, startY, (leftX + rightX) / 2, endY);
 
-        gradient.addColorStop(0, `rgba(${color}, ${opacity * 1.1})`);
-        gradient.addColorStop(0.42, `rgba(${color}, ${opacity * 0.45})`);
+        gradient.addColorStop(0, `rgba(${color}, ${opacity * 1.1 * pulse})`);
+        gradient.addColorStop(0.42, `rgba(${color}, ${opacity * 0.45 * pulse})`);
         gradient.addColorStop(1, `rgba(${color}, 0)`);
 
         context.beginPath();
@@ -78,14 +83,14 @@ export default function Rays({
       }
 
       const glow = context.createRadialGradient(sourceX + drift, sourceY, 0, sourceX + drift, sourceY, width * 0.42);
-      glow.addColorStop(0, `rgba(${color}, ${opacity * 0.9})`);
-      glow.addColorStop(0.32, `rgba(${color}, ${opacity * 0.22})`);
+      glow.addColorStop(0, `rgba(${color}, ${opacity * 0.9 * pulse})`);
+      glow.addColorStop(0.32, `rgba(${color}, ${opacity * 0.22 * pulse})`);
       glow.addColorStop(1, `rgba(${color}, 0)`);
       context.fillStyle = glow;
       context.fillRect(0, height * 0.45, width, height * 0.55);
       context.restore();
 
-      if (!reducedMotion) {
+      if (shouldAnimate) {
         animationFrame = window.requestAnimationFrame(draw);
       }
     };
@@ -98,7 +103,7 @@ export default function Rays({
       window.cancelAnimationFrame(animationFrame);
       window.removeEventListener('resize', resize);
     };
-  }, [color, opacity, reducedMotion]);
+  }, [color, forceAnimation, opacity, reducedMotion]);
 
   return (
     <div
