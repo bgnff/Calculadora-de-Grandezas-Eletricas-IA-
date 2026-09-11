@@ -106,12 +106,12 @@ export function ProfileOnboarding({
 
   return (
     <div className="relative min-h-[100dvh] overflow-hidden bg-[hsl(var(--background))]" data-testid="screen-profile-onboarding">
-      <div className="pointer-events-none absolute -right-20 -top-32 size-[30rem] rounded-full bg-[#d9f3f0]/70 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-56 -left-24 size-[26rem] rounded-full bg-[#e6eff7]/80 blur-3xl" />
+       <div className="pointer-events-none absolute -right-20 -top-32 size-[30rem] rounded-full bg-[#dcecff]/70 blur-3xl" />
+       <div className="pointer-events-none absolute -bottom-56 -left-24 size-[26rem] rounded-full bg-[#eaf2ff]/80 blur-3xl" />
 
       <header className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-6 md:px-10 md:py-8">
         <div className="flex items-center gap-3" data-testid="brand-onboarding">
-          <span className="grid size-10 place-items-center rounded-xl bg-[hsl(var(--sidebar))] text-[#65dfd9] shadow-[0_0_0_5px_rgba(44,197,203,.12)]">
+           <span className="grid size-10 place-items-center rounded-lg bg-[hsl(var(--sidebar))] text-[#7eb3ff] shadow-[0_0_0_5px_rgba(0,107,255,.12)]">
             <Zap size={20} fill="currentColor" />
           </span>
           <span className="font-display text-[24px] font-bold tracking-[-0.05em] text-[hsl(var(--foreground))]">voltiva</span>
@@ -152,7 +152,7 @@ export function ProfileOnboarding({
               {stepLabels.map((label, index) => (
                 <span
                   key={label}
-                  className={`h-1.5 w-10 rounded-full transition-colors duration-300 sm:w-16 ${index <= step ? 'bg-[hsl(var(--primary))]' : 'bg-[#dce8e7]'}`}
+                   className={`h-1.5 w-10 rounded-full transition-colors duration-300 sm:w-16 ${index <= step ? 'bg-[hsl(var(--primary))]' : 'bg-[#d4e0ed]'}`}
                   data-testid={`progress-step-${index + 1}`}
                 />
               ))}
@@ -190,7 +190,7 @@ export function ProfileOnboarding({
                             }}
                             role="radio"
                             aria-checked={selected}
-                            className={`focus-ring group rounded-2xl border p-4 text-left transition ${selected ? 'border-[#39aaa6] bg-[#eaf8f5] shadow-[inset_0_0_0_1px_#39aaa6]' : 'border-[hsl(var(--border))] bg-[#fcfdfd] hover:border-[#afd5d1] hover:bg-[#f6fbfa]'}`}
+                             className={`focus-ring group rounded-2xl border p-4 text-left transition ${selected ? 'border-[#006bff] bg-[#e6f0ff] shadow-[inset_0_0_0_1px_#006bff]' : 'border-[hsl(var(--border))] bg-[#fcfdfd] hover:border-[#9bbce0] hover:bg-[#f4f8ff]'}`}
                             data-testid={`card-goal-${id}`}
                           >
                             <span className={`mb-4 grid size-10 place-items-center rounded-xl ${selected ? 'bg-[#ccece5] text-[#167e76]' : 'bg-[#eef5f5] text-[#62878a]'} transition-colors`}>
@@ -220,7 +220,7 @@ export function ProfileOnboarding({
                             key={id}
                             onClick={() => toggleInterest(id)}
                             aria-pressed={selected}
-                            className={`focus-ring flex items-center justify-between gap-4 rounded-2xl border p-4 text-left transition ${selected ? 'border-[#39aaa6] bg-[#eaf8f5] shadow-[inset_0_0_0_1px_#39aaa6]' : 'border-[hsl(var(--border))] bg-[#fcfdfd] hover:border-[#afd5d1] hover:bg-[#f6fbfa]'}`}
+                             className={`focus-ring flex items-center justify-between gap-4 rounded-2xl border p-4 text-left transition ${selected ? 'border-[#006bff] bg-[#e6f0ff] shadow-[inset_0_0_0_1px_#006bff]' : 'border-[hsl(var(--border))] bg-[#fcfdfd] hover:border-[#9bbce0] hover:bg-[#f4f8ff]'}`}
                             data-testid={`card-interest-${id}`}
                           >
                             <span className="flex items-center gap-3">
@@ -257,7 +257,7 @@ export function ProfileOnboarding({
                             }}
                             role="radio"
                             aria-checked={selected}
-                            className={`focus-ring flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition ${selected ? 'border-[#39aaa6] bg-[#eaf8f5] shadow-[inset_0_0_0_1px_#39aaa6]' : 'border-[hsl(var(--border))] bg-[#fcfdfd] hover:border-[#afd5d1] hover:bg-[#f6fbfa]'}`}
+                             className={`focus-ring flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition ${selected ? 'border-[#006bff] bg-[#e6f0ff] shadow-[inset_0_0_0_1px_#006bff]' : 'border-[hsl(var(--border))] bg-[#fcfdfd] hover:border-[#9bbce0] hover:bg-[#f4f8ff]'}`}
                             data-testid={`card-knowledge-${id}`}
                           >
                             <span className={`grid size-10 shrink-0 place-items-center rounded-xl text-sm font-data font-medium ${selected ? 'bg-[#ccece5] text-[#167e76]' : 'bg-[#eef5f5] text-[#62878a]'}`}>{id === 'beginner' ? '01' : id === 'familiar' ? '02' : '03'}</span>
@@ -276,7 +276,7 @@ export function ProfileOnboarding({
           </div>
 
           {step === 2 && (
-            <div className="mt-5 rounded-2xl border border-[#cfe2df] bg-[#edf8f5] p-5" data-testid="card-profile-summary">
+            <div className="mt-5 rounded-2xl border border-[#c9dcf2] bg-[#eaf2ff] p-5" data-testid="card-profile-summary">
               <div className="flex items-start gap-3">
                 <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-white text-[#299b8d]"><House size={17} /></span>
                 <div className="min-w-0">
@@ -312,7 +312,7 @@ export function ProfileOnboarding({
               {message && <p className="text-right text-xs font-semibold text-[#b04f4c]" role="alert" data-testid="alert-onboarding-validation">{message}</p>}
               <button
                 onClick={handleContinue}
-                className="focus-ring inline-flex items-center justify-center gap-2 rounded-xl bg-[hsl(var(--primary))] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_18px_hsl(var(--primary)/.18)] transition hover:-translate-y-0.5 hover:bg-[#126d91] disabled:cursor-not-allowed disabled:opacity-55 disabled:hover:translate-y-0"
+                className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_18px_hsl(var(--primary)/.18)] transition hover:-translate-y-0.5 hover:bg-[#004eba] disabled:cursor-not-allowed disabled:opacity-55 disabled:hover:translate-y-0"
                 data-testid={step === 2 ? 'button-finish-profile' : 'button-continue-onboarding'}
               >
                 {step === 2 ? (editing ? 'Salvar perfil' : 'Finalizar perfil') : 'Continuar'} <ArrowRight size={17} />

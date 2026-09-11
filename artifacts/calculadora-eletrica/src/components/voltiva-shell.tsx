@@ -12,6 +12,7 @@ import {
   Clock3,
   FileText,
   LayoutDashboard,
+  LogOut,
   Menu,
   Settings2,
   X,
@@ -80,7 +81,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
       </AnimatePresence>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-[72px] items-center justify-between border-b border-[hsl(var(--border))] bg-[#f9fbfb]/90 px-5 backdrop-blur-xl md:px-9">
+        <header className="sticky top-0 z-30 flex h-[72px] items-center justify-between border-b border-[hsl(var(--border))] bg-[#f8f9fb]/95 px-5 backdrop-blur-xl md:px-9">
           <div className="flex items-center gap-3">
             <button onClick={() => setMobileOpen(true)} className="rounded-lg p-2 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))] md:hidden" aria-label="Abrir menu" data-testid="button-open-mobile-menu">
               <Menu size={21} />
@@ -96,8 +97,8 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="hidden items-center gap-2 rounded-full border border-[#cce3df] bg-[#f0faf7] px-3 py-1.5 text-xs font-semibold text-[#267867] sm:flex">
-              <span className="size-1.5 rounded-full bg-[#3bab83]" />
+             <div className="hidden items-center gap-2 rounded-full border border-[#c9dcf2] bg-[#eaf2ff] px-3 py-1.5 text-xs font-semibold text-[#004eba] sm:flex">
+               <span className="size-1.5 rounded-full bg-[#006bff]" />
               Sistema operacional
             </div>
             <button onClick={onEditProfile} className="rounded-xl border border-[hsl(var(--border))] bg-white p-2 text-[hsl(var(--muted-foreground))] shadow-sm transition hover:border-[#a8c6c3] hover:text-[hsl(var(--primary))]" aria-label="Editar perfil" data-testid="button-open-settings">
@@ -115,7 +116,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
                   <p className="text-sm font-bold text-[#27736d]">Seu perfil está pausado</p>
                   <p className="mt-1 text-xs leading-5 text-[#5c7e7b]">As respostas estão salvas neste dispositivo. Retome quando quiser para concluir o perfil.</p>
                 </div>
-                <button onClick={onResumeProfile} className="focus-ring inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#277d7a] px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-[#1d6968]" data-testid="button-resume-profile">
+                 <button onClick={onResumeProfile} className="focus-ring inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#006bff] px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-[#004eba]" data-testid="button-resume-profile">
                   Retomar perfil <ChevronRight size={15} />
                 </button>
               </div>
@@ -132,7 +133,7 @@ function SidebarContent({ onEditProfile, reducedMotion, activePath, onClose, onS
   return (
     <>
       <div className="flex h-[72px] items-center gap-3 border-b border-white/10 px-7">
-        <span className="grid size-9 place-items-center rounded-xl bg-[#2cc5cb] text-[#102f43] shadow-[0_0_0_5px_rgba(44,197,203,.12)]">
+         <span className="grid size-9 place-items-center rounded-lg bg-[#006bff] text-white shadow-[0_0_0_5px_rgba(0,107,255,.14)]">
           <Bolt size={19} fill="currentColor" strokeWidth={2.4} />
         </span>
         <span className="font-display text-[22px] font-bold tracking-[-0.04em] text-white">voltiva</span>
@@ -146,11 +147,11 @@ function SidebarContent({ onEditProfile, reducedMotion, activePath, onClose, onS
                 key={label}
                 layoutId="active-nav"
                 transition={reducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 520, damping: 34 }}
-                className="mt-1 flex items-center gap-3 rounded-xl bg-[#2b647b] px-3 py-2.5 text-[13px] font-semibold text-white shadow-[inset_3px_0_0_#55d8d4]"
+                 className="mt-1 flex items-center gap-3 rounded-lg bg-[#174c78] px-3 py-2.5 text-[13px] font-semibold text-white shadow-[inset_3px_0_0_#006bff]"
                 aria-current="page"
                 data-testid={`nav-${label.toLowerCase().replaceAll(' ', '-')}-ativa`}
               >
-                <Icon size={17} className="text-[#66e1dd]" />
+                 <Icon size={17} className="text-[#7eb3ff]" />
                 {label}
               </motion.div>
             ) : (
@@ -162,7 +163,7 @@ function SidebarContent({ onEditProfile, reducedMotion, activePath, onClose, onS
               >
                 <Link href={path} onClick={onClose} className="group relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition-colors hover:text-white" data-testid={`button-nav-${label.toLowerCase().replaceAll(' ', '-')}`}>
                   <span className="absolute inset-1 rounded-[10px] bg-white/[.08] opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true" />
-                  <Icon size={17} strokeWidth={1.8} className="relative text-white/45 transition-colors duration-200 group-hover:text-[#5bd9d7]" />
+                   <Icon size={17} strokeWidth={1.8} className="relative text-white/45 transition-colors duration-200 group-hover:text-[#7eb3ff]" />
                   <span className="relative">{label}</span>
                 </Link>
               </motion.div>
@@ -172,15 +173,15 @@ function SidebarContent({ onEditProfile, reducedMotion, activePath, onClose, onS
         <div className="my-7 h-px bg-white/10" />
         <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">Gerencie</p>
         <button onClick={onEditProfile} className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition hover:bg-white/8 hover:text-white" data-testid="button-nav-configuracoes">
-          <Settings2 size={17} strokeWidth={1.8} className="text-white/45 group-hover:text-[#5bd9d7]" />
+           <Settings2 size={17} strokeWidth={1.8} className="text-white/45 group-hover:text-[#7eb3ff]" />
           Configurações
         </button>
         <button onClick={onSignOut} className="group mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition hover:bg-white/8 hover:text-white" data-testid="button-sign-out">
-          <span className="text-white/45 group-hover:text-[#5bd9d7]">↪</span>
+           <LogOut size={17} strokeWidth={1.8} className="text-white/45 group-hover:text-[#7eb3ff]" />
           Sair da conta
         </button>
         <div className="mt-auto rounded-2xl border border-white/10 bg-white/[.06] p-4">
-          <div className="mb-3 flex items-center gap-2 text-[#73e5dd]"><span className="grid size-7 place-items-center rounded-lg bg-[#2b7a84]/50"><Bolt size={14} fill="currentColor" /></span><span className="text-xs font-bold">Dica Voltiva</span></div>
+           <div className="mb-3 flex items-center gap-2 text-[#8ebaff]"><span className="grid size-7 place-items-center rounded-lg bg-[#2c61a1]/50"><Bolt size={14} fill="currentColor" /></span><span className="text-xs font-bold">Dica Voltiva</span></div>
           <p className="text-[11px] leading-relaxed text-white/55">Use a calculadora para validar uma grandeza antes de fechar seu diagnóstico.</p>
         </div>
       </div>

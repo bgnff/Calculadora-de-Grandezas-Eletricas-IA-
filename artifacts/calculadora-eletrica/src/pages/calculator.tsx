@@ -183,7 +183,7 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
       <motion.section initial={reducedMotion ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { duration: 0.45 }} className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
           <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[hsl(var(--primary))]">
-            <span className="grid size-6 place-items-center rounded-md bg-[#d8eff0]"><Zap size={13} fill="currentColor" /></span>
+             <span className="grid size-6 place-items-center rounded-md bg-[#e6f0ff]"><Zap size={13} fill="currentColor" /></span>
             Ferramenta de precisão
           </div>
           <h1 className="font-display text-[clamp(2rem,4vw,3.35rem)] font-semibold leading-[1.05] tracking-[-0.055em] text-[hsl(var(--foreground))]">Calculadora elétrica</h1>
@@ -208,7 +208,7 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
               <p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">01 / Escolha a grandeza</p>
               <h2 className="mt-2 font-display text-xl font-semibold tracking-[-0.035em] text-[hsl(var(--foreground))]">O que você quer encontrar?</h2>
             </div>
-            <div className="hidden size-10 place-items-center rounded-xl bg-[#edf8f6] text-[#299b8d] sm:grid"><CircleHelp size={18} /></div>
+                 <div className="hidden size-10 place-items-center rounded-xl bg-[#e6f0ff] text-[#006bff] sm:grid"><CircleHelp size={18} /></div>
           </div>
 
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4" role="radiogroup" aria-label="Grandeza a calcular">
@@ -221,7 +221,7 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
                   onClick={() => handleTypeChange(option)}
                   role="radio"
                   aria-checked={selected}
-                  className={`focus-ring rounded-xl border px-2 py-3 text-center transition ${selected ? 'border-[#42bdb5] bg-[#e9f8f5] text-[#18786e] shadow-[inset_0_0_0_1px_#42bdb5]' : 'border-[hsl(var(--border))] bg-[#fcfdfd] text-[hsl(var(--muted-foreground))] hover:border-[#afd5d1] hover:bg-[#f6fbfa]'}`}
+                   className={`focus-ring rounded-lg border px-2 py-3 text-center transition ${selected ? 'border-[#006bff] bg-[#e6f0ff] text-[#004eba] shadow-[inset_0_0_0_1px_#006bff]' : 'border-[hsl(var(--border))] bg-[#fcfdfd] text-[hsl(var(--muted-foreground))] hover:border-[#9bbce0] hover:bg-[#f4f8ff]'}`}
                   data-testid={`button-select-${option}`}
                 >
                   <span className="font-data block text-[17px] font-medium">{optionMeta.symbol}</span>
@@ -249,7 +249,7 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
                     {field.label}
                     <span className="font-data text-xs font-normal text-[hsl(var(--muted-foreground))]">{field.unit}</span>
                   </span>
-                  <div className={`flex h-12 items-center rounded-xl border bg-white transition focus-within:ring-4 ${hasError ? 'border-[#df7774] focus-within:border-[#d85b58] focus-within:ring-[#e36c691c]' : 'border-[hsl(var(--input))] focus-within:border-[#39aaa6] focus-within:ring-[#39aaa61f]'}`}>
+                     <div className={`flex h-12 items-center rounded-lg border bg-white transition focus-within:ring-4 ${hasError ? 'border-[#df7774] focus-within:border-[#d85b58] focus-within:ring-[#e36c691c]' : 'border-[hsl(var(--input))] focus-within:border-[#006bff] focus-within:ring-[#006bff1f]'}`}>
                     <input
                       id={`input-${key}`}
                       type="text"
@@ -277,7 +277,7 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
             <button onClick={() => reset()} className="focus-ring inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold text-[hsl(var(--muted-foreground))] transition hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))]" data-testid="button-clear">
               <Eraser size={16} /> Limpar
             </button>
-            <button onClick={calculate} className="focus-ring inline-flex items-center justify-center gap-2 rounded-xl bg-[hsl(var(--primary))] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_18px_hsl(var(--primary)/.18)] transition hover:-translate-y-0.5 hover:bg-[#126d91] active:translate-y-0" data-testid="button-calculate">
+            <button onClick={calculate} className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_18px_hsl(var(--primary)/.18)] transition hover:-translate-y-0.5 hover:bg-[#004eba] active:translate-y-0" data-testid="button-calculate">
               Calcular <ArrowRight size={17} />
             </button>
           </div>
@@ -304,11 +304,11 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
             </div>
           ) : (
             <motion.div initial={reducedMotion ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { duration: 0.24 }} className="mt-7">
-              <div className="rounded-2xl bg-[#edf8f5] px-5 py-6">
-                <p className="text-sm font-medium text-[#347d78]">Resultado de {calculationMeta[result.type].label.toLowerCase()}</p>
+                 <div className="rounded-2xl bg-[#eaf2ff] px-5 py-6">
+                 <p className="text-sm font-medium text-[#004eba]">Resultado de {calculationMeta[result.type].label.toLowerCase()}</p>
                 <div className="mt-2 flex items-end gap-3">
-                  <motion.strong key={`${result.type}-${result.value}`} initial={reducedMotion ? false : { opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { duration: 0.22 }} className="font-data text-[clamp(2.5rem,6vw,4.2rem)] font-medium leading-none tracking-[-0.08em] text-[#156e70]" data-testid="text-result-value">{formatNumber(result.value)}</motion.strong>
-                  <span className="mb-1.5 font-data text-lg font-medium text-[#4c8d8a]">{calculationMeta[result.type].unit}</span>
+                   <motion.strong key={`${result.type}-${result.value}`} initial={reducedMotion ? false : { opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { duration: 0.22 }} className="font-data text-[clamp(2.5rem,6vw,4.2rem)] font-medium leading-none tracking-[-0.08em] text-[#0b3558]" data-testid="text-result-value">{formatNumber(result.value)}</motion.strong>
+                   <span className="mb-1.5 font-data text-lg font-medium text-[#476788]">{calculationMeta[result.type].unit}</span>
                 </div>
                 <p className="mt-4 border-t border-[#cde9e2] pt-3 font-data text-xs text-[#568b88]" data-testid="text-result-context">{calculationMeta[result.type].formula} <span className="mx-1.5 text-[#a7c9c4]">·</span> {contextualLine}</p>
               </div>

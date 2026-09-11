@@ -1,5 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
 @layer theme, base, clerk, components, utilities;
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 @import '@clerk/themes/shadcn.css';
 @import 'tw-animate-css';
@@ -81,72 +81,72 @@
   --elevate-1: rgba(0, 0, 0, 0.03);
   --elevate-2: rgba(0, 0, 0, 0.08);
 
-  --background: 210 38% 95%;
+  --background: 210 33% 97%;
 
-  --foreground: 215 41% 17%;
+  --foreground: 207 78% 19%;
 
-  --border: 211 28% 86%;
+  --border: 211 42% 88%;
 
   --card: 0 0% 100%;
 
-  --card-foreground: 215 41% 17%;
+  --card-foreground: 207 78% 19%;
 
   --card-border: 211 28% 86%;
 
-  --sidebar: 216 54% 16%;
+  --sidebar: 207 78% 19%;
 
-  --sidebar-foreground: 210 30% 90%;
+  --sidebar-foreground: 211 38% 92%;
 
-  --sidebar-border: 215 42% 25%;
+  --sidebar-border: 207 54% 27%;
 
-  --sidebar-primary: 190 84% 54%;
+  --sidebar-primary: 216 100% 50%;
 
-  --sidebar-primary-foreground: 216 54% 16%;
+  --sidebar-primary-foreground: 0 0% 100%;
 
-  --sidebar-accent: 215 44% 24%;
+  --sidebar-accent: 207 54% 27%;
 
-  --sidebar-accent-foreground: 210 30% 94%;
+  --sidebar-accent-foreground: 211 38% 94%;
 
-  --sidebar-ring: 190 84% 54%;
+  --sidebar-ring: 216 100% 50%;
 
   --popover: 0 0% 100%;
 
-  --popover-foreground: 215 41% 17%;
+  --popover-foreground: 207 78% 19%;
 
   --popover-border: 211 28% 86%;
 
-  --primary: 198 91% 39%;
+  --primary: 216 100% 50%;
 
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 190 80% 91%;
+  --secondary: 214 100% 95%;
 
-  --secondary-foreground: 199 68% 23%;
+  --secondary-foreground: 213 77% 29%;
 
-  --muted: 210 30% 93%;
+  --muted: 213 35% 94%;
 
-  --muted-foreground: 214 18% 47%;
+  --muted-foreground: 211 30% 41%;
 
-  --accent: 39 93% 58%;
+  --accent: 199 100% 50%;
 
-  --accent-foreground: 215 41% 17%;
+  --accent-foreground: 207 78% 19%;
 
   --destructive: 1 72% 52%;
 
   --destructive-foreground: 0 0% 100%;
 
-  --input: 211 28% 82%;
-  --ring: 190 84% 54%;
-  --chart-1: 198 91% 39%;
-  --chart-2: 39 93% 58%;
-  --chart-3: 164 55% 42%;
-  --chart-4: 215 54% 42%;
+  --input: 211 42% 82%;
+  --ring: 216 100% 50%;
+  --chart-1: 216 100% 50%;
+  --chart-2: 199 100% 50%;
+  --chart-3: 207 78% 19%;
+  --chart-4: 211 46% 55%;
   --chart-5: 1 72% 52%;
 
-  --app-font-sans: 'DM Sans', sans-serif;
-  --app-font-serif: 'Bricolage Grotesque', sans-serif;
+  --app-font-sans: 'Manrope', sans-serif;
+  --app-font-serif: 'Manrope', sans-serif;
   --app-font-mono: 'DM Mono', monospace;
-  --radius: 0.7rem;
+  --radius: 0.5rem;
   --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0); /*replace with H S L */
   --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0); /*replace with H S L */
   --shadow-sm:
@@ -332,9 +332,7 @@
   body {
     min-width: 320px;
     min-height: 100dvh;
-    background:
-      radial-gradient(circle at 76% 3%, hsl(190 80% 91% / 0.42), transparent 28rem),
-      hsl(var(--background));
+    background: hsl(var(--background));
   }
 
   button,
@@ -358,14 +356,11 @@
   }
 
   .voltiva-grid {
-    background-image:
-      linear-gradient(hsl(211 28% 86% / 0.24) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(211 28% 86% / 0.24) 1px, transparent 1px);
-    background-size: 32px 32px;
+    background-color: hsl(var(--background));
   }
 
   .soft-shadow {
-    box-shadow: 0 18px 48px hsl(215 41% 17% / 0.07), 0 2px 8px hsl(215 41% 17% / 0.04);
+    box-shadow: 0 30px 50px rgba(71, 103, 136, 0.08), 0 8px 15px rgba(71, 103, 136, 0.03), 0 4px 5px rgba(71, 103, 136, 0.04);
   }
 
   .focus-ring:focus-visible {
