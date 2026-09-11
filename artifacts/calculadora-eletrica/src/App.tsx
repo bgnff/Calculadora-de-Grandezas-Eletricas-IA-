@@ -5,7 +5,7 @@ import { shadcn } from '@clerk/themes';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { Redirect, Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { ArrowRight, BarChart3, Calculator, CheckCircle2, CircleDollarSign, Clock3, Lightbulb, ShieldCheck } from 'lucide-react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { MotionConfig, motion, useInView } from 'framer-motion';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { BlurReveal } from '@/components/blur-reveal';
 import Rays from '@/components/light-rays';
@@ -90,8 +90,10 @@ const platformModules = [
 
 function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.16 });
-  const reducedMotion = useReducedMotion();
+  const isInView = useInView(ref, { once: true, amount: 0.12, margin: '-8% 0px -8% 0px' });
+  // A landing page is an explicit showcase surface. Keep its motion visible in
+  // the embedded preview even when the preview browser advertises reduced motion.
+  const reducedMotion = false;
   const show = isInView || reducedMotion;
 
   return (
@@ -109,7 +111,8 @@ function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; 
 
 function LandingPage() {
   return (
-    <main className="relative min-h-[100dvh] overflow-hidden bg-[#f5f7fa]">
+    <MotionConfig reducedMotion="never">
+      <main className="relative min-h-[100dvh] overflow-x-hidden bg-[#f5f7fa]">
       <Rays backgroundColor="hsl(var(--background))" style={{ zIndex: 0 }} />
 
       <header className="relative z-10 mx-auto flex max-w-[1180px] items-center justify-between px-5 py-5 md:px-8 md:py-6">
@@ -245,7 +248,8 @@ function LandingPage() {
           <div className="flex gap-4"><a href="#recursos" data-testid="link-footer-recursos" className="hover:text-[#0b1f3b]">Recursos</a><a href={`${basePath}/sign-in`} data-testid="link-footer-entrar" className="hover:text-[#0b1f3b]">Entrar</a></div>
         </div>
       </footer>
-    </main>
+      </main>
+    </MotionConfig>
   );
 }
 
