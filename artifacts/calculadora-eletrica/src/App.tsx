@@ -5,6 +5,7 @@ import { shadcn } from '@clerk/themes';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { Redirect, Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { BorderGlow } from '@/components/border-glow';
+import { BlurReveal } from '@/components/blur-reveal';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { ProfileOnboarding } from '@/components/profile-onboarding';
 import { VoltivaShell } from '@/components/voltiva-shell';
@@ -91,7 +92,11 @@ function LandingPage() {
       <section className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-12 md:grid-cols-[1.05fr_0.95fr] md:px-10 md:pb-28 md:pt-20">
         <div>
            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#c9dcf2] bg-[#eaf2ff] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.13em] text-[#004eba]"><span className="size-1.5 rounded-full bg-[#006bff]" /> Clareza para cada grandeza</p>
-           <h1 className="max-w-3xl font-display text-[clamp(3rem,7vw,5.8rem)] font-bold leading-[0.98] tracking-[-0.075em] text-[hsl(var(--foreground))]">Energia bem entendida muda decisões.</h1>
+           <h1 className="max-w-3xl font-display text-[clamp(3rem,7vw,5.8rem)] font-bold leading-[0.98] tracking-[-0.075em] text-[hsl(var(--foreground))]">
+             <BlurReveal delay={0.08} speedReveal={0.72} speedSegment={0.022}>
+               Energia bem entendida muda decisões.
+             </BlurReveal>
+           </h1>
           <p className="mt-7 max-w-xl text-lg leading-8 text-[hsl(var(--muted-foreground))]">A Voltiva reúne cálculo elétrico, acompanhamento de consumo e histórico em um espaço simples para quem quer agir com mais confiança.</p>
            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><a href={`${basePath}/sign-up`} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-white shadow-[0_15px_30px_rgba(71,103,136,.12)] transition hover:-translate-y-0.5 hover:bg-[#004eba]">Começar agora <span aria-hidden="true">→</span></a><a href={`${basePath}/sign-in`} className="inline-flex items-center justify-center rounded-lg border border-[hsl(var(--border))] bg-white px-5 py-3.5 text-sm font-bold text-[hsl(var(--foreground))] transition hover:border-[#9bbce0]">Já tenho uma conta</a></div>
           <div className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-xs font-semibold text-[hsl(var(--muted-foreground))]"><span>Fórmulas de Ohm</span><span>Código de cores</span><span>Histórico por conta</span></div>
