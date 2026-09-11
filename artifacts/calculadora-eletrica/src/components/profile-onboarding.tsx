@@ -107,10 +107,8 @@ export function ProfileOnboarding({
   return (
     <div className="relative min-h-[100dvh] overflow-hidden bg-[hsl(var(--background))]" data-testid="screen-profile-onboarding">
       <header className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-6 md:px-10 md:py-8">
-        <div className="flex items-center gap-3" data-testid="brand-onboarding">
-           <span className="grid size-10 place-items-center rounded-lg bg-[hsl(var(--sidebar))] text-[#7eb3ff] shadow-[0_0_0_5px_rgba(0,107,255,.12)]">
-            <Zap size={20} fill="currentColor" />
-          </span>
+         <div className="flex items-center gap-3" data-testid="brand-onboarding">
+           <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="size-10 rounded-lg object-cover shadow-[0_0_0_5px_rgba(0,107,255,.12)]" />
           <span className="font-display text-[24px] font-bold tracking-[-0.05em] text-[hsl(var(--foreground))]">voltiva</span>
         </div>
         <div className="flex items-center gap-2">

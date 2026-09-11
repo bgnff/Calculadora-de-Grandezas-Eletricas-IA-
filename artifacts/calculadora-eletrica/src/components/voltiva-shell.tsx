@@ -126,8 +126,8 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
             <button onClick={() => setMobileOpen(true)} className="rounded-lg p-2 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))] md:hidden" aria-label="Abrir menu" data-testid="button-open-mobile-menu">
               <Menu size={21} />
             </button>
-            <div className="flex items-center gap-2 md:hidden">
-              <span className="grid size-8 place-items-center rounded-lg bg-[hsl(var(--primary))] text-white"><Bolt size={17} fill="currentColor" /></span>
+             <div className="flex items-center gap-2 md:hidden">
+               <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="size-8 rounded-lg object-cover" />
               <span className="font-display text-lg font-bold tracking-tight text-[hsl(var(--foreground))]">voltiva</span>
             </div>
              <div className="hidden items-center gap-2 text-sm md:flex">
@@ -173,9 +173,7 @@ function SidebarContent({ onEditProfile, reducedMotion, activePath, onClose, onS
   return (
     <>
       <div className="flex h-[72px] items-center gap-3 border-b border-white/10 px-7">
-         <span className="grid size-9 place-items-center rounded-lg bg-[#006bff] text-white shadow-[0_0_0_5px_rgba(0,107,255,.14)]">
-          <Bolt size={19} fill="currentColor" strokeWidth={2.4} />
-        </span>
+         <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="size-9 rounded-lg object-cover shadow-[0_0_0_5px_rgba(0,107,255,.14)]" />
         <span className="font-display text-[22px] font-bold tracking-[-0.04em] text-white">voltiva</span>
       </div>
       <div className="flex flex-1 flex-col px-4 py-7">

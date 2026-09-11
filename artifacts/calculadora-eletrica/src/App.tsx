@@ -37,7 +37,7 @@ const clerkAppearance = {
   options: {
     logoPlacement: 'inside' as const,
     logoLinkUrl: basePath || '/',
-    logoImageUrl: `${window.location.origin}${basePath}/logo.svg`,
+     logoImageUrl: `${window.location.origin}${basePath}/logo.png`,
   },
   variables: {
     colorPrimary: '#006bff',
@@ -201,7 +201,7 @@ function Feature({ title, text, icon }: { title: string; text: string; icon: str
 }
 
 function Brand({ compact = false }: { compact?: boolean }) {
-  return <div className="flex items-center gap-2"><span className={`${compact ? 'size-8 rounded-lg' : 'size-10 rounded-xl'} grid place-items-center bg-[hsl(var(--sidebar))] text-[#7ecbff]`}><img src={`${basePath}/logo.svg`} alt="" className="size-full p-1.5" /></span><span className={`${compact ? 'text-lg' : 'text-[24px]'} font-display font-medium tracking-[-0.05em] text-[hsl(var(--foreground))]`}>voltiva</span></div>;
+  return <div className="flex items-center gap-2"><span className={`${compact ? 'size-8 rounded-lg' : 'size-10 rounded-xl'} grid shrink-0 place-items-center overflow-hidden`}><img src={`${basePath}/logo.png`} alt="" className="size-full object-cover" /></span><span className={`${compact ? 'text-lg' : 'text-[24px]'} font-display font-medium tracking-[-0.05em] text-[hsl(var(--foreground))]`}>voltiva</span></div>;
 }
 
 function SignInPage() {
