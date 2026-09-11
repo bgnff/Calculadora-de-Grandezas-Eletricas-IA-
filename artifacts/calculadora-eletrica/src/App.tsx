@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/reac
 import { Redirect, Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { ArrowRight, BarChart3, Calculator, CheckCircle2, CircleDollarSign, Clock3, Lightbulb, ShieldCheck } from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
-import { BlurReveal } from '@/components/blur-reveal';
 import Rays from '@/components/light-rays';
 import { ProfileOnboarding } from '@/components/profile-onboarding';
 import { VoltivaShell } from '@/components/voltiva-shell';
@@ -109,14 +108,12 @@ function LandingPage() {
       </header>
 
       <section className="relative z-10 mx-auto max-w-[1180px] px-5 pb-20 pt-16 md:px-8 md:pb-28 md:pt-24">
-        <div className="grid items-center gap-12 lg:grid-cols-[.86fr_1.14fr] lg:gap-16">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.02fr_1fr] lg:gap-12">
           <div className="max-w-[590px]">
             <h1 className="max-w-[720px] font-display text-[clamp(2.8rem,5.4vw,5.1rem)] font-semibold leading-[1.02] tracking-[-0.065em] text-[hsl(var(--foreground))]">
-              <BlurReveal className="inline-block whitespace-nowrap" forceAnimation>Entenda sua </BlurReveal>
-              <BlurReveal className="inline-block whitespace-nowrap rounded-md bg-[#d7ebff] px-2 text-[#0b1f3b]" delay={0.12} forceAnimation>energia.</BlurReveal>
-              <span className="block">
-                <BlurReveal className="inline-block whitespace-nowrap" delay={0.28} forceAnimation>Decida melhor.</BlurReveal>
-              </span>
+              <span>Entenda sua </span>
+              <span className="inline-block whitespace-nowrap rounded-md bg-[#d7ebff] px-2 text-[#0b1f3b]">energia.</span>
+              <span className="block">Decida melhor.</span>
             </h1>
             <p className="mt-6 max-w-[540px] text-base leading-7 text-[hsl(var(--muted-foreground))]">A Voltiva transforma grandezas elétricas, consumo e custos em uma leitura prática para sua casa, seu projeto ou seu negócio.</p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -230,52 +227,60 @@ function LandingPage() {
 }
 
 function DashboardPreview() {
-  const bars = [38, 56, 44, 72, 50, 66, 82, 58, 91, 70, 62, 78, 48, 68, 84, 54, 73, 88, 64, 79, 57, 76, 92, 69];
   return (
     <div className="relative mt-2 md:mt-6" data-testid="block-dashboard-preview">
-      <div className="soft-shadow overflow-hidden rounded-[16px] bg-white">
-        <div className="grid min-h-[430px] overflow-hidden bg-[#fbfbfa] sm:grid-cols-[148px_minmax(0,1fr)]">
-          <aside className="hidden border-r border-[#e8e6e5] bg-white p-4 sm:block">
-             <div className="flex items-center gap-2 text-xs font-medium text-[#374151]"><img src={`${basePath}/logo.png`} alt="" className="size-6 object-contain" /> voltiva</div>
-            <p className="mt-8 text-[9px] uppercase tracking-[0.14em] text-[#a8a29e]">Seu espaço</p>
-            <div className="mt-3 space-y-1.5 text-[11px] text-[#78716c]">
-              <div className="rounded-md bg-[#d7ebff] px-2.5 py-2 font-medium text-[#0b1f3b]">Visão geral</div>
+      <div className="soft-shadow overflow-hidden rounded-[18px] border border-[#dfe8ed] bg-[#f9fbfd]">
+        <div className="grid min-h-[500px] overflow-hidden sm:grid-cols-[148px_minmax(0,1fr)]">
+          <aside className="hidden border-r border-[#dbe7f1] bg-white p-4 sm:block">
+            <div className="flex items-center gap-2 text-xs font-medium text-[#0b3558]"><img src={`${basePath}/logo.png`} alt="" className="size-6 object-contain" /> voltiva</div>
+            <p className="mt-8 text-[9px] font-bold uppercase tracking-[0.14em] text-[#8ba8c9]">Seu espaço</p>
+            <div className="mt-3 space-y-1.5 text-[10px] text-[#64748b]">
+              <div className="rounded-lg bg-[#dff0ff] px-2.5 py-2 font-semibold text-[#004eba]">Visão geral</div>
               <div className="px-2.5 py-2">Calculadora</div>
               <div className="px-2.5 py-2">Consumo</div>
               <div className="px-2.5 py-2">Histórico</div>
             </div>
-            <div className="mt-20 border-t border-[#e8e6e5] pt-3 text-[10px] text-[#a8a29e]">Perfil completo</div>
+            <div className="mt-20 border-t border-[#dbe7f1] pt-3 text-[9px] text-[#8ba8c9]">Perfil completo</div>
           </aside>
-          <div className="min-w-0 p-4 md:p-5">
-            <div className="flex items-start justify-between gap-3">
-              <div><p className="text-[9px] uppercase tracking-[0.14em] text-[#a8a29e]">Visão geral</p><h2 className="mt-1 text-lg font-medium tracking-[-0.03em] text-[#0c0a09]">Seu painel elétrico</h2></div>
-              <div className="rounded-md border border-[#e8e6e5] bg-white px-2.5 py-1.5 text-[10px] text-[#78716c]">Este mês⌄</div>
+          <div className="min-w-0 space-y-3 p-4 md:p-5">
+            <div className="flex items-end justify-between gap-3">
+              <div><p className="text-[9px] font-bold uppercase tracking-[0.14em] text-[#1e6fff]">Visão geral</p><h2 className="mt-1 font-display text-xl font-semibold tracking-[-0.04em] text-[#0b1f3b]">Olá, por aqui.</h2><p className="mt-1 hidden text-[10px] leading-4 text-[#64748b] md:block">Seu espaço para entender grandezas e tomar decisões elétricas.</p></div>
+              <span className="inline-flex shrink-0 items-center gap-1 rounded-lg bg-[#1e6fff] px-2.5 py-2 text-[9px] font-bold text-white">Novo cálculo <ArrowRight size={11} /></span>
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4">
+            <div className="rounded-xl border border-[#c9dcf2] bg-[#eaf2ff] p-3">
+              <div className="flex items-center gap-2.5"><span className="grid size-8 shrink-0 place-items-center rounded-lg bg-white text-[#1e6fff]"><Lightbulb size={15} /></span><div><p className="text-[8px] font-bold uppercase tracking-[0.12em] text-[#004eba]">Seu ponto de partida</p><p className="mt-0.5 text-[11px] font-semibold text-[#0b3558]">Encontrar oportunidades</p></div><span className="ml-auto hidden rounded-lg border border-[#b5cdec] bg-white px-2 py-1 text-[9px] font-bold text-[#004eba] md:inline-flex">Ver perfil</span></div>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
               {[
-                ['Consumo', '186,4', 'kWh'],
-                ['Custo estimado', 'R$ 142', 'mês'],
-                ['Equipamentos', '08', 'ativos'],
-                ['Economia', '12%', 'vs. mês anterior'],
-              ].map(([label, value, helper]) => <div key={label} className="rounded-md border border-[#e8e6e5] bg-white p-3"><p className="text-[9px] text-[#78716c]">{label}</p><p className="mt-2 text-lg font-medium tracking-[-0.04em] text-[#0c0a09]">{value} <span className="text-[9px] font-normal text-[#a8a29e]">{helper}</span></p><div className="mt-2 h-1 rounded-full bg-[#eaf5fc]"><div className="h-1 w-2/3 rounded-full bg-[#3ba6f1]" /></div></div>)}
+                ['Cálculos salvos', '12', 'No histórico', Calculator],
+                ['Consumo estimado', '186,4 kWh', 'Equipamentos', BarChart3],
+                ['Equipamentos', '08', 'Neste espaço', CircleDollarSign],
+              ].map(([label, value, caption, Icon]) => <div key={label as string} className="rounded-xl border border-[#dbe7f1] bg-white p-2.5"><div className="flex items-start justify-between gap-1"><p className="text-[8px] font-bold uppercase tracking-[0.08em] text-[#64748b]">{label as string}</p><span className="hidden size-6 place-items-center rounded-md bg-[#e6f0ff] text-[#1e6fff] sm:grid"><Icon size={12} /></span></div><p className="mt-3 font-data text-sm font-medium tracking-[-0.04em] text-[#0b1f3b]">{value as string}</p><p className="mt-0.5 text-[8px] text-[#64748b]">{caption as string}</p></div>)}
             </div>
-            <div className="mt-3 grid gap-3 md:grid-cols-[1.35fr_1fr]">
-              <div className="rounded-md border border-[#e8e6e5] bg-white p-3">
-                <div className="flex items-center justify-between"><p className="text-[11px] font-medium text-[#0c0a09]">Consumo ao longo do mês</p><span className="text-[9px] text-[#a8a29e]">kWh</span></div>
-                <div className="mt-5 flex h-[132px] items-end gap-1.5 border-b border-[#e8e6e5] px-1">
-                  {bars.map((height, index) => <span key={index} className={`min-w-0 flex-1 rounded-t-[2px] ${index > 17 ? 'bg-[#8fc9eb]' : 'bg-[#3ba6f1]'}`} style={{ height: `${height}%` }} />)}
-                </div>
-                <div className="mt-2 flex justify-between text-[8px] text-[#a8a29e]"><span>01</span><span>08</span><span>15</span><span>22</span><span>30</span></div>
-              </div>
-              <div className="rounded-md border border-[#e8e6e5] bg-white p-3">
-                <div className="flex items-center justify-between"><p className="text-[11px] font-medium text-[#0c0a09]">Onde está o consumo</p><span className="text-[9px] text-[#a8a29e]">agora</span></div>
-                <div className="mt-4 space-y-3">
-                  {[['Chuveiro elétrico', '42%', 'bg-[#3ba6f1]'], ['Geladeira', '24%', 'bg-[#8fc9eb]'], ['Iluminação', '18%', 'bg-[#c1e1f7]'], ['Outros', '16%', 'bg-[#d6d3d1]']].map(([label, percentage, color]) => <div key={label}><div className="mb-1 flex justify-between text-[9px] text-[#78716c]"><span>{label}</span><span>{percentage}</span></div><div className="h-2 rounded-full bg-[#f1f0ee]"><div className={`h-2 rounded-full ${color}`} style={{ width: percentage }} /></div></div>)}
+            <div className="grid gap-3 md:grid-cols-[1.15fr_0.85fr]">
+              <div className="rounded-xl border border-[#dbe7f1] bg-white p-3">
+                <div className="flex items-end justify-between"><div><p className="text-[8px] font-bold uppercase tracking-[0.12em] text-[#64748b]">Atividade recente</p><p className="mt-1 text-[12px] font-semibold text-[#0b1f3b]">Últimos cálculos</p></div><span className="text-[8px] font-bold text-[#1e6fff]">Ver histórico</span></div>
+                <div className="mt-3 divide-y divide-[#e6eef5]">
+                  {[
+                    ['Potência do chuveiro', 'Calculadora elétrica', 'agora'],
+                    ['Consumo mensal da cozinha', 'Consumo', 'ontem'],
+                    ['Economia com LED', 'Relatório', '12 jun'],
+                  ].map(([title, type, date]) => <div key={title} className="flex items-center gap-2 py-2 first:pt-0 last:pb-0"><span className="grid size-6 shrink-0 place-items-center rounded-md bg-[#e6f0ff] text-[#1e6fff]"><Clock3 size={11} /></span><span className="min-w-0 flex-1"><strong className="block truncate text-[9px] font-semibold text-[#0b1f3b]">{title}</strong><span className="text-[8px] text-[#64748b]">{type}</span></span><span className="text-[8px] text-[#8ba8c9]">{date}</span></div>)}
                 </div>
               </div>
+              <div className="rounded-xl border border-[#dbe7f1] bg-white/80 p-3">
+                <p className="text-[8px] font-bold uppercase tracking-[0.12em] text-[#64748b]">Acesso rápido</p>
+                <div className="mt-2 space-y-1.5">
+                  {[
+                    ['Calcular uma grandeza', 'Use as fórmulas de Ohm.', Calculator],
+                    ['Mapear consumo', 'Cadastre equipamentos.', BarChart3],
+                    ['Gerar relatório', 'Exporte seus dados.', Clock3],
+                  ].map(([title, text, Icon]) => <div key={title as string} className="flex items-center gap-2 rounded-lg p-1.5"><span className="grid size-6 shrink-0 place-items-center rounded-md bg-[#e6f0ff] text-[#1e6fff]"><Icon size={11} /></span><span className="min-w-0"><strong className="block truncate text-[9px] font-semibold text-[#0b1f3b]">{title as string}</strong><span className="block truncate text-[8px] text-[#64748b]">{text as string}</span></span></div>)}
+                </div>
+              </div>
             </div>
-            <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[#e8e6e5] pt-3 text-[10px]">
-              {['Visão geral', 'Calculadora', 'Consumo', 'Histórico'].map((tab, index) => <span key={tab} className={`rounded-full px-3 py-1.5 ${index === 0 ? 'bg-[#1c1917] text-white' : 'border border-[#e8e6e5] text-[#78716c]'}`}>{tab}</span>)}
+            <div className="flex flex-wrap items-center gap-1.5 border-t border-[#dbe7f1] pt-3 text-[9px]">
+              {['Visão geral', 'Calculadora', 'Consumo', 'Histórico'].map((tab, index) => <span key={tab} className={`rounded-full px-2.5 py-1.5 ${index === 0 ? 'bg-[#0b1f3b] font-semibold text-white' : 'border border-[#dbe7f1] text-[#64748b]'}`}>{tab}</span>)}
             </div>
           </div>
         </div>
