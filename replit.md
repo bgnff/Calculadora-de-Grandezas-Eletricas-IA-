@@ -1,4 +1,4 @@
-# Voltiva — Calculadora Elétrica
+# Voltiva — Plataforma de Eficiência Elétrica
 
 Dashboard responsivo para calcular grandezas elétricas e identificar automaticamente resistores de 4 bandas.
 
@@ -22,15 +22,20 @@ Dashboard responsivo para calcular grandezas elétricas e identificar automatica
 
 ## Where things live
 
-- `artifacts/calculadora-eletrica/src/components/voltiva-shell.tsx` — shell responsivo, header e navegação.
+- `artifacts/calculadora-eletrica/src/components/voltiva-shell.tsx` — shell responsivo, header, navegação e logout.
 - `artifacts/calculadora-eletrica/src/pages/calculator.tsx` — tela principal da calculadora.
+- `artifacts/calculadora-eletrica/src/pages/app-pages.tsx` — visão geral, consumo, economia, histórico, relatórios e configurações.
 - `artifacts/calculadora-eletrica/src/lib/electricity.ts` — fórmulas, validação de entrada, formatação e conversão para bandas.
+- `artifacts/calculadora-eletrica/src/hooks/use-voltiva-data.ts` — dados locais isolados por usuário para cálculos, equipamentos e preferências.
 - `artifacts/calculadora-eletrica/src/components/resistor-visual.tsx` — resistor SVG dinâmico e animado.
+- `artifacts/calculadora-eletrica/src/components/profile-onboarding.tsx` — onboarding de perfil energético com retomada de rascunho.
 - `artifacts/calculadora-eletrica/src/index.css` — tokens visuais, tipografia, grid de fundo e responsividade.
 
 ## Architecture decisions
 
-- A primeira versão é frontend-only para manter o escopo visual e funcional enxuto; não há persistência, autenticação ou APIs externas.
+- A autenticação usa Clerk gerenciado pela Replit, com login por e-mail/senha e suporte ao provedor Google habilitado pelo tenant.
+- O perfil, histórico, equipamentos e preferências ficam em localStorage com namespace do ID do usuário; a camada pode ser substituída por API/DB sem misturar dados entre contas.
+- O servidor Express monta o proxy Clerk em `/api/__clerk` antes dos parsers e mantém o middleware Clerk para futuras rotas protegidas.
 - A resistência é convertida automaticamente em quatro bandas, com tolerância fixa de ±5% em dourado.
 - A calculadora limpa o resultado ao trocar grandeza ou editar entradas, evitando exibir resultados desatualizados.
 
@@ -42,12 +47,13 @@ Dashboard responsivo para calcular grandezas elétricas e identificar automatica
 
 ## User preferences
 
-- Nesta etapa, manter somente interface principal, calculadora e resistor automático; não implementar login, cadastro, banco, consumo, economia, relatórios, tarifas, CEP ou APIs externas.
+- Manter a identidade Voltiva: sidebar azul-marinho, workspace claro com grid, acentos teal/azul e destaque âmbar.
+- Não apresentar projeções indicativas como medições reais; toda estimativa de consumo deve mostrar a origem dos valores informados pelo usuário.
 
 ## Gotchas
 
 - A aplicação web é o artifact `@workspace/calculadora-eletrica` e usa o workflow gerenciado `artifacts/calculadora-eletrica: web`.
-- Para validar localmente, use `pnpm --filter @workspace/calculadora-eletrica run typecheck`.
+- Para validar localmente, use `pnpm --filter @workspace/calculadora-eletrica run typecheck` e `PORT=4173 BASE_PATH=/calculadora-eletrica pnpm --filter @workspace/calculadora-eletrica run build`.
 
 ## Pointers
 

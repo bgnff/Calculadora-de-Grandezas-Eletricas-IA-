@@ -1,5 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Link, useLocation } from 'wouter';
+import { useClerk, useUser } from '@clerk/react';
 import {
   Activity,
   BarChart3,
@@ -23,29 +25,28 @@ interface VoltivaShellProps {
 }
 
 const navItems = [
-  { label: 'Visão geral', icon: LayoutDashboard },
-  { label: 'Calculadora elétrica', icon: Calculator },
-  { label: 'Consumo de energia', icon: Activity },
-  { label: 'Economia', icon: CircleDollarSign },
-  { label: 'Histórico', icon: Clock3 },
-  { label: 'Relatórios', icon: FileText },
+  { label: 'Visão geral', icon: LayoutDashboard, path: '/app/dashboard' },
+  { label: 'Calculadora elétrica', icon: Calculator, path: '/app/calculator' },
+  { label: 'Consumo de energia', icon: Activity, path: '/app/consumption' },
+  { label: 'Economia', icon: CircleDollarSign, path: '/app/savings' },
+  { label: 'Histórico', icon: Clock3, path: '/app/history' },
+  { label: 'Relatórios', icon: FileText, path: '/app/reports' },
 ];
 
 export function VoltivaShell({ children, onEditProfile, profileIncomplete = false, onResumeProfile }: VoltivaShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [notice, setNotice] = useState('');
   const reducedMotion = Boolean(useReducedMotion());
-
-  const showComingSoon = (label: string) => {
-    setNotice(`${label} estará disponível em uma próxima versão.`);
-    setMobileOpen(false);
-    window.setTimeout(() => setNotice(''), 3000);
-  };
+  const [location] = useLocation();
+  const { user } = useUser();
+  const { signOut } = useClerk();
+  const activeLabel = navItems.find((item) => location === item.path)?.label ?? 'Visão geral';
+  const firstName = user?.firstName || user?.emailAddresses[0]?.emailAddress?.split('@')[0] || 'Conta';
+  const initials = (user?.firstName?.[0] || user?.emailAddresses[0]?.emailAddress?.[0] || 'V').toUpperCase();
 
   return (
     <div className="flex min-h-[100dvh] bg-transparent text-foreground">
       <aside className="hidden w-[252px] shrink-0 flex-col bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))] md:flex">
-        <SidebarContent onNavigate={showComingSoon} onEditProfile={onEditProfile} reducedMotion={reducedMotion} />
+        <SidebarContent onEditProfile={onEditProfile} reducedMotion={reducedMotion} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} />
       </aside>
 
       <AnimatePresence>
@@ -72,7 +73,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
                   <X size={19} />
                 </button>
               </div>
-               <SidebarContent onNavigate={showComingSoon} onEditProfile={onEditProfile} reducedMotion={reducedMotion} />
+                <SidebarContent onEditProfile={onEditProfile} reducedMotion={reducedMotion} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} />
             </motion.aside>
           </>
         )}
@@ -91,7 +92,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
             <div className="hidden items-center gap-2 text-sm md:flex">
               <span className="text-[hsl(var(--muted-foreground))]">Espaço de trabalho</span>
               <ChevronRight size={15} className="text-[hsl(var(--muted-foreground))]" />
-              <span className="font-semibold text-[hsl(var(--foreground))]">Calculadora elétrica</span>
+              <span className="font-semibold text-[hsl(var(--foreground))]">{activeLabel}</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -99,10 +100,10 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
               <span className="size-1.5 rounded-full bg-[#3bab83]" />
               Sistema operacional
             </div>
-            <button onClick={onEditProfile ?? (() => showComingSoon('Configurações'))} className="rounded-xl border border-[hsl(var(--border))] bg-white p-2 text-[hsl(var(--muted-foreground))] shadow-sm transition hover:border-[#a8c6c3] hover:text-[hsl(var(--primary))]" aria-label="Editar perfil" data-testid="button-open-settings">
+            <button onClick={onEditProfile} className="rounded-xl border border-[hsl(var(--border))] bg-white p-2 text-[hsl(var(--muted-foreground))] shadow-sm transition hover:border-[#a8c6c3] hover:text-[hsl(var(--primary))]" aria-label="Editar perfil" data-testid="button-open-settings">
               <Settings2 size={18} />
             </button>
-            <div className="grid size-9 place-items-center rounded-full bg-[#d9edf0] text-sm font-bold text-[#17617a]" aria-label="Perfil de usuário" data-testid="avatar-user">MC</div>
+            <div className="grid size-9 place-items-center rounded-full bg-[#d9edf0] text-sm font-bold text-[#17617a]" aria-label={`Perfil de ${firstName}`} data-testid="avatar-user">{initials}</div>
           </div>
         </header>
 
@@ -123,18 +124,11 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
           </div>
         </main>
       </div>
-      <AnimatePresence>
-        {notice && (
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 12 }} className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2 rounded-xl bg-[hsl(var(--sidebar))] px-4 py-3 text-sm font-medium text-white shadow-xl" role="status" data-testid="status-coming-soon">
-            {notice}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
 
-function SidebarContent({ onNavigate, onEditProfile, reducedMotion }: { onNavigate: (label: string) => void; onEditProfile?: () => void; reducedMotion: boolean }) {
+function SidebarContent({ onEditProfile, reducedMotion, activePath, onClose, onSignOut }: { onEditProfile?: () => void; reducedMotion: boolean; activePath: string; onClose: () => void; onSignOut: () => void }) {
   return (
     <>
       <div className="flex h-[72px] items-center gap-3 border-b border-white/10 px-7">
@@ -146,40 +140,44 @@ function SidebarContent({ onNavigate, onEditProfile, reducedMotion }: { onNaviga
       <div className="flex flex-1 flex-col px-4 py-7">
         <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">Navegação</p>
         <nav className="space-y-1" aria-label="Navegação principal">
-          {navItems.map(({ label, icon: Icon }) => (
-            label === 'Calculadora elétrica' ? (
+          {navItems.map(({ label, icon: Icon, path }) => (
+            activePath === path ? (
               <motion.div
                 key={label}
                 layoutId="active-nav"
                 transition={reducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 520, damping: 34 }}
                 className="mt-1 flex items-center gap-3 rounded-xl bg-[#2b647b] px-3 py-2.5 text-[13px] font-semibold text-white shadow-[inset_3px_0_0_#55d8d4]"
                 aria-current="page"
-                data-testid="nav-calculadora-ativa"
+                data-testid={`nav-${label.toLowerCase().replaceAll(' ', '-')}-ativa`}
               >
                 <Icon size={17} className="text-[#66e1dd]" />
                 {label}
               </motion.div>
             ) : (
-              <motion.button
+              <motion.div
                 key={label}
-                onClick={() => onNavigate(label)}
                 whileHover={reducedMotion ? undefined : { x: 2 }}
                 whileTap={reducedMotion ? undefined : { scale: 0.985 }}
-                className="group relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition-colors hover:text-white"
-                data-testid={`button-nav-${label.toLowerCase().replaceAll(' ', '-')}`}
+                className="relative"
               >
-                <span className="absolute inset-1 rounded-[10px] bg-white/[.08] opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true" />
-                <Icon size={17} strokeWidth={1.8} className="relative text-white/45 transition-colors duration-200 group-hover:text-[#5bd9d7]" />
-                <span className="relative">{label}</span>
-              </motion.button>
+                <Link href={path} onClick={onClose} className="group relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition-colors hover:text-white" data-testid={`button-nav-${label.toLowerCase().replaceAll(' ', '-')}`}>
+                  <span className="absolute inset-1 rounded-[10px] bg-white/[.08] opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true" />
+                  <Icon size={17} strokeWidth={1.8} className="relative text-white/45 transition-colors duration-200 group-hover:text-[#5bd9d7]" />
+                  <span className="relative">{label}</span>
+                </Link>
+              </motion.div>
             )
           ))}
         </nav>
         <div className="my-7 h-px bg-white/10" />
         <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">Gerencie</p>
-        <button onClick={onEditProfile ?? (() => onNavigate('Configurações'))} className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition hover:bg-white/8 hover:text-white" data-testid="button-nav-configuracoes">
+        <button onClick={onEditProfile} className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition hover:bg-white/8 hover:text-white" data-testid="button-nav-configuracoes">
           <Settings2 size={17} strokeWidth={1.8} className="text-white/45 group-hover:text-[#5bd9d7]" />
           Configurações
+        </button>
+        <button onClick={onSignOut} className="group mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition hover:bg-white/8 hover:text-white" data-testid="button-sign-out">
+          <span className="text-white/45 group-hover:text-[#5bd9d7]">↪</span>
+          Sair da conta
         </button>
         <div className="mt-auto rounded-2xl border border-white/10 bg-white/[.06] p-4">
           <div className="mb-3 flex items-center gap-2 text-[#73e5dd]"><span className="grid size-7 place-items-center rounded-lg bg-[#2b7a84]/50"><Bolt size={14} fill="currentColor" /></span><span className="text-xs font-bold">Dica Voltiva</span></div>

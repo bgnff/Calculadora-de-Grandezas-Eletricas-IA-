@@ -60,8 +60,8 @@ function readJson(key: string): unknown {
   }
 }
 
-function readProfile(): EnergyProfile | null {
-  const value = readJson(PROFILE_KEY);
+function readProfile(key: string): EnergyProfile | null {
+  const value = readJson(key);
   if (!value || typeof value !== 'object') return null;
   const candidate = value as Partial<EnergyProfile>;
   if (!isGoal(candidate.goal) || !isKnowledge(candidate.knowledge) || !Array.isArray(candidate.interests)) return null;
@@ -70,8 +70,8 @@ function readProfile(): EnergyProfile | null {
   return { goal: candidate.goal, knowledge: candidate.knowledge, interests, completedAt: candidate.completedAt };
 }
 
-function readDraft(): EnergyProfileDraft {
-  const value = readJson(DRAFT_KEY);
+function readDraft(key: string): EnergyProfileDraft {
+  const value = readJson(key);
   if (!value || typeof value !== 'object') return emptyEnergyProfileDraft;
   const candidate = value as Partial<EnergyProfileDraft>;
   const step = typeof candidate.step === 'number' && candidate.step >= 0 && candidate.step <= 2 ? Math.floor(candidate.step) : 0;
@@ -84,37 +84,39 @@ function readDraft(): EnergyProfileDraft {
   };
 }
 
-function writeDraft(draft: EnergyProfileDraft) {
+function writeDraft(key: string, draft: EnergyProfileDraft) {
   const currentStorage = storage();
   if (!currentStorage) return;
   try {
-    currentStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    currentStorage.setItem(key, JSON.stringify(draft));
   } catch {
     // Storage can be unavailable or full; the in-memory flow still works.
   }
 }
 
-export function useEnergyProfile() {
-  const [profile, setProfile] = useState<EnergyProfile | null>(() => readProfile());
-  const [draft, setDraft] = useState<EnergyProfileDraft>(() => readDraft());
+export function useEnergyProfile(userId: string) {
+  const profileKey = `${PROFILE_KEY}:${userId}`;
+  const draftKey = `${DRAFT_KEY}:${userId}`;
+  const [profile, setProfile] = useState<EnergyProfile | null>(() => readProfile(profileKey));
+  const [draft, setDraft] = useState<EnergyProfileDraft>(() => readDraft(draftKey));
 
   const updateDraft = useCallback((patch: Partial<EnergyProfileDraft>) => {
     setDraft((current) => {
       const next = { ...current, ...patch };
-      writeDraft(next);
+      writeDraft(draftKey, next);
       return next;
     });
-  }, []);
+  }, [draftKey]);
 
   const beginEditing = useCallback(() => {
     setDraft((current) => {
       const next = profile
         ? { step: 0, goal: profile.goal, interests: [...profile.interests], knowledge: profile.knowledge }
         : current;
-      writeDraft(next);
+      writeDraft(draftKey, next);
       return next;
     });
-  }, [profile]);
+  }, [draftKey, profile]);
 
   const completeProfile = useCallback((completedDraft: EnergyProfileDraft) => {
     if (!isGoal(completedDraft.goal) || !isKnowledge(completedDraft.knowledge) || !completedDraft.interests.length) return;
@@ -126,14 +128,14 @@ export function useEnergyProfile() {
     };
     const currentStorage = storage();
     try {
-      currentStorage?.setItem(PROFILE_KEY, JSON.stringify(nextProfile));
-      currentStorage?.removeItem(DRAFT_KEY);
+      currentStorage?.setItem(profileKey, JSON.stringify(nextProfile));
+      currentStorage?.removeItem(draftKey);
     } catch {
       // The completed profile remains available for this session.
     }
     setProfile(nextProfile);
     setDraft(emptyEnergyProfileDraft);
-  }, []);
+  }, [draftKey, profileKey]);
 
   return { profile, draft, updateDraft, beginEditing, completeProfile };
 }

@@ -1,0 +1,2 @@
+- [Clerk no Vite](clerk-vite.md) — após trocar dependências do Clerk, reinicie o workflow antes de avaliar erros de hooks do hot reload.
+- [Dependências no monorepo](workspace-dependencies.md) — instalações precisam ser direcionadas ao pacote com pnpm --filter, não à raiz.

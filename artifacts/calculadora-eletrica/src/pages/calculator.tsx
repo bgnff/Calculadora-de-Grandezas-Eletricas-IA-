@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, CheckCircle2, CircleHelp, Eraser, Lightbulb, RotateCcw, Zap } from 'lucide-react';
+import { ArrowRight, CheckCircle2, CircleHelp, Eraser, Lightbulb, RotateCcw, Save, Zap } from 'lucide-react';
 import { ResistorVisual } from '@/components/resistor-visual';
 import {
   calculateCurrent,
@@ -18,7 +18,7 @@ type InputKey = 'voltage' | 'current' | 'resistance';
 type InputValues = Record<InputKey, string>;
 type FieldErrors = Partial<Record<InputKey, string>>;
 
-interface CalculationResult {
+export interface CalculationResult {
   value: number;
   type: CalculationType;
   bands?: ReturnType<typeof resistanceToColorBands>;
@@ -29,13 +29,24 @@ type Feedback = { tone: FeedbackTone; message: string };
 
 const initialValues: InputValues = { voltage: '', current: '', resistance: '' };
 
-export default function CalculatorPage() {
+interface CalculatorPageProps {
+  onSaveCalculation?: (record: {
+    type: CalculationType;
+    result: number;
+    unit: string;
+    formula: string;
+    inputs: Record<string, string>;
+  }) => void;
+}
+
+export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProps) {
   const [type, setType] = useState<CalculationType>('resistance');
   const [values, setValues] = useState<InputValues>(initialValues);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState('');
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const [saved, setSaved] = useState(false);
   const reducedMotion = Boolean(useReducedMotion());
 
   const meta = calculationMeta[type];
@@ -52,6 +63,7 @@ export default function CalculatorPage() {
     setErrors({});
     setFormError('');
     setResult(null);
+    setSaved(false);
     setFeedback({ tone: 'info', message: 'Pronto para um novo cálculo.' });
     if (resetType) setType('resistance');
   };
@@ -61,6 +73,7 @@ export default function CalculatorPage() {
     setErrors({});
     setFormError('');
     setResult(null);
+    setSaved(false);
     setFeedback(null);
   };
 
@@ -69,6 +82,7 @@ export default function CalculatorPage() {
     setErrors((current) => ({ ...current, [key]: undefined }));
     setFormError('');
     setResult(null);
+    setSaved(false);
   };
 
   const calculate = () => {
@@ -139,7 +153,21 @@ export default function CalculatorPage() {
       type,
       bands: type === 'resistance' && calculatedValue > 0 ? resistanceToColorBands(calculatedValue) : undefined,
     });
+    setSaved(false);
     setFeedback({ tone: 'success', message: 'Cálculo realizado com sucesso.' });
+  };
+
+  const saveResult = () => {
+    if (!result || !onSaveCalculation) return;
+    onSaveCalculation({
+      type: result.type,
+      result: result.value,
+      unit: calculationMeta[result.type].unit,
+      formula: calculationMeta[result.type].formula,
+      inputs: { ...values },
+    });
+    setSaved(true);
+    setFeedback({ tone: 'success', message: 'Cálculo salvo no histórico.' });
   };
 
   const contextualLine = useMemo(() => {
@@ -313,6 +341,16 @@ export default function CalculatorPage() {
                 <div className="mt-6 rounded-xl border border-dashed border-[#c7d9d7] bg-[#fbfdfc] p-4 text-sm leading-6 text-[hsl(var(--muted-foreground))]">
                   O código de cores fica disponível quando o resultado for uma resistência.
                 </div>
+              )}
+              {onSaveCalculation && (
+                <button
+                  onClick={saveResult}
+                  disabled={saved}
+                  className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#b7d8d3] bg-white px-4 py-3 text-sm font-bold text-[#247772] transition hover:border-[#48aaa2] hover:bg-[#f3fbf9] disabled:cursor-default disabled:opacity-60"
+                  data-testid="button-save-calculation"
+                >
+                  <Save size={16} /> {saved ? 'Salvo no histórico' : 'Salvar no histórico'}
+                </button>
               )}
             </motion.div>
           )}
