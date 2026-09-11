@@ -108,7 +108,7 @@ export function ProfileOnboarding({
     <div className="relative min-h-[100dvh] overflow-hidden bg-[hsl(var(--background))]" data-testid="screen-profile-onboarding">
       <header className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-6 md:px-10 md:py-8">
          <div className="flex items-center gap-3" data-testid="brand-onboarding">
-            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="size-10 object-contain shadow-[0_0_0_5px_rgba(30,111,255,.12)]" />
+             <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="size-10 object-contain" />
           <span className="font-display text-[24px] font-bold tracking-[-0.05em] text-[hsl(var(--foreground))]">voltiva</span>
         </div>
         <div className="flex items-center gap-2">
@@ -188,7 +188,7 @@ export function ProfileOnboarding({
                              className={`focus-ring group rounded-2xl border p-4 text-left transition ${selected ? 'border-[#1e6fff] bg-[#d7ebff] shadow-[inset_0_0_0_1px_#1e6fff]' : 'border-[hsl(var(--border))] bg-[#f5f7fa] hover:border-[#1e6fff] hover:bg-white'}`}
                             data-testid={`card-goal-${id}`}
                           >
-                            <span className={`mb-4 grid size-10 place-items-center rounded-xl ${selected ? 'bg-[#ccece5] text-[#167e76]' : 'bg-[#eef5f5] text-[#62878a]'} transition-colors`}>
+                             <span className={`mb-4 grid size-10 place-items-center rounded-xl ${selected ? 'bg-[#d7ebff] text-[#004eba]' : 'bg-[#edf4ff] text-[#5d7694]'} transition-colors`}>
                               <Icon size={19} />
                             </span>
                             <span className="block text-sm font-bold text-[hsl(var(--foreground))]">{title}</span>
@@ -219,10 +219,10 @@ export function ProfileOnboarding({
                             data-testid={`card-interest-${id}`}
                           >
                             <span className="flex items-center gap-3">
-                              <span className={`grid size-10 place-items-center rounded-xl ${selected ? 'bg-[#ccece5] text-[#167e76]' : 'bg-[#eef5f5] text-[#62878a]'}`}><Icon size={18} /></span>
+                               <span className={`grid size-10 place-items-center rounded-xl ${selected ? 'bg-[#d7ebff] text-[#004eba]' : 'bg-[#edf4ff] text-[#5d7694]'}`}><Icon size={18} /></span>
                               <span className="text-sm font-bold text-[hsl(var(--foreground))]">{title}</span>
                             </span>
-                            <span className={`grid size-5 place-items-center rounded-full border transition ${selected ? 'border-[#289c94] bg-[#289c94] text-white' : 'border-[#c4d4d3] text-transparent'}`}><Check size={13} strokeWidth={3} /></span>
+                             <span className={`grid size-5 place-items-center rounded-full border transition ${selected ? 'border-[#1e6fff] bg-[#1e6fff] text-white' : 'border-[#b9cbe1] text-transparent'}`}><Check size={13} strokeWidth={3} /></span>
                           </button>
                         );
                       })}
@@ -255,7 +255,7 @@ export function ProfileOnboarding({
                              className={`focus-ring flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition ${selected ? 'border-[#1e6fff] bg-[#d7ebff] shadow-[inset_0_0_0_1px_#1e6fff]' : 'border-[hsl(var(--border))] bg-[#f5f7fa] hover:border-[#1e6fff] hover:bg-white'}`}
                             data-testid={`card-knowledge-${id}`}
                           >
-                            <span className={`grid size-10 shrink-0 place-items-center rounded-xl text-sm font-data font-medium ${selected ? 'bg-[#ccece5] text-[#167e76]' : 'bg-[#eef5f5] text-[#62878a]'}`}>{id === 'beginner' ? '01' : id === 'familiar' ? '02' : '03'}</span>
+                             <span className={`grid size-10 shrink-0 place-items-center rounded-xl text-sm font-data font-medium ${selected ? 'bg-[#d7ebff] text-[#004eba]' : 'bg-[#edf4ff] text-[#5d7694]'}`}>{id === 'beginner' ? '01' : id === 'familiar' ? '02' : '03'}</span>
                             <span>
                               <span className="block text-sm font-bold text-[hsl(var(--foreground))]">{title}</span>
                               <span className="mt-1 block text-xs leading-5 text-[hsl(var(--muted-foreground))]">{description}</span>
@@ -273,15 +273,15 @@ export function ProfileOnboarding({
           {step === 2 && (
             <div className="mt-5 rounded-2xl border border-[#d7ebff] bg-[#d7ebff] p-5" data-testid="card-profile-summary">
               <div className="flex items-start gap-3">
-                <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-white text-[#299b8d]"><House size={17} /></span>
+                 <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-white text-[#004eba]"><House size={17} /></span>
                 <div className="min-w-0">
                   <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#1e6fff]">Resumo do perfil</p>
-                  <div className="mt-2 flex flex-wrap gap-2 text-xs font-semibold text-[#387672]">
+                   <div className="mt-2 flex flex-wrap gap-2 text-xs font-semibold text-[#0b3558]">
                     <span className="rounded-full bg-white px-2.5 py-1" data-testid="text-summary-goal">{goals.find((item) => item.id === draft.goal)?.title}</span>
                     <span className="rounded-full bg-white px-2.5 py-1" data-testid="text-summary-interests">{draft.interests.length} {draft.interests.length === 1 ? 'interesse' : 'interesses'}</span>
                     <span className="rounded-full bg-white px-2.5 py-1" data-testid="text-summary-knowledge">{knowledgeLevels.find((item) => item.id === draft.knowledge)?.title}</span>
                   </div>
-                  <p className="mt-3 text-xs leading-5 text-[#527b78]">Essas escolhas vão personalizar a experiência quando novos recursos estiverem disponíveis. Elas não alteram os cálculos nem preenchem dados automaticamente.</p>
+                   <p className="mt-3 text-xs leading-5 text-[#476788]">Essas escolhas vão personalizar a experiência quando novos recursos estiverem disponíveis. Elas não alteram os cálculos nem preenchem dados automaticamente.</p>
                 </div>
               </div>
             </div>
@@ -336,7 +336,7 @@ function StepFrame({
   return (
     <>
       <div className="mb-8 flex items-start gap-4">
-        <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-[#e6f5f2] text-[#238f87]">{icon}</span>
+        <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-[#d7ebff] text-[#004eba]">{icon}</span>
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-[hsl(var(--muted-foreground))]">{eyebrow}</p>
           <h1 className="mt-2 font-display text-[clamp(1.8rem,4vw,2.65rem)] font-semibold leading-[1.07] tracking-[-0.055em] text-[hsl(var(--foreground))]">{title}</h1>
