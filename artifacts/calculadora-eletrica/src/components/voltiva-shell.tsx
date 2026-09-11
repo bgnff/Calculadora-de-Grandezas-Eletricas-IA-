@@ -16,6 +16,7 @@ import {
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
+  Search,
   Settings2,
   X,
 } from 'lucide-react';
@@ -52,7 +53,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
         initial={false}
         animate={{ width: sidebarCollapsed ? 76 : 252 }}
         transition={reducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 260, damping: 30 }}
-        className="relative hidden min-h-[100dvh] shrink-0 overflow-hidden rounded-r-[28px] bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))] md:flex"
+        className="sticky top-3 hidden h-[calc(100dvh-1.5rem)] shrink-0 overflow-hidden rounded-[28px] border border-[#d8e0ea] bg-white text-[#0b1f3b] shadow-[0_10px_30px_rgba(11,31,59,.08)] md:flex"
         aria-label="Navegação principal"
       >
         <motion.div
@@ -61,7 +62,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
           transition={reducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
           className={`h-full ${sidebarCollapsed ? 'min-w-[76px]' : 'min-w-[252px]'}`}
         >
-          <SidebarContent collapsed={sidebarCollapsed} onToggleCollapsed={() => setSidebarCollapsed((current) => !current)} onEditProfile={onEditProfile} reducedMotion={reducedMotion} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} />
+          <SidebarContent collapsed={sidebarCollapsed} onToggleCollapsed={() => setSidebarCollapsed((current) => !current)} onEditProfile={onEditProfile} reducedMotion={reducedMotion} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} firstName={firstName} initials={initials} />
         </motion.div>
       </motion.aside>
 
@@ -82,14 +83,14 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
               animate={{ x: 0 }}
               exit={{ x: -270 }}
               transition={{ type: 'spring', stiffness: 300, damping: 32 }}
-              className="fixed inset-y-0 left-0 z-50 flex w-[270px] flex-col bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))] md:hidden"
+              className="fixed inset-y-3 left-3 z-50 flex w-[270px] flex-col overflow-hidden rounded-[28px] border border-[#d8e0ea] bg-white text-[#0b1f3b] shadow-[0_16px_40px_rgba(11,31,59,.16)] md:hidden"
             >
-              <div className="flex justify-end p-4">
-                <button onClick={() => setMobileOpen(false)} aria-label="Fechar menu" className="rounded-lg p-2 text-white/70 hover:bg-white/10 hover:text-white" data-testid="button-close-mobile-menu">
+              <div className="flex justify-end px-4 pt-4">
+                <button onClick={() => setMobileOpen(false)} aria-label="Fechar menu" className="rounded-lg p-2 text-[#64748b] transition hover:bg-[#eef4fb] hover:text-[#0b1f3b]" data-testid="button-close-mobile-menu">
                   <X size={19} />
                 </button>
               </div>
-                <SidebarContent collapsed={false} onEditProfile={onEditProfile} reducedMotion={reducedMotion} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} />
+                <SidebarContent collapsed={false} onEditProfile={onEditProfile} reducedMotion={reducedMotion} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} firstName={firstName} initials={initials} />
             </motion.aside>
           </>
         )}
@@ -144,46 +145,101 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
   );
 }
 
-function SidebarContent({ collapsed, onToggleCollapsed, onEditProfile, reducedMotion, activePath, onClose, onSignOut }: { collapsed: boolean; onToggleCollapsed?: () => void; onEditProfile?: () => void; reducedMotion: boolean; activePath: string; onClose: () => void; onSignOut: () => void }) {
+function SidebarContent({ collapsed, onToggleCollapsed, onEditProfile, reducedMotion, activePath, onClose, onSignOut, firstName, initials }: { collapsed: boolean; onToggleCollapsed?: () => void; onEditProfile?: () => void; reducedMotion: boolean; activePath: string; onClose: () => void; onSignOut: () => void; firstName: string; initials: string }) {
+  const labelTransition = reducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' as const };
+
   return (
-    <>
-      <div className={`flex h-[72px] items-center border-b border-white/10 ${collapsed ? 'justify-center gap-1 px-1' : 'justify-between px-5'}`}>
+    <div className="flex h-full min-h-0 flex-col">
+      <div className={`flex h-[72px] shrink-0 items-center border-b border-[#edf1f6] ${collapsed ? 'justify-center px-2' : 'justify-between px-5'}`}>
         <div className="flex min-w-0 items-center gap-3">
-          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="size-9 shrink-0 object-contain" />
-          <span className={`overflow-hidden whitespace-nowrap font-display text-[22px] font-bold tracking-[-0.04em] text-white transition-all duration-300 ${collapsed ? 'max-w-0 opacity-0' : 'max-w-[120px] opacity-100'}`}>voltiva</span>
+          <motion.img
+            layout
+            src={`${import.meta.env.BASE_URL}logo.png`}
+            alt=""
+            className="size-9 shrink-0 object-contain"
+          />
+          <AnimatePresence initial={false} mode="wait">
+            {!collapsed && (
+              <motion.span
+                key="voltiva-wordmark"
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -8 }}
+                transition={labelTransition}
+                className="whitespace-nowrap font-display text-[22px] font-bold tracking-[-0.04em] text-[#0b1f3b]"
+              >
+                voltiva
+              </motion.span>
+            )}
+          </AnimatePresence>
         </div>
         {onToggleCollapsed && (
           <button
             onClick={onToggleCollapsed}
-            className="grid size-8 shrink-0 place-items-center rounded-lg text-white/55 transition hover:bg-white/10 hover:text-white"
+            className="grid size-8 shrink-0 place-items-center rounded-lg text-[#64748b] transition hover:bg-[#eef4fb] hover:text-[#0b1f3b]"
             aria-label={collapsed ? 'Expandir barra lateral' : 'Minimizar barra lateral'}
             title={collapsed ? 'Expandir barra lateral' : 'Minimizar barra lateral'}
             data-testid="button-toggle-sidebar"
           >
-            {collapsed ? <PanelLeftOpen size={17} /> : <PanelLeftClose size={17} />}
+            <motion.span
+              animate={{ rotate: collapsed ? 180 : 0 }}
+              transition={reducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 360, damping: 24 }}
+              className="grid place-items-center"
+            >
+              {collapsed ? <PanelLeftOpen size={17} /> : <PanelLeftClose size={17} />}
+            </motion.span>
           </button>
         )}
       </div>
-      <div className={`flex flex-1 flex-col py-7 transition-[padding] duration-300 ${collapsed ? 'px-2' : 'px-4'}`}>
-        <p className={`mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/40 transition-opacity duration-200 ${collapsed ? 'pointer-events-none h-0 overflow-hidden opacity-0' : 'opacity-100'}`}>Navegação</p>
+
+      <div className={`flex min-h-0 flex-1 flex-col overflow-y-auto py-5 transition-[padding] duration-300 ${collapsed ? 'px-2' : 'px-3'}`}>
+        <AnimatePresence initial={false}>
+          {!collapsed && (
+            <motion.div
+              initial={{ opacity: 0, height: 0, y: -6 }}
+              animate={{ opacity: 1, height: 42, y: 0 }}
+              exit={{ opacity: 0, height: 0, y: -6 }}
+              transition={labelTransition}
+              className="mb-5 flex shrink-0 items-center gap-2 rounded-xl bg-[#f0f2f5] px-3 text-sm text-[#7a8492]"
+            >
+              <Search size={17} strokeWidth={1.8} />
+              <span>Buscar no espaço</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <p className={`mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-[#9aa8b9] transition-opacity duration-200 ${collapsed ? 'pointer-events-none h-0 overflow-hidden opacity-0' : 'opacity-100'}`}>Navegação</p>
         <nav className="space-y-1" aria-label="Navegação principal">
-          {navItems.map(({ label, icon: Icon, path }) => (
-            activePath === path ? (
-               <motion.div
+          {navItems.map(({ label, icon: Icon, path }) => {
+            const isActive = activePath === path;
+            return isActive ? (
+              <motion.div
                 key={label}
                 layoutId="active-nav"
-                 whileHover={reducedMotion ? undefined : { x: 3 }}
-                 whileTap={reducedMotion ? undefined : { scale: 0.985 }}
+                whileHover={reducedMotion ? undefined : { x: 2 }}
+                whileTap={reducedMotion ? undefined : { scale: 0.985 }}
                 transition={reducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 520, damping: 34 }}
-                  className={`group relative mt-1 flex items-center rounded-xl bg-[#1e6fff] py-2.5 text-[13px] font-semibold text-white shadow-[inset_3px_0_0_#ffc107,0_8px_20px_rgba(30,111,255,.2)] transition-all duration-300 ${collapsed ? 'justify-center px-2' : 'gap-3 px-3'}`}
+                className={`group relative flex items-center rounded-xl bg-[#1e6fff] py-2.5 text-[13px] font-semibold text-white shadow-[0_8px_18px_rgba(30,111,255,.2)] ${collapsed ? 'justify-center px-2' : 'gap-3 px-3'}`}
                 aria-current="page"
-                  title={collapsed ? label : undefined}
+                title={collapsed ? label : undefined}
                 data-testid={`nav-${label.toLowerCase().replaceAll(' ', '-')}-ativa`}
               >
-                  <motion.span animate={reducedMotion ? undefined : { rotate: [0, -5, 0], scale: [1, 1.08, 1] }} transition={{ duration: 0.5 }}>
-                    <Icon size={17} className="text-[#ffc107]" />
-                  </motion.span>
-                <span className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${collapsed ? 'max-w-0 opacity-0' : 'max-w-[170px] opacity-100'}`}>{label}</span>
+                <motion.span animate={reducedMotion ? undefined : { rotate: [0, -5, 0], scale: [1, 1.08, 1] }} transition={{ duration: 0.5 }} className="grid place-items-center">
+                  <Icon size={17} className="text-white" />
+                </motion.span>
+                <AnimatePresence initial={false}>
+                  {!collapsed && (
+                    <motion.span
+                      initial={{ opacity: 0, x: -6, width: 0 }}
+                      animate={{ opacity: 1, x: 0, width: 'auto' }}
+                      exit={{ opacity: 0, x: -6, width: 0 }}
+                      transition={labelTransition}
+                      className="overflow-hidden whitespace-nowrap"
+                    >
+                      {label}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </motion.div>
             ) : (
               <motion.div
@@ -192,31 +248,100 @@ function SidebarContent({ collapsed, onToggleCollapsed, onEditProfile, reducedMo
                 whileTap={reducedMotion ? undefined : { scale: 0.985 }}
                 className="relative"
               >
-                  <Link href={path} onClick={onClose} title={collapsed ? label : undefined} className={`group relative flex w-full items-center overflow-hidden rounded-xl py-2.5 text-left text-[13px] font-medium text-white/65 transition-all duration-300 hover:text-white ${collapsed ? 'justify-center px-2' : 'gap-3 px-3'}`} data-testid={`button-nav-${label.toLowerCase().replaceAll(' ', '-')}`}>
-                  <span className="absolute inset-1 rounded-[10px] bg-white/[.08] opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true" />
-                    <Icon size={17} strokeWidth={1.8} className="relative text-white/45 transition-colors duration-200 group-hover:text-[#ffc107]" />
-                  <span className={`relative overflow-hidden whitespace-nowrap transition-all duration-200 ${collapsed ? 'max-w-0 opacity-0' : 'max-w-[170px] opacity-100'}`}>{label}</span>
+                <Link
+                  href={path}
+                  onClick={onClose}
+                  title={collapsed ? label : undefined}
+                  className={`group relative flex w-full items-center rounded-xl py-2.5 text-left text-[13px] font-medium text-[#687587] transition-colors duration-200 hover:bg-[#f1f5fb] hover:text-[#0b1f3b] ${collapsed ? 'justify-center px-2' : 'gap-3 px-3'}`}
+                  data-testid={`button-nav-${label.toLowerCase().replaceAll(' ', '-')}`}
+                >
+                  <Icon size={17} strokeWidth={1.8} className="relative shrink-0 text-[#8b98a8] transition-colors duration-200 group-hover:text-[#1e6fff]" />
+                  <AnimatePresence initial={false}>
+                    {!collapsed && (
+                      <motion.span
+                        initial={{ opacity: 0, x: -6, width: 0 }}
+                        animate={{ opacity: 1, x: 0, width: 'auto' }}
+                        exit={{ opacity: 0, x: -6, width: 0 }}
+                        transition={labelTransition}
+                        className="overflow-hidden whitespace-nowrap"
+                      >
+                        {label}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
                 </Link>
               </motion.div>
-            )
-          ))}
+            );
+          })}
         </nav>
-        <div className={`my-7 h-px bg-white/10 ${collapsed ? 'mx-1' : ''}`} />
-        <p className={`mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/40 transition-opacity duration-200 ${collapsed ? 'pointer-events-none h-0 overflow-hidden opacity-0' : 'opacity-100'}`}>Gerencie</p>
-        <button onClick={onEditProfile} title={collapsed ? 'Configurações' : undefined} className={`group flex w-full items-center rounded-xl py-2.5 text-left text-[13px] font-medium text-white/65 transition-all duration-300 hover:bg-white/10 hover:text-white ${collapsed ? 'justify-center px-2' : 'gap-3 px-3'}`} data-testid="button-nav-configuracoes">
-            <Settings2 size={17} strokeWidth={1.8} className="text-white/45 group-hover:text-[#ffc107]" />
-          <span className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${collapsed ? 'max-w-0 opacity-0' : 'max-w-[170px] opacity-100'}`}>Configurações</span>
+
+        <div className={`my-6 h-px bg-[#edf1f6] ${collapsed ? 'mx-1' : ''}`} />
+        <button
+          onClick={onEditProfile}
+          title={collapsed ? 'Configurações' : undefined}
+          className={`group flex w-full items-center rounded-xl py-2.5 text-left text-[13px] font-medium text-[#687587] transition-colors duration-200 hover:bg-[#f1f5fb] hover:text-[#0b1f3b] ${collapsed ? 'justify-center px-2' : 'gap-3 px-3'}`}
+          data-testid="button-nav-configuracoes"
+        >
+          <Settings2 size={17} strokeWidth={1.8} className="shrink-0 text-[#8b98a8] transition-colors group-hover:text-[#1e6fff]" />
+          <AnimatePresence initial={false}>
+            {!collapsed && (
+              <motion.span initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -6 }} transition={labelTransition} className="whitespace-nowrap">
+                Configurações
+              </motion.span>
+            )}
+          </AnimatePresence>
         </button>
-        <button onClick={onSignOut} title={collapsed ? 'Sair da conta' : undefined} className={`group mt-1 flex w-full items-center rounded-xl py-2.5 text-left text-[13px] font-medium text-white/65 transition-all duration-300 hover:bg-white/10 hover:text-white ${collapsed ? 'justify-center px-2' : 'gap-3 px-3'}`} data-testid="button-sign-out">
-            <LogOut size={17} strokeWidth={1.8} className="text-white/45 group-hover:text-[#ffc107]" />
-          <span className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${collapsed ? 'max-w-0 opacity-0' : 'max-w-[170px] opacity-100'}`}>Sair da conta</span>
+        <button
+          onClick={onSignOut}
+          title={collapsed ? 'Sair da conta' : undefined}
+          className={`group mt-1 flex w-full items-center rounded-xl py-2.5 text-left text-[13px] font-medium text-[#687587] transition-colors duration-200 hover:bg-[#fff2f1] hover:text-[#b04f4c] ${collapsed ? 'justify-center px-2' : 'gap-3 px-3'}`}
+          data-testid="button-sign-out"
+        >
+          <LogOut size={17} strokeWidth={1.8} className="shrink-0 text-[#8b98a8] transition-colors group-hover:text-[#b04f4c]" />
+          <AnimatePresence initial={false}>
+            {!collapsed && (
+              <motion.span initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -6 }} transition={labelTransition} className="whitespace-nowrap">
+                Sair da conta
+              </motion.span>
+            )}
+          </AnimatePresence>
         </button>
-        <div className={`mt-auto overflow-hidden rounded-2xl border border-white/10 bg-white/[.06] transition-all duration-300 ${collapsed ? 'max-h-0 border-transparent p-0 opacity-0' : 'max-h-40 p-4 opacity-100'}`}>
-           <div className="mb-3 flex items-center gap-2 text-[#d7ebff]"><span className="grid size-7 place-items-center rounded-lg bg-[#1e6fff]/30 text-[#ffc107]"><Bolt size={14} fill="currentColor" /></span><span className="text-xs font-bold">Dica Voltiva</span></div>
-          <p className="text-[11px] leading-relaxed text-white/55">Use a calculadora para validar uma grandeza antes de fechar seu diagnóstico.</p>
+
+        <div className="mt-auto pt-5">
+          <AnimatePresence initial={false}>
+            {!collapsed && (
+              <motion.div
+                initial={{ opacity: 0, height: 0, y: 8 }}
+                animate={{ opacity: 1, height: 'auto', y: 0 }}
+                exit={{ opacity: 0, height: 0, y: 8 }}
+                transition={labelTransition}
+                className="mb-3 overflow-hidden rounded-2xl border border-[#dbe7f4] bg-[#f6f9fd] p-3"
+              >
+                <div className="mb-2 flex items-center gap-2 text-[#0b3558]">
+                  <span className="grid size-7 place-items-center rounded-lg bg-[#d7ebff] text-[#004eba]"><Bolt size={14} fill="currentColor" /></span>
+                  <span className="text-xs font-bold">Dica Voltiva</span>
+                </div>
+                <p className="text-[11px] leading-relaxed text-[#64748b]">Valide uma grandeza antes de fechar seu diagnóstico.</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <motion.div
+            layout
+            className={`flex items-center rounded-2xl border border-[#e2e8f0] bg-[#f1f4f8] ${collapsed ? 'justify-center p-2' : 'gap-3 px-3 py-2.5'}`}
+          >
+            <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#8fc9eb] text-sm font-bold text-[#0b3558]">{initials}</span>
+            <AnimatePresence initial={false}>
+              {!collapsed && (
+                <motion.div initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -6 }} transition={labelTransition} className="min-w-0">
+                  <p className="truncate text-xs font-bold text-[#0b1f3b]">{firstName}</p>
+                  <p className="truncate text-[11px] text-[#7a8492]">Espaço Voltiva</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         </div>
       </div>
-      <div className={`overflow-hidden border-t border-white/10 py-5 text-center text-[11px] text-white/40 transition-all duration-300 ${collapsed ? 'px-1 text-[0px]' : 'px-7'}`}>Voltiva <span className={`mx-1 ${collapsed ? 'hidden' : ''}`}>·</span> <span className={collapsed ? 'hidden' : ''}>v1.0</span></div>
-    </>
+    </div>
   );
 }
