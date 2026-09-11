@@ -584,6 +584,15 @@
     transition-duration: 0.01ms !important;
   }
 
+  /* The walking bird is an explicit user-requested loading animation. */
+  .walking-loader .walking-head,
+  .walking-loader .walking-body,
+  .walking-loader .walking-leg-left,
+  .walking-loader .walking-leg-right,
+  .walking-loader .walking-ground {
+    animation-duration: 1s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 /**

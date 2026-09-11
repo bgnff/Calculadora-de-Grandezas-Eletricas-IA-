@@ -4,7 +4,7 @@ import { publishableKeyFromHost } from '@clerk/react/internal';
 import { shadcn } from '@clerk/themes';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { Redirect, Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
-import { ArrowRight, BarChart3, Calculator, CheckCircle2, CircleDollarSign, Clock3, Lightbulb, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowRight, BarChart3, Calculator, CheckCircle2, CircleDollarSign, Clock3, Lightbulb, ShieldCheck } from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { BlurReveal } from '@/components/blur-reveal';
 import Rays from '@/components/light-rays';
@@ -111,14 +111,12 @@ function LandingPage() {
       <section className="relative z-10 mx-auto max-w-[1180px] px-5 pb-20 pt-16 md:px-8 md:pb-28 md:pt-24">
         <div className="grid items-center gap-12 lg:grid-cols-[.86fr_1.14fr] lg:gap-16">
           <div className="max-w-[590px]">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#c8e4f7] bg-[#eaf5fc] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#17617a]" data-testid="badge-hero">
-              <Zap size={13} fill="currentColor" /> Energia em contexto
-            </div>
-            <h1 className="mt-6 font-display text-[clamp(2.8rem,5.4vw,5.1rem)] font-semibold leading-[1.02] tracking-[-0.065em] text-[hsl(var(--foreground))]">
+            <h1 className="max-w-[720px] font-display text-[clamp(2.8rem,5.4vw,5.1rem)] font-semibold leading-[1.02] tracking-[-0.065em] text-[hsl(var(--foreground))]">
               <BlurReveal className="inline-block whitespace-nowrap" forceAnimation>Entenda sua </BlurReveal>
               <BlurReveal className="inline-block whitespace-nowrap rounded-md bg-[#d7ebff] px-2 text-[#0b1f3b]" delay={0.12} forceAnimation>energia.</BlurReveal>
-              <br />
-              <BlurReveal className="inline-block whitespace-nowrap" delay={0.28} forceAnimation>Decida melhor.</BlurReveal>
+              <span className="block">
+                <BlurReveal className="inline-block whitespace-nowrap" delay={0.28} forceAnimation>Decida melhor.</BlurReveal>
+              </span>
             </h1>
             <p className="mt-6 max-w-[540px] text-base leading-7 text-[hsl(var(--muted-foreground))]">A Voltiva transforma grandezas elétricas, consumo e custos em uma leitura prática para sua casa, seu projeto ou seu negócio.</p>
             <div className="mt-8 flex flex-wrap gap-3">
