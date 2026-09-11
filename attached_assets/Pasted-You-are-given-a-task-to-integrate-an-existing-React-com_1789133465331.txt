@@ -1,0 +1,617 @@
+You are given a task to integrate an existing React component into the codebase.
+
+The codebase should support:
+- shadcn project structure
+- Tailwind CSS
+- TypeScript
+
+If it doesn't, provide instructions on how to set up the project via shadcn CLI, install Tailwind, or TypeScript.
+
+Determine the default path for components and styles.
+If the default path for components is not /components/ui, provide instructions on why it's important to create this folder.
+
+Copy-paste these components to the /components/ui folder:
+
+```tsx
+// components.json
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/index.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "rtl": false,
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "registries": {}
+}
+
+
+// src/index-demo.tsx
+import { Header } from "@/components/header";
+import { Hero } from "@/components/hero";
+import { BrandMarquee } from "@/components/brand-marquee";
+import { InsightsSection } from "@/components/insights-section";
+
+function Demo() {
+  return (
+    <main className="min-h-screen bg-neutral-950 pb-125">
+      <Header />
+      <Hero />
+      <BrandMarquee />
+      <InsightsSection />
+    </main>
+  );
+}
+
+export default Demo;
+
+
+// src/index.css
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #0a0a0a;
+  --color-primary: #0a0a0a;
+  --color-primary-foreground: #fafafa;
+  --color-secondary: #f4f4f5;
+  --color-secondary-foreground: #18181b;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #71717a;
+  --color-accent: #f4f4f5;
+  --color-accent-foreground: #18181b;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #fafafa;
+  --color-border: #e4e4e7;
+  --color-input: #e4e4e7;
+  --color-ring: #0a0a0a;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0a0a0a;
+  --color-card: #ffffff;
+  --color-card-foreground: #0a0a0a;
+}
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  background-color: #fff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  @keyframes brand-marquee-x {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .brand-marquee-track {
+    animation: brand-marquee-x 25s linear infinite;
+    will-change: transform;
+  }
+}
+
+// src/lib/utils.ts
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+
+// src/components/hero.tsx
+"use client";
+
+import { motion } from "framer-motion";
+import NumberFlow, { continuous } from "@number-flow/react";
+import { ArrowUpRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AnimatedLines } from "./animated-lines";
+
+const stats = [
+  { value: 100, suffix: "%", label: "Uptime" },
+  { value: 3, suffix: "x", label: "Faster Insights" },
+  { value: 92, suffix: "%", label: "Less Manual Work" },
+  { value: 40, suffix: "+", label: "Integrations" },
+];
+
+export function Hero() {
+  const [hasAnimatedStats, setHasAnimatedStats] = useState(false);
+
+  useEffect(() => {
+    const frameId = requestAnimationFrame(() => {
+      setHasAnimatedStats(true);
+    });
+
+    return () => {
+      cancelAnimationFrame(frameId);
+    };
+  }, []);
+
+  return (
+    <section className="relative px-4 pt-28 pb-0 sm:px-6 md:pt-32">
+      <div className="relative mx-auto w-full max-w-7xl overflow-hidden rounded-3xl bg-gradient-to-b from-pink-500 via-red-600 to-red-700 px-6 py-20 sm:px-10 md:py-20">
+        <AnimatedLines />
+
+        <div className="relative z-10 flex flex-col items-center text-center">
+          <motion.h1
+            className="max-w-xl lg:max-w-2xl text-4xl font-medium leading-10 md:leading-14 lg:leading-18 tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            Turn your data into instant insights
+          </motion.h1>
+
+          <motion.p
+            className="mt-5 max-w-xl text-base text-neutral-200 sm:text-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2, ease: "easeOut" }}
+          >
+            FluxMetric helps teams analyze performance, automate reporting, and
+            uncover growth opportunities
+          </motion.p>
+
+          <motion.a
+            href="#"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-neutral-50 px-6 py-3 text-sm font-semibold text-neutral-950"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ scale: 1.05 }}
+            transition={{
+              opacity: { duration: 0.3, delay: 0.3, ease: "easeOut" },
+              y: { duration: 0.3, delay: 0.3, ease: "easeOut" },
+              scale: { duration: 0.2, delay: 0, ease: "easeOut" },
+            }}
+          >
+            Get Started
+            <span className="flex size-6 items-center justify-center rounded-full bg-neutral-950 text-neutral-50">
+              <ArrowUpRight className="size-3.5" />
+            </span>
+          </motion.a>
+        </div>
+
+        <motion.div
+          className="relative z-10 mt-16 grid grid-cols-2 gap-6 sm:mt-20 md:grid-cols-4"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+        >
+          {stats.map((stat) => (
+            <div key={stat.label} className="text-center">
+              <p className="text-3xl font-bold text-white sm:text-4xl md:text-5xl">
+                <NumberFlow
+                  value={hasAnimatedStats ? stat.value : 0}
+                  suffix={stat.suffix}
+                  plugins={[continuous]}
+                />
+              </p>
+              <p className="mt-1 text-sm text-white/70">{stat.label}</p>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+
+// src/components/header.tsx
+"use client";
+
+import Logo from "./ui/logo";
+
+const navLinks = [
+  { label: "Features", href: "#features" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "Customers", href: "#customers" },
+  { label: "Contact", href: "#contact" },
+];
+
+export function Header() {
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 bg-neutral-950/80 backdrop-blur-md px-5 py-4">
+      <nav className="mx-auto flex max-w-7xl w-full items-center justify-between">
+        <a href="/" className="flex items-center gap-2">
+          <Logo className="size-7 text-white" />
+          <span className="text-lg font-bold text-neutral-50">morphin.dev</span>
+        </a>
+
+        <ul className="hidden items-center gap-8 md:flex">
+          {navLinks.map((link) => (
+            <li key={link.label}>
+              <a
+                href={link.href}
+                className="text-sm text-neutral-400 transition-colors hover:text-neutral-50"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </header>
+  );
+}
+
+
+// src/components/animated-lines.tsx
+"use client";
+
+import { motion } from "framer-motion";
+
+const stripes = [
+  { width: 88, baseHeight: 55, color: "rgba(180, 20, 40, 0.7)" },
+  { width: 92, baseHeight: 65, color: "rgba(160, 15, 35, 0.75)" },
+  { width: 88, baseHeight: 80, color: "rgba(140, 12, 30, 0.8)" },
+  { width: 92, baseHeight: 90, color: "rgba(120, 10, 25, 0.85)" },
+  { width: 88, baseHeight: 100, color: "rgba(100, 8, 22, 0.9)" },
+  { width: 92, baseHeight: 95, color: "rgba(110, 10, 28, 0.85)" },
+  { width: 88, baseHeight: 85, color: "rgba(130, 12, 32, 0.8)" },
+  { width: 92, baseHeight: 70, color: "rgba(150, 15, 35, 0.75)" },
+  { width: 88, baseHeight: 60, color: "rgba(170, 18, 38, 0.7)" },
+];
+
+export function AnimatedLines() {
+  return (
+    <div className="pointer-events-none absolute inset-0 flex items-end justify-center overflow-hidden">
+      {stripes.map((stripe, i) => {
+        const minH = stripe.baseHeight * 0.35;
+        const maxH = stripe.baseHeight;
+        const duration = 1.2 + Math.random() * 1.4;
+        const delay = i * 0.15;
+
+        return (
+          <motion.div
+            key={i}
+            className="origin-bottom rounded-t-sm"
+            style={{
+              width: stripe.width,
+              background: `linear-gradient(to top, ${stripe.color}, rgba(200, 30, 50, 0))`,
+            }}
+            initial={{ height: `${minH}%` }}
+            animate={{
+              height: [
+                `${minH}%`,
+                `${maxH}%`,
+                `${minH + (maxH - minH) * 0.4}%`,
+                `${maxH * 0.85}%`,
+                `${minH}%`,
+              ],
+            }}
+            transition={{
+              duration,
+              delay,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+
+// src/components/insights-section.tsx
+"use client";
+
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+
+const LABEL = "SMARTER INSIGHTS";
+const TEXT_WHITE =
+  "With predictive analytics, automated workflows, and beautifully simple dashboards, ";
+const TEXT_GREY =
+  "FluxMetric helps you uncover patterns, optimize performance, and make decisions with confidence.";
+const FULL_TEXT = TEXT_WHITE + TEXT_GREY;
+
+export function InsightsSection() {
+  const containerRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 0.9", "end 0.4"],
+  });
+
+  const chars = FULL_TEXT.split("");
+
+  return (
+    <section ref={containerRef} className="px-6 py-20 md:py-32">
+      <div className="mx-auto max-w-4xl text-center">
+        <motion.span
+          className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-50"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          {LABEL}
+        </motion.span>
+
+        <p className="mt-8 text-2xl font-medium leading-snug tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">
+          {chars.map((char, i) => (
+            <CharReveal
+              key={i}
+              char={char}
+              index={i}
+              total={chars.length}
+              scrollYProgress={scrollYProgress}
+            />
+          ))}
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function CharReveal({
+  char,
+  index,
+  total,
+  scrollYProgress,
+}: {
+  char: string;
+  index: number;
+  total: number;
+  scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
+}) {
+  const start = index / total;
+  const end = start + 1 / total;
+
+  const color = useTransform(
+    scrollYProgress,
+    [start, end],
+    ["rgb(64 64 64)", "rgb(250 250 250)"],
+  );
+
+  if (char === " ") {
+    return <span> </span>;
+  }
+
+  return (
+    <motion.span style={{ color }} className="inline">
+      {char}
+    </motion.span>
+  );
+}
+
+
+// src/components/brand-marquee.tsx
+"use client";
+
+import {
+  Activity,
+  BarChart3,
+  BrainCircuit,
+  Layers,
+  LineChart,
+  Radio,
+  TrendingUp,
+  Workflow,
+} from "lucide-react";
+
+const brands = [
+  { name: "Datavora", icon: Activity },
+  { name: "Synalytix", icon: Workflow },
+  { name: "Optivise AI", icon: BrainCircuit },
+  { name: "Nexora Labs", icon: Layers },
+  { name: "MetricFlow", icon: LineChart },
+  { name: "AuriSense", icon: Radio },
+  { name: "Quantiva", icon: TrendingUp },
+  { name: "InsightHQ", icon: BarChart3 },
+];
+
+export function BrandMarquee() {
+  return (
+    <section className="overflow-hidden py-12 md:py-16">
+      <div className="brand-marquee-track flex w-max items-center gap-12 motion-reduce:animate-none md:gap-16">
+        {brands.map((brand) => (
+          <div
+            key={`a-${brand.name}`}
+            className="flex shrink-0 items-center gap-2"
+          >
+            <brand.icon className="h-5 w-5 text-neutral-600" />
+            <span className="text-base font-medium text-neutral-600 whitespace-nowrap">
+              {brand.name}
+            </span>
+          </div>
+        ))}
+        {brands.map((brand) => (
+          <div
+            key={`b-${brand.name}`}
+            className="flex shrink-0 items-center gap-2"
+          >
+            <brand.icon className="h-5 w-5 text-neutral-600" />
+            <span className="text-base font-medium text-neutral-600 whitespace-nowrap">
+              {brand.name}
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+
+// src/components/ui/logo.tsx
+function Logo({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="currentColor"
+      viewBox="0 0 126 126"
+      className={className}
+    >
+      <path d="M32 32h31v-.5A31.5 31.5 0 1 0 31.5 63h.5Zm62 0v31h.5A31.5 31.5 0 1 0 63 31.5v.5ZM32 94V63h-.5A31.5 31.5 0 1 0 63 94.5V94Zm62.5-31H94v31H63v.5A31.5 31.5 0 1 0 94.5 63" />
+      <path d="M63 32a31.5 31.5 0 0 1-31 31 31.5 31.5 0 0 1 31 31 31.5 31.5 0 0 1 31-31 31.5 31.5 0 0 1-31-31" />
+    </svg>
+  );
+}
+
+export default Logo;
+
+```
+
+
+Implementation Guidelines:
+1. Analyze the component structure and identify all required dependencies
+2. Review the component's arguments and state
+3. Identify any required context providers or hooks and install them
+4. Questions to consider:
+   - What data/props will be passed to this component?
+   - Are there any specific state management requirements?
+   - Are there any required assets (images, icons, etc.)?
+   - What is the expected responsive behavior?
+   - What is the best place to use this component in the app?
+5. index.css should be updated to include the new component's styles (if needed)
+
+Steps to integrate:
+1. Copy-paste all the code above into the correct directories
+2. Install external dependencies
+3. Fill image assets with Unsplash stock images you know exist
+4. Update the import paths to match your project setup

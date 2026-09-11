@@ -1,0 +1,381 @@
+You are given a task to integrate an existing React component into the codebase.
+
+The codebase should support:
+- shadcn project structure
+- Tailwind CSS
+- TypeScript
+
+If it doesn't, provide instructions on how to set up the project via shadcn CLI, install Tailwind, or TypeScript.
+
+Determine the default path for components and styles.
+If the default path for components is not /components/ui, provide instructions on why it's important to create this folder.
+
+Copy-paste these components to the /components/ui folder:
+
+```tsx
+// components.json
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "radix-nova",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/index.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "remixicon",
+  "rtl": false,
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "menuColor": "default",
+  "menuAccent": "subtle",
+  "registries": {}
+}
+
+
+// src/index-demo.tsx
+import NavMenu from "@/components/nav-menu";
+
+export default function Demo() {
+  return <NavMenu />;
+}
+
+
+// src/index.css
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --color-background: #ffffff;
+  --color-foreground: #0a0a0a;
+  --color-primary: #0a0a0a;
+  --color-primary-foreground: #fafafa;
+  --color-secondary: #f4f4f5;
+  --color-secondary-foreground: #18181b;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #71717a;
+  --color-accent: #f4f4f5;
+  --color-accent-foreground: #18181b;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #fafafa;
+  --color-border: #e4e4e7;
+  --color-input: #e4e4e7;
+  --color-ring: #0a0a0a;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0a0a0a;
+  --color-card: #ffffff;
+  --color-card-foreground: #0a0a0a;
+
+  --inset-shadow-md: inset -1px -1px 2px rgba(0, 0, 0, 0.25);
+}
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  background-color: #fff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --radius: 0.875rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-sans: Inter, sans-serif;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+
+// src/lib/utils.ts
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+
+// src/components/nav-menu.tsx
+import { Easing, motion, Transition } from "framer-motion";
+
+const navItems = [
+  {
+    label: "Expertises",
+    href: "/",
+  },
+  {
+    label: "Work",
+    href: "/about",
+  },
+  {
+    label: "About",
+    href: "/about",
+  },
+  {
+    label: "Contact",
+    href: "/contact",
+  },
+];
+
+export default function NavDemo() {
+  return (
+    <div className="h-screen w-full flex items-center justify-center bg-[#faf4ec]">
+      <nav className="flex items-center justify-center bg-white rounded-lg p-1">
+        <ul className="flex items-center md:gap-4 gap-1 min-h-10">
+          {navItems.map((item) => (
+            <NavItem key={item.label} item={item} />
+          ))}
+        </ul>
+      </nav>
+    </div>
+  );
+}
+
+const SPRING_CONFIG_TEXT = {
+  type: "spring",
+  stiffness: 320,
+  damping: 32,
+  mass: 1.3,
+} as Transition;
+
+const EASE_CUBIC_CONFIG = {
+  duration: 0.5,
+  ease: [0.32, 0.72, 0, 1] as Easing,
+} as Transition;
+
+function NavItem({ item }: { item: (typeof navItems)[0] }) {
+  return (
+    <li className="text-xs md:text-base font-semibold">
+      <motion.a
+        href={item.href}
+        className="relative px-2 py-2 rounded-md overflow-hidden block"
+        initial="initial"
+        whileHover="hover"
+        variants={{
+          initial: {},
+          hover: {},
+        }}
+      >
+        <span className="relative text-transparent">{item.label}</span>
+
+        <motion.span
+          className="z-2 absolute inset-0 w-full h-full flex items-center justify-center"
+          initial={{
+            y: 0,
+            scale: 1,
+            rotate: 0,
+          }}
+          variants={{
+            hover: {
+              y: -100,
+              scale: 0.5,
+              rotate: -30,
+            },
+          }}
+          transition={SPRING_CONFIG_TEXT}
+        >
+          {item.label}
+        </motion.span>
+
+        <motion.span
+          className="absolute inset-0 bg-orange-500 w-full h-full scale-x-150 z-1 overflow-hidden"
+          initial={{
+            y: 100,
+            rotate: -40,
+          }}
+          variants={{
+            hover: {
+              y: 0,
+              rotate: 0,
+            },
+          }}
+          transition={EASE_CUBIC_CONFIG}
+        >
+          <motion.span
+            className="absolute inset-0 bg-neutral-900 w-full h-full"
+            initial={{
+              y: 150,
+              rotate: -60,
+            }}
+            variants={{
+              hover: {
+                y: 0,
+                rotate: 0,
+              },
+            }}
+            transition={EASE_CUBIC_CONFIG}
+          ></motion.span>
+        </motion.span>
+
+        <motion.span
+          className="z-2 absolute inset-0 flex items-center justify-center text-white"
+          initial={{
+            y: 180,
+            rotate: -60,
+            scale: 0.5,
+          }}
+          variants={{
+            hover: {
+              y: 0,
+              rotate: 0,
+              scale: 1,
+            },
+          }}
+          transition={SPRING_CONFIG_TEXT}
+        >
+          {item.label}
+        </motion.span>
+      </motion.a>
+    </li>
+  );
+}
+
+```
+
+
+Implementation Guidelines:
+1. Analyze the component structure and identify all required dependencies
+2. Review the component's arguments and state
+3. Identify any required context providers or hooks and install them
+4. Questions to consider:
+   - What data/props will be passed to this component?
+   - Are there any specific state management requirements?
+   - Are there any required assets (images, icons, etc.)?
+   - What is the expected responsive behavior?
+   - What is the best place to use this component in the app?
+5. index.css should be updated to include the new component's styles (if needed)
+
+Steps to integrate:
+1. Copy-paste all the code above into the correct directories
+2. Install external dependencies
+3. Fill image assets with Unsplash stock images you know exist
+4. Update the import paths to match your project setup

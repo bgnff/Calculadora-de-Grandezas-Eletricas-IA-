@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { MotionConfig, motion } from 'framer-motion';
 import { Link } from 'wouter';
 import {
   Activity,
@@ -37,14 +38,19 @@ const interestLabels = {
 
 function PageIntro({ eyebrow, title, description, action }: { eyebrow: string; title: string; description: string; action?: React.ReactNode }) {
   return (
-    <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+      className="flex flex-col justify-between gap-5 md:flex-row md:items-end"
+    >
       <div>
         <p className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-[hsl(var(--primary))]">{eyebrow}</p>
         <h1 className="font-display text-[clamp(2rem,4vw,3.35rem)] font-semibold leading-[1.05] tracking-[-0.055em] text-[hsl(var(--foreground))]">{title}</h1>
         <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[hsl(var(--muted-foreground))]">{description}</p>
       </div>
       {action}
-    </div>
+    </motion.div>
   );
 }
 
@@ -55,66 +61,127 @@ function StatCard({ label, value, caption, icon: Icon, accent = 'teal' }: { labe
     blue: 'bg-[#dff5ff] text-[#16658e]',
   };
   return (
-    <div className="soft-shadow rounded-2xl border border-[hsl(var(--card-border))] bg-white p-5">
+    <motion.div
+      whileHover={{ y: -5, scale: 1.012 }}
+      transition={{ type: 'spring', stiffness: 320, damping: 24 }}
+      className="soft-shadow rounded-2xl border border-[hsl(var(--card-border))] bg-white p-5"
+    >
       <div className="flex items-start justify-between gap-4">
         <p className="text-xs font-bold uppercase tracking-[0.12em] text-[hsl(var(--muted-foreground))]">{label}</p>
         <span className={`grid size-9 place-items-center rounded-xl ${colors[accent]}`}><Icon size={17} /></span>
       </div>
       <p className="mt-5 font-data text-2xl font-medium tracking-[-0.05em] text-[hsl(var(--foreground))]">{value}</p>
       <p className="mt-1 text-xs leading-5 text-[hsl(var(--muted-foreground))]">{caption}</p>
-    </div>
+    </motion.div>
   );
 }
 
 export function DashboardPage({ userName, profile, data }: { userName: string; profile: EnergyProfile | null; data: VoltivaData }) {
   const kwh = totalMonthlyKwh(data.devices);
   const recent = data.calculations.slice(0, 4);
+
   return (
-    <div className="space-y-8">
-      <PageIntro eyebrow="Visão geral" title={`Olá, ${userName || 'por aqui'}.`} description="Seu espaço para entender grandezas, acompanhar consumo e tomar decisões elétricas com mais clareza." action={<Link href="/app/calculator" className="focus-ring inline-flex items-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-4 py-3 text-sm font-bold text-white shadow-[0_8px_18px_hsl(var(--primary)/.18)] transition hover:-translate-y-0.5 hover:bg-[#004eba]">Novo cálculo <ArrowRight size={16} /></Link>} />
+    <MotionConfig reducedMotion="never">
+      <div className="space-y-8">
+        <PageIntro
+          eyebrow="Visão geral"
+          title={`Olá, ${userName || 'por aqui'}.`}
+          description="Seu espaço para entender grandezas, acompanhar consumo e tomar decisões elétricas com mais clareza."
+          action={
+            <motion.div whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Link href="/app/calculator" className="focus-ring inline-flex items-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-4 py-3 text-sm font-bold text-white shadow-[0_8px_18px_hsl(var(--primary)/.18)] transition hover:bg-[#004eba]">
+                Novo cálculo <ArrowRight size={16} />
+              </Link>
+            </motion.div>
+          }
+        />
 
-       <section className="rounded-[24px] border border-[#c9dcf2] bg-[#eaf2ff] p-5 sm:p-7">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
-          <div className="flex items-start gap-4">
-             <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-white text-[#006bff] shadow-sm"><Zap size={22} fill="currentColor" /></span>
-            <div>
-               <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#004eba]">Seu ponto de partida</p>
-               <h2 className="mt-1 font-display text-2xl font-semibold tracking-[-0.04em] text-[#0b3558]">{profile ? goalLabels[profile.goal] : 'Complete seu perfil energético'}</h2>
-               <p className="mt-2 max-w-xl text-sm leading-6 text-[#476788]">{profile ? `Você marcou ${profile.interests.length} ${profile.interests.length === 1 ? 'interesse' : 'interesses'} para acompanhar na Voltiva.` : 'Responda três perguntas rápidas para ajustar sua experiência.'}</p>
+        <motion.section
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.55, delay: 0.05 }}
+          className="rounded-[24px] border border-[#c9dcf2] bg-[#eaf2ff] p-5 sm:p-7"
+        >
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
+            <div className="flex items-start gap-4">
+              <motion.span
+                animate={{ rotate: [0, -6, 0], scale: [1, 1.06, 1] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+                className="grid size-12 shrink-0 place-items-center rounded-2xl bg-white text-[#006bff] shadow-sm"
+              >
+                <Zap size={22} fill="currentColor" />
+              </motion.span>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#004eba]">Seu ponto de partida</p>
+                <h2 className="mt-1 font-display text-2xl font-semibold tracking-[-0.04em] text-[#0b3558]">{profile ? goalLabels[profile.goal] : 'Complete seu perfil energético'}</h2>
+                <p className="mt-2 max-w-xl text-sm leading-6 text-[#476788]">{profile ? `Você marcou ${profile.interests.length} ${profile.interests.length === 1 ? 'interesse' : 'interesses'} para acompanhar na Voltiva.` : 'Responda três perguntas rápidas para ajustar sua experiência.'}</p>
+              </div>
             </div>
+            <motion.div whileHover={{ x: 3 }} transition={{ type: 'spring', stiffness: 300, damping: 22 }}>
+              <Link href={profile ? '/app/settings' : '/app/dashboard'} className="focus-ring inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-[#b5cdec] bg-white px-4 py-2.5 text-sm font-bold text-[#004eba] transition hover:border-[#006bff]">
+                {profile ? 'Ver perfil' : 'Começar perfil'} <ArrowRight size={15} />
+              </Link>
+            </motion.div>
           </div>
-           <Link href={profile ? '/app/settings' : '/app/dashboard'} className="focus-ring inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-[#b5cdec] bg-white px-4 py-2.5 text-sm font-bold text-[#004eba] transition hover:border-[#006bff]">{profile ? 'Ver perfil' : 'Começar perfil'} <ArrowRight size={15} /></Link>
-        </div>
-      </section>
+        </motion.section>
 
-      <section className="grid gap-4 sm:grid-cols-3">
-        <StatCard label="Cálculos salvos" value={String(data.calculations.length)} caption="Resultados disponíveis no histórico" icon={Calculator} />
-        <StatCard label="Consumo estimado" value={`${formatNumber(kwh)} kWh`} caption="Com base nos equipamentos cadastrados" icon={Activity} accent="blue" />
-        <StatCard label="Equipamentos" value={String(data.devices.length)} caption="Itens acompanhados neste espaço" icon={Gauge} accent="amber" />
-      </section>
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+          className="grid gap-4 sm:grid-cols-3"
+        >
+          {[ 
+            { label: 'Cálculos salvos', value: String(data.calculations.length), caption: 'Resultados disponíveis no histórico', icon: Calculator },
+            { label: 'Consumo estimado', value: `${formatNumber(kwh)} kWh`, caption: 'Com base nos equipamentos cadastrados', icon: Activity, accent: 'blue' as const },
+            { label: 'Equipamentos', value: String(data.devices.length), caption: 'Itens acompanhados neste espaço', icon: Gauge, accent: 'amber' as const },
+          ].map((card) => (
+            <motion.div key={card.label} variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}>
+              <StatCard {...card} />
+            </motion.div>
+          ))}
+        </motion.section>
 
-      <section className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="soft-shadow rounded-2xl border border-[hsl(var(--card-border))] bg-white p-5 sm:p-7">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">Atividade recente</p>
-              <h2 className="mt-2 font-display text-xl font-semibold tracking-[-0.035em]">Últimos cálculos</h2>
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.55 }}
+          className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]"
+        >
+          <motion.div whileHover={{ y: -3 }} transition={{ type: 'spring', stiffness: 280, damping: 24 }} className="soft-shadow rounded-2xl border border-[hsl(var(--card-border))] bg-white p-5 sm:p-7">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">Atividade recente</p>
+                <h2 className="mt-2 font-display text-xl font-semibold tracking-[-0.035em]">Últimos cálculos</h2>
+              </div>
+              <Link href="/app/history" className="text-xs font-bold text-[hsl(var(--primary))]">Ver histórico</Link>
             </div>
-            <Link href="/app/history" className="text-xs font-bold text-[hsl(var(--primary))]">Ver histórico</Link>
-          </div>
-          {recent.length ? <div className="mt-5 divide-y divide-[hsl(var(--border))]">{recent.map((record) => <CalculationRow key={record.id} record={record} />)}</div> : <EmptyState icon={History} title="Seu histórico começa aqui" description="Salve o próximo resultado da calculadora para acompanhar sua evolução." href="/app/calculator" action="Abrir calculadora" />}</div>
-        <div className="rounded-2xl border border-[hsl(var(--border))] bg-white/75 p-5 sm:p-7">
-          <p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">Acesso rápido</p>
-           <div className="mt-4 space-y-2">
-            {[
-              { href: '/app/calculator', label: 'Calcular uma grandeza', icon: Calculator, text: 'Use as fórmulas de Ohm.' },
-              { href: '/app/consumption', label: 'Mapear consumo', icon: Activity, text: 'Cadastre seus equipamentos.' },
-              { href: '/app/reports', label: 'Gerar relatório', icon: ReceiptText, text: 'Exporte seus dados locais.' },
-             ].map(({ href, label, icon: Icon, text }) => <Link key={href} href={href} className="group flex items-center gap-3 rounded-xl border border-transparent p-3 transition hover:border-[#bcd4f6] hover:bg-[#f4f8ff]"><span className="grid size-9 place-items-center rounded-lg bg-[#e6f0ff] text-[#1e6fff]"><Icon size={16} /></span><span className="min-w-0 flex-1"><strong className="block text-sm text-[hsl(var(--foreground))]">{label}</strong><span className="text-xs text-[hsl(var(--muted-foreground))]">{text}</span></span><ArrowRight size={15} className="text-[#8ba8c9] transition group-hover:translate-x-1 group-hover:text-[#1e6fff]" /></Link>)}
-          </div>
-        </div>
-      </section>
-    </div>
+            {recent.length ? <div className="mt-5 divide-y divide-[hsl(var(--border))]">{recent.map((record) => <CalculationRow key={record.id} record={record} />)}</div> : <EmptyState icon={History} title="Seu histórico começa aqui" description="Salve o próximo resultado da calculadora para acompanhar sua evolução." href="/app/calculator" action="Abrir calculadora" />}
+          </motion.div>
+          <motion.div whileHover={{ y: -3 }} transition={{ type: 'spring', stiffness: 280, damping: 24 }} className="rounded-2xl border border-[hsl(var(--border))] bg-white/75 p-5 sm:p-7">
+            <p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">Acesso rápido</p>
+            <div className="mt-4 space-y-2">
+              {[
+                { href: '/app/calculator', label: 'Calcular uma grandeza', icon: Calculator, text: 'Use as fórmulas de Ohm.' },
+                { href: '/app/consumption', label: 'Mapear consumo', icon: Activity, text: 'Cadastre seus equipamentos.' },
+                { href: '/app/reports', label: 'Gerar relatório', icon: ReceiptText, text: 'Exporte seus dados locais.' },
+              ].map(({ href, label, icon: Icon, text }) => (
+                <motion.div key={href} whileHover={{ x: 4 }} transition={{ type: 'spring', stiffness: 320, damping: 24 }}>
+                  <Link href={href} className="group flex items-center gap-3 rounded-xl border border-transparent p-3 transition hover:border-[#bcd4f6] hover:bg-[#f4f8ff]">
+                    <span className="grid size-9 place-items-center rounded-lg bg-[#e6f0ff] text-[#1e6fff]"><Icon size={16} /></span>
+                    <span className="min-w-0 flex-1"><strong className="block text-sm text-[hsl(var(--foreground))]">{label}</strong><span className="text-xs text-[hsl(var(--muted-foreground))]">{text}</span></span>
+                    <ArrowRight size={15} className="text-[#8ba8c9] transition group-hover:translate-x-1 group-hover:text-[#1e6fff]" />
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </motion.section>
+      </div>
+    </MotionConfig>
   );
 }
 
@@ -220,11 +287,11 @@ function Field({ label, value, onChange, placeholder, suffix, inputMode = 'text'
 }
 
 function CalculationRow({ record, detailed = false }: { record: CalculationRecord; detailed?: boolean }) {
-  return <div className="flex flex-col gap-3 py-4 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"><div className="flex items-center gap-3"><span className="grid size-9 place-items-center rounded-xl bg-[#e6f0ff] font-data text-xs font-bold text-[#1e6fff]">{calculationMeta[record.type].symbol}</span><div><p className="text-sm font-bold">{calculationMeta[record.type].label}</p><p className="mt-0.5 text-xs text-[hsl(var(--muted-foreground))]">{detailed ? record.formula : 'Fórmula de Ohm'} · {new Date(record.createdAt).toLocaleDateString('pt-BR')}</p></div></div><div className="flex items-center justify-between gap-4 sm:justify-end"><span className="font-data text-base font-medium text-[#004eba]">{formatNumber(record.result)} {record.unit}</span>{detailed && <span className="hidden rounded-full bg-[#e6f0ff] px-2 py-1 text-[10px] font-bold text-[#1e6fff] sm:inline">Salvo</span>}</div></div>;
+  return <motion.div whileHover={{ x: 4, backgroundColor: 'rgba(234,242,255,.45)' }} transition={{ duration: 0.2 }} className="flex flex-col gap-3 rounded-xl px-2 py-4 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"><div className="flex items-center gap-3"><span className="grid size-9 place-items-center rounded-xl bg-[#e6f0ff] font-data text-xs font-bold text-[#1e6fff]">{calculationMeta[record.type].symbol}</span><div><p className="text-sm font-bold">{calculationMeta[record.type].label}</p><p className="mt-0.5 text-xs text-[hsl(var(--muted-foreground))]">{detailed ? record.formula : 'Fórmula de Ohm'} · {new Date(record.createdAt).toLocaleDateString('pt-BR')}</p></div></div><div className="flex items-center justify-between gap-4 sm:justify-end"><span className="font-data text-base font-medium text-[#004eba]">{formatNumber(record.result)} {record.unit}</span>{detailed && <span className="hidden rounded-full bg-[#e6f0ff] px-2 py-1 text-[10px] font-bold text-[#1e6fff] sm:inline">Salvo</span>}</div></motion.div>;
 }
 
 function DeviceRow({ device, onRemove }: { device: EnergyDevice; onRemove: () => void }) {
-  return <div className="flex items-center gap-3 rounded-lg border border-[hsl(var(--border))] bg-[#fbfdff] p-3"><span className="grid size-9 place-items-center rounded-lg bg-[#dff5ff] text-[#16658e]"><Zap size={16} /></span><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{device.name}</p><p className="mt-0.5 text-xs text-[hsl(var(--muted-foreground))]">{device.watts} W · {device.hoursPerDay} h/dia · {formatNumber(deviceMonthlyKwh(device))} kWh/mês</p></div><button onClick={onRemove} className="focus-ring rounded-lg p-2 text-[#b47b78] transition hover:bg-[#fff0ee] hover:text-[#b04f4c]" aria-label={`Remover ${device.name}`}><Trash2 size={15} /></button></div>;
+  return <motion.div whileHover={{ x: 4, borderColor: '#9fc8c5' }} transition={{ duration: 0.2 }} className="flex items-center gap-3 rounded-lg border border-[hsl(var(--border))] bg-[#fbfdff] p-3"><span className="grid size-9 place-items-center rounded-lg bg-[#dff5ff] text-[#16658e]"><Zap size={16} /></span><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{device.name}</p><p className="mt-0.5 text-xs text-[hsl(var(--muted-foreground))]">{device.watts} W · {device.hoursPerDay} h/dia · {formatNumber(deviceMonthlyKwh(device))} kWh/mês</p></div><button onClick={onRemove} className="focus-ring rounded-lg p-2 text-[#b47b78] transition hover:bg-[#fff0ee] hover:text-[#b04f4c]" aria-label={`Remover ${device.name}`}><Trash2 size={15} /></button></motion.div>;
 }
 
 function EmptyState({ icon: Icon, title, description, href, action }: { icon: typeof Activity; title: string; description: string; href?: string; action?: string }) {

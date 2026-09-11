@@ -12,6 +12,9 @@ import Rays from '@/components/light-rays';
 import { ProfileOnboarding } from '@/components/profile-onboarding';
 import { VoltivaShell } from '@/components/voltiva-shell';
 import { WalkingLoader } from '@/components/walking-loader';
+import { AnimatedEnergyLines } from '@/components/animated-energy-lines';
+import { AnimatedNavLink } from '@/components/animated-nav-link';
+import { ScrollHighlightText } from '@/components/scroll-highlight-text';
 import { useEnergyProfile } from '@/hooks/use-energy-profile';
 import { useVoltivaData } from '@/hooks/use-voltiva-data';
 import CalculatorPage from '@/pages/calculator';
@@ -113,15 +116,15 @@ function LandingPage() {
   return (
     <MotionConfig reducedMotion="never">
       <main className="relative min-h-[100dvh] overflow-x-hidden bg-[#f5f7fa]">
-      <Rays backgroundColor="hsl(var(--background))" style={{ zIndex: 0 }} />
+      <Rays backgroundColor="hsl(var(--background))" forceAnimation style={{ zIndex: 0 }} />
 
       <header className="relative z-10 mx-auto flex max-w-[1180px] items-center justify-between px-5 py-5 md:px-8 md:py-6">
         <Brand />
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Navegação principal">
-          <a href="#recursos" data-testid="link-nav-recursos" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Recursos</a>
-          <a href="#como-funciona" data-testid="link-nav-como-funciona" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Como funciona</a>
-          <a href="#plataforma" data-testid="link-nav-plataforma" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Plataforma</a>
-          <a href="#clareza" data-testid="link-nav-clareza" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Clareza dos dados</a>
+           <AnimatedNavLink href="#recursos">Recursos</AnimatedNavLink>
+           <AnimatedNavLink href="#como-funciona">Como funciona</AnimatedNavLink>
+           <AnimatedNavLink href="#plataforma">Plataforma</AnimatedNavLink>
+           <AnimatedNavLink href="#clareza">Clareza dos dados</AnimatedNavLink>
           <span className="mx-2 h-4 w-px bg-[hsl(var(--border))]" />
           <span className="text-[11px] font-medium text-[#64748b]">Feito para decisões reais</span>
         </nav>
@@ -131,7 +134,8 @@ function LandingPage() {
         </div>
       </header>
 
-      <section className="relative z-10 mx-auto max-w-[1180px] px-5 pb-20 pt-16 md:px-8 md:pb-28 md:pt-24">
+       <section className="relative z-10 mx-auto max-w-[1180px] px-5 pb-20 pt-16 md:px-8 md:pb-28 md:pt-24">
+         <AnimatedEnergyLines />
         <div className="grid items-center gap-12 lg:grid-cols-[1.02fr_1fr] lg:gap-12">
           <Reveal className="max-w-[590px]">
             <h1 className="max-w-[720px] font-display text-[clamp(2.8rem,5.4vw,5.1rem)] font-semibold leading-[1.02] tracking-[-0.065em] text-[hsl(var(--foreground))]">
@@ -201,7 +205,7 @@ function LandingPage() {
           <Reveal>
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#8fc9eb]"><ShieldCheck size={16} /> Clareza dos dados</div>
             <h2 className="mt-5 max-w-[650px] font-display text-[clamp(2rem,4vw,3.4rem)] font-semibold leading-[1.06] tracking-[-0.055em]">Número bom é número que você consegue conferir.</h2>
-            <p className="mt-5 max-w-[570px] text-base leading-7 text-white/65">A Voltiva mostra unidade, origem do cálculo e evolução do consumo sem esconder o raciocínio atrás de um índice. Você entende o que mudou antes de escolher o que fazer.</p>
+             <ScrollHighlightText className="mt-5 max-w-[570px] text-base leading-7">A Voltiva mostra unidade, origem do cálculo e evolução do consumo sem esconder o raciocínio atrás de um índice. Você entende o que mudou antes de escolher o que fazer.</ScrollHighlightText>
           </Reveal>
           <Reveal className="grid gap-3 sm:grid-cols-2" delay={0.12}>
             <div className="rounded-2xl bg-white/[.08] p-5"><CheckCircle2 className="text-[#8fc9eb]" size={20} /><p className="mt-10 text-sm font-semibold">Fórmulas visíveis</p><p className="mt-2 text-xs leading-5 text-white/55">Grandezas e unidades no mesmo lugar.</p></div>
