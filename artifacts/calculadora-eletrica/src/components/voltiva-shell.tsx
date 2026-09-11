@@ -43,12 +43,52 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
   const activeLabel = navItems.find((item) => location === item.path)?.label ?? 'Visão geral';
   const firstName = user?.firstName || user?.emailAddresses[0]?.emailAddress?.split('@')[0] || 'Conta';
   const initials = (user?.firstName?.[0] || user?.emailAddresses[0]?.emailAddress?.[0] || 'V').toUpperCase();
+  const shouldAnimateSidebarEntrance = location === '/app/dashboard' && !reducedMotion;
 
   return (
     <div className="flex min-h-[100dvh] bg-transparent text-foreground">
-      <aside className="hidden w-[252px] shrink-0 flex-col bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))] md:flex">
-        <SidebarContent onEditProfile={onEditProfile} reducedMotion={reducedMotion} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} />
-      </aside>
+      <motion.aside
+        initial={{ width: shouldAnimateSidebarEntrance ? 68 : 252 }}
+        animate={{ width: 252 }}
+        transition={
+          shouldAnimateSidebarEntrance
+            ? { delay: 0.06, duration: 1.45, ease: [0.22, 1, 0.36, 1] }
+            : { duration: 0 }
+        }
+        className="relative hidden shrink-0 overflow-hidden bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))] md:flex"
+        aria-label="Navegação principal"
+      >
+        <motion.div
+          initial={{ opacity: shouldAnimateSidebarEntrance ? 1 : 0 }}
+          animate={{ opacity: 0 }}
+          transition={
+            shouldAnimateSidebarEntrance
+              ? { delay: 0.66, duration: 0.32, ease: 'easeOut' }
+              : { duration: 0 }
+          }
+          className="pointer-events-none absolute inset-x-0 top-0 z-10 grid h-[72px] place-items-center"
+          aria-hidden="true"
+        >
+          <span className="grid size-9 place-items-center rounded-lg bg-[#006bff] text-white shadow-[0_0_0_5px_rgba(0,107,255,.14)]">
+            <Bolt size={19} fill="currentColor" strokeWidth={2.4} />
+          </span>
+        </motion.div>
+        <motion.div
+          initial={{
+            opacity: shouldAnimateSidebarEntrance ? 0 : 1,
+            x: shouldAnimateSidebarEntrance ? -12 : 0,
+          }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={
+            shouldAnimateSidebarEntrance
+              ? { delay: 0.58, duration: 0.72, ease: [0.22, 1, 0.36, 1] }
+              : { duration: 0 }
+          }
+          className="min-w-[252px]"
+        >
+          <SidebarContent onEditProfile={onEditProfile} reducedMotion={reducedMotion} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} />
+        </motion.div>
+      </motion.aside>
 
       <AnimatePresence>
         {mobileOpen && (
