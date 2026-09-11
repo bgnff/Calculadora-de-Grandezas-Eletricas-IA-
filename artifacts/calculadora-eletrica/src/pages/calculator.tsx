@@ -394,7 +394,7 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
             role="status"
             data-testid="toast-feedback"
           >
-            <span className={`size-2 rounded-full ${feedback.tone === 'success' ? 'bg-[#43aa78]' : feedback.tone === 'error' ? 'bg-[#dd6c67]' : 'bg-[#39a9a2]'}`} aria-hidden="true" />
+            <span className={`size-2 rounded-full ${feedback.tone === 'success' ? 'bg-[#43aa78]' : feedback.tone === 'error' ? 'bg-[#dd6c67]' : 'bg-[#1e6fff]'}`} aria-hidden="true" />
             {feedback.message}
           </motion.div>
         )}

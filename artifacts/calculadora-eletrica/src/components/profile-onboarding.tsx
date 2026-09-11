@@ -275,7 +275,7 @@ export function ProfileOnboarding({
               <div className="flex items-start gap-3">
                 <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-white text-[#299b8d]"><House size={17} /></span>
                 <div className="min-w-0">
-                  <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#287b76]">Resumo do perfil</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#1e6fff]">Resumo do perfil</p>
                   <div className="mt-2 flex flex-wrap gap-2 text-xs font-semibold text-[#387672]">
                     <span className="rounded-full bg-white px-2.5 py-1" data-testid="text-summary-goal">{goals.find((item) => item.id === draft.goal)?.title}</span>
                     <span className="rounded-full bg-white px-2.5 py-1" data-testid="text-summary-interests">{draft.interests.length} {draft.interests.length === 1 ? 'interesse' : 'interesses'}</span>

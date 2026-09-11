@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
 @layer theme, base, clerk, components, utilities;
 @import 'tailwindcss';
 @import '@clerk/themes/shadcn.css';
@@ -143,8 +144,8 @@
   --chart-4: 215 16% 43%;
   --chart-5: 45 100% 50%;
 
-  --app-font-sans: 'Lato', Arial, sans-serif;
-  --app-font-serif: 'Lato', Arial, sans-serif;
+  --app-font-sans: 'DM Sans', sans-serif;
+  --app-font-serif: 'Manrope', sans-serif;
   --app-font-mono: 'DM Mono', monospace;
   --radius: 0.625rem;
   --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0); /*replace with H S L */
@@ -327,15 +328,15 @@
 
 @layer base {
   html {
-    font-family: 'Lato', Arial, sans-serif;
+    font-family: var(--app-font-sans);
     background: hsl(var(--background));
   }
 
   body {
-    font-family: 'Lato', Arial, sans-serif;
+    font-family: var(--app-font-sans);
     min-width: 320px;
     min-height: 100dvh;
-    background: #fafaf9;
+    background: hsl(var(--background));
   }
 
   button,
@@ -583,15 +584,6 @@
     transition-duration: 0.01ms !important;
   }
 
-  /* The auth illustration is an explicit user-requested animation. */
-  .walking-loader .walking-head,
-  .walking-loader .walking-body,
-  .walking-loader .walking-leg-left,
-  .walking-loader .walking-leg-right,
-  .walking-loader .walking-ground {
-    animation-duration: 1s !important;
-    animation-iteration-count: infinite !important;
-  }
 }
 
 /**

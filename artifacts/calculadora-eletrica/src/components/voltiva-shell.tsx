@@ -14,6 +14,8 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  PanelLeftClose,
+  PanelLeftOpen,
   Settings2,
   X,
 } from 'lucide-react';
@@ -36,6 +38,7 @@ const navItems = [
 
 export function VoltivaShell({ children, onEditProfile, profileIncomplete = false, onResumeProfile }: VoltivaShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const reducedMotion = Boolean(useReducedMotion());
   const [location] = useLocation();
   const { user } = useUser();
@@ -43,48 +46,22 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
   const activeLabel = navItems.find((item) => location === item.path)?.label ?? 'Visão geral';
   const firstName = user?.firstName || user?.emailAddresses[0]?.emailAddress?.split('@')[0] || 'Conta';
   const initials = (user?.firstName?.[0] || user?.emailAddresses[0]?.emailAddress?.[0] || 'V').toUpperCase();
-  const shouldAnimateSidebarEntrance = location === '/app/dashboard' && !reducedMotion;
-
   return (
     <div className="flex min-h-[100dvh] bg-transparent text-foreground">
       <motion.aside
-        initial={{ width: shouldAnimateSidebarEntrance ? 68 : 252 }}
-        animate={{ width: 252 }}
-        transition={
-          shouldAnimateSidebarEntrance
-            ? { delay: 0.06, duration: 1.45, ease: [0.22, 1, 0.36, 1] }
-            : { duration: 0 }
-        }
-        className="relative hidden shrink-0 overflow-hidden rounded-r-[28px] bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))] md:flex"
+        initial={false}
+        animate={{ width: sidebarCollapsed ? 76 : 252 }}
+        transition={reducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 260, damping: 30 }}
+        className="relative hidden min-h-[100dvh] shrink-0 overflow-hidden rounded-r-[28px] bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))] md:flex"
         aria-label="Navegação principal"
       >
         <motion.div
-          initial={{ opacity: shouldAnimateSidebarEntrance ? 1 : 0 }}
-          animate={{ opacity: 0 }}
-          transition={
-            shouldAnimateSidebarEntrance
-              ? { delay: 0.66, duration: 0.32, ease: 'easeOut' }
-              : { duration: 0 }
-          }
-          className="pointer-events-none absolute inset-x-0 top-0 z-10 grid h-[72px] place-items-center"
-          aria-hidden="true"
-        >
-          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="size-9 rounded-lg object-cover shadow-[0_0_0_5px_rgba(30,111,255,.18)]" />
-        </motion.div>
-        <motion.div
-          initial={{
-            opacity: shouldAnimateSidebarEntrance ? 0 : 1,
-            x: shouldAnimateSidebarEntrance ? -12 : 0,
-          }}
+          initial={false}
           animate={{ opacity: 1, x: 0 }}
-          transition={
-            shouldAnimateSidebarEntrance
-              ? { delay: 0.58, duration: 0.72, ease: [0.22, 1, 0.36, 1] }
-              : { duration: 0 }
-          }
-          className="min-w-[252px]"
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
+          className={`h-full ${sidebarCollapsed ? 'min-w-[76px]' : 'min-w-[252px]'}`}
         >
-          <SidebarContent onEditProfile={onEditProfile} reducedMotion={reducedMotion} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} />
+          <SidebarContent collapsed={sidebarCollapsed} onToggleCollapsed={() => setSidebarCollapsed((current) => !current)} onEditProfile={onEditProfile} reducedMotion={reducedMotion} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} />
         </motion.div>
       </motion.aside>
 
@@ -112,7 +89,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
                   <X size={19} />
                 </button>
               </div>
-                <SidebarContent onEditProfile={onEditProfile} reducedMotion={reducedMotion} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} />
+                <SidebarContent collapsed={false} onEditProfile={onEditProfile} reducedMotion={reducedMotion} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} />
             </motion.aside>
           </>
         )}
@@ -125,7 +102,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
               <Menu size={21} />
             </button>
              <div className="flex items-center gap-2 md:hidden">
-               <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="size-8 rounded-lg object-cover" />
+                <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="size-8 object-contain" />
               <span className="font-display text-lg font-bold tracking-tight text-[hsl(var(--foreground))]">voltiva</span>
             </div>
              <div className="hidden items-center gap-2 text-sm md:flex">
@@ -167,15 +144,28 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
   );
 }
 
-function SidebarContent({ onEditProfile, reducedMotion, activePath, onClose, onSignOut }: { onEditProfile?: () => void; reducedMotion: boolean; activePath: string; onClose: () => void; onSignOut: () => void }) {
+function SidebarContent({ collapsed, onToggleCollapsed, onEditProfile, reducedMotion, activePath, onClose, onSignOut }: { collapsed: boolean; onToggleCollapsed?: () => void; onEditProfile?: () => void; reducedMotion: boolean; activePath: string; onClose: () => void; onSignOut: () => void }) {
   return (
     <>
-      <div className="flex h-[72px] items-center gap-3 border-b border-white/10 px-7">
-         <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="size-9 rounded-lg object-cover shadow-[0_0_0_5px_rgba(0,107,255,.14)]" />
-        <span className="font-display text-[22px] font-bold tracking-[-0.04em] text-white">voltiva</span>
+      <div className={`flex h-[72px] items-center border-b border-white/10 ${collapsed ? 'justify-center gap-1 px-1' : 'justify-between px-5'}`}>
+        <div className="flex min-w-0 items-center gap-3">
+          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="size-9 shrink-0 object-contain" />
+          <span className={`overflow-hidden whitespace-nowrap font-display text-[22px] font-bold tracking-[-0.04em] text-white transition-all duration-300 ${collapsed ? 'max-w-0 opacity-0' : 'max-w-[120px] opacity-100'}`}>voltiva</span>
+        </div>
+        {onToggleCollapsed && (
+          <button
+            onClick={onToggleCollapsed}
+            className="grid size-8 shrink-0 place-items-center rounded-lg text-white/55 transition hover:bg-white/10 hover:text-white"
+            aria-label={collapsed ? 'Expandir barra lateral' : 'Minimizar barra lateral'}
+            title={collapsed ? 'Expandir barra lateral' : 'Minimizar barra lateral'}
+            data-testid="button-toggle-sidebar"
+          >
+            {collapsed ? <PanelLeftOpen size={17} /> : <PanelLeftClose size={17} />}
+          </button>
+        )}
       </div>
-      <div className="flex flex-1 flex-col px-4 py-7">
-        <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">Navegação</p>
+      <div className={`flex flex-1 flex-col py-7 transition-[padding] duration-300 ${collapsed ? 'px-2' : 'px-4'}`}>
+        <p className={`mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/40 transition-opacity duration-200 ${collapsed ? 'pointer-events-none h-0 overflow-hidden opacity-0' : 'opacity-100'}`}>Navegação</p>
         <nav className="space-y-1" aria-label="Navegação principal">
           {navItems.map(({ label, icon: Icon, path }) => (
             activePath === path ? (
@@ -185,14 +175,15 @@ function SidebarContent({ onEditProfile, reducedMotion, activePath, onClose, onS
                  whileHover={reducedMotion ? undefined : { x: 3 }}
                  whileTap={reducedMotion ? undefined : { scale: 0.985 }}
                 transition={reducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 520, damping: 34 }}
-                  className="group relative mt-1 flex items-center gap-3 rounded-xl bg-[#1e6fff] px-3 py-2.5 text-[13px] font-semibold text-white shadow-[inset_3px_0_0_#ffc107,0_8px_20px_rgba(30,111,255,.2)]"
+                  className={`group relative mt-1 flex items-center rounded-xl bg-[#1e6fff] py-2.5 text-[13px] font-semibold text-white shadow-[inset_3px_0_0_#ffc107,0_8px_20px_rgba(30,111,255,.2)] transition-all duration-300 ${collapsed ? 'justify-center px-2' : 'gap-3 px-3'}`}
                 aria-current="page"
+                  title={collapsed ? label : undefined}
                 data-testid={`nav-${label.toLowerCase().replaceAll(' ', '-')}-ativa`}
               >
                   <motion.span animate={reducedMotion ? undefined : { rotate: [0, -5, 0], scale: [1, 1.08, 1] }} transition={{ duration: 0.5 }}>
                     <Icon size={17} className="text-[#ffc107]" />
                   </motion.span>
-                {label}
+                <span className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${collapsed ? 'max-w-0 opacity-0' : 'max-w-[170px] opacity-100'}`}>{label}</span>
               </motion.div>
             ) : (
               <motion.div
@@ -201,31 +192,31 @@ function SidebarContent({ onEditProfile, reducedMotion, activePath, onClose, onS
                 whileTap={reducedMotion ? undefined : { scale: 0.985 }}
                 className="relative"
               >
-                <Link href={path} onClick={onClose} className="group relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition-colors hover:text-white" data-testid={`button-nav-${label.toLowerCase().replaceAll(' ', '-')}`}>
+                  <Link href={path} onClick={onClose} title={collapsed ? label : undefined} className={`group relative flex w-full items-center overflow-hidden rounded-xl py-2.5 text-left text-[13px] font-medium text-white/65 transition-all duration-300 hover:text-white ${collapsed ? 'justify-center px-2' : 'gap-3 px-3'}`} data-testid={`button-nav-${label.toLowerCase().replaceAll(' ', '-')}`}>
                   <span className="absolute inset-1 rounded-[10px] bg-white/[.08] opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true" />
                     <Icon size={17} strokeWidth={1.8} className="relative text-white/45 transition-colors duration-200 group-hover:text-[#ffc107]" />
-                  <span className="relative">{label}</span>
+                  <span className={`relative overflow-hidden whitespace-nowrap transition-all duration-200 ${collapsed ? 'max-w-0 opacity-0' : 'max-w-[170px] opacity-100'}`}>{label}</span>
                 </Link>
               </motion.div>
             )
           ))}
         </nav>
-        <div className="my-7 h-px bg-white/10" />
-        <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">Gerencie</p>
-        <button onClick={onEditProfile} className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition hover:bg-white/8 hover:text-white" data-testid="button-nav-configuracoes">
+        <div className={`my-7 h-px bg-white/10 ${collapsed ? 'mx-1' : ''}`} />
+        <p className={`mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/40 transition-opacity duration-200 ${collapsed ? 'pointer-events-none h-0 overflow-hidden opacity-0' : 'opacity-100'}`}>Gerencie</p>
+        <button onClick={onEditProfile} title={collapsed ? 'Configurações' : undefined} className={`group flex w-full items-center rounded-xl py-2.5 text-left text-[13px] font-medium text-white/65 transition-all duration-300 hover:bg-white/10 hover:text-white ${collapsed ? 'justify-center px-2' : 'gap-3 px-3'}`} data-testid="button-nav-configuracoes">
             <Settings2 size={17} strokeWidth={1.8} className="text-white/45 group-hover:text-[#ffc107]" />
-          Configurações
+          <span className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${collapsed ? 'max-w-0 opacity-0' : 'max-w-[170px] opacity-100'}`}>Configurações</span>
         </button>
-        <button onClick={onSignOut} className="group mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition hover:bg-white/8 hover:text-white" data-testid="button-sign-out">
+        <button onClick={onSignOut} title={collapsed ? 'Sair da conta' : undefined} className={`group mt-1 flex w-full items-center rounded-xl py-2.5 text-left text-[13px] font-medium text-white/65 transition-all duration-300 hover:bg-white/10 hover:text-white ${collapsed ? 'justify-center px-2' : 'gap-3 px-3'}`} data-testid="button-sign-out">
             <LogOut size={17} strokeWidth={1.8} className="text-white/45 group-hover:text-[#ffc107]" />
-          Sair da conta
+          <span className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${collapsed ? 'max-w-0 opacity-0' : 'max-w-[170px] opacity-100'}`}>Sair da conta</span>
         </button>
-        <div className="mt-auto rounded-2xl border border-white/10 bg-white/[.06] p-4">
+        <div className={`mt-auto overflow-hidden rounded-2xl border border-white/10 bg-white/[.06] transition-all duration-300 ${collapsed ? 'max-h-0 border-transparent p-0 opacity-0' : 'max-h-40 p-4 opacity-100'}`}>
            <div className="mb-3 flex items-center gap-2 text-[#d7ebff]"><span className="grid size-7 place-items-center rounded-lg bg-[#1e6fff]/30 text-[#ffc107]"><Bolt size={14} fill="currentColor" /></span><span className="text-xs font-bold">Dica Voltiva</span></div>
           <p className="text-[11px] leading-relaxed text-white/55">Use a calculadora para validar uma grandeza antes de fechar seu diagnóstico.</p>
         </div>
       </div>
-      <div className="border-t border-white/10 px-7 py-5 text-[11px] text-white/40">Voltiva <span className="mx-1">·</span> v1.0</div>
+      <div className={`overflow-hidden border-t border-white/10 py-5 text-center text-[11px] text-white/40 transition-all duration-300 ${collapsed ? 'px-1 text-[0px]' : 'px-7'}`}>Voltiva <span className={`mx-1 ${collapsed ? 'hidden' : ''}`}>·</span> <span className={collapsed ? 'hidden' : ''}>v1.0</span></div>
     </>
   );
 }

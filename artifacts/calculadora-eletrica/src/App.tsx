@@ -4,6 +4,7 @@ import { publishableKeyFromHost } from '@clerk/react/internal';
 import { shadcn } from '@clerk/themes';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { Redirect, Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
+import { ArrowRight, BarChart3, Calculator, CheckCircle2, CircleDollarSign, Clock3, Lightbulb, ShieldCheck, Zap } from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { BlurReveal } from '@/components/blur-reveal';
 import Rays from '@/components/light-rays';
@@ -66,7 +67,7 @@ const clerkAppearance = {
     dividerText: 'text-[#64748b]',
     formFieldSuccessText: 'text-[#15803d]',
     alertText: 'text-[#dc2626]',
-    logoBox: 'rounded-xl overflow-hidden',
+     logoBox: '!rounded-none !overflow-visible !shadow-none',
     socialButtonsBlockButton: 'border-[#d7ebff] hover:bg-[#f5f7fa]',
     formButtonPrimary: 'bg-[#1e6fff] hover:bg-[#1557d6] text-white',
     formFieldInput: 'border-[#d7ebff] bg-[#f5f7fa] text-[#374151]',
@@ -79,64 +80,153 @@ const clerkAppearance = {
   },
 };
 
+const platformModules = [
+  ['Calculadora elétrica', 'Grandezas para validar uma ideia', Calculator],
+  ['Consumo de energia', 'Uma visão do que acontece no mês', BarChart3],
+  ['Economia', 'Cenários para gastar melhor', CircleDollarSign],
+  ['Histórico', 'Decisões que continuam disponíveis', Clock3],
+] as const;
+
 function LandingPage() {
   return (
     <main className="relative min-h-[100dvh] overflow-hidden bg-[#f5f7fa]">
-      <Rays backgroundColor="hsl(var(--background))" forceAnimation style={{ zIndex: 0 }} />
-      <div className="pointer-events-none absolute -left-[340px] top-10 z-[1] size-[620px] rounded-full border-[10px] border-[#d7ebff]/65" />
-      <div className="pointer-events-none absolute -right-[380px] top-[500px] z-[1] size-[700px] rounded-full border-[10px] border-[#d7ebff]/55" />
+      <Rays backgroundColor="hsl(var(--background))" style={{ zIndex: 0 }} />
 
-      <header className="relative z-10 mx-auto flex max-w-[1024px] items-center justify-between px-5 py-5 md:px-8 md:py-4">
+      <header className="relative z-10 mx-auto flex max-w-[1180px] items-center justify-between px-5 py-5 md:px-8 md:py-6">
         <Brand />
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Navegação principal">
-          <a href="#recursos" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Recursos</a>
-          <a href="#como-funciona" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Como funciona</a>
-          <a href="#recursos" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Plataforma <span className="ml-1 text-[10px]">⌄</span></a>
-          <a href="#recursos" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Guias</a>
+          <a href="#recursos" data-testid="link-nav-recursos" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Recursos</a>
+          <a href="#como-funciona" data-testid="link-nav-como-funciona" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Como funciona</a>
+          <a href="#plataforma" data-testid="link-nav-plataforma" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Plataforma</a>
+          <a href="#clareza" data-testid="link-nav-clareza" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Clareza dos dados</a>
           <span className="mx-2 h-4 w-px bg-[hsl(var(--border))]" />
-          <div className="flex -space-x-1.5" aria-label="Comunidade Voltiva">
-            {['V', 'O', 'E', 'R'].map((letter, index) => <span key={letter} className={`grid size-6 place-items-center rounded-full border-2 border-[#f5f7fa] text-[9px] font-bold text-white ${['bg-[#0b1f3b]', 'bg-[#1e6fff]', 'bg-[#64748b]', 'bg-[#374151]'][index]}`}>{letter}</span>)}
-          </div>
+          <span className="text-[11px] font-medium text-[#64748b]">Feito para decisões reais</span>
         </nav>
         <div className="flex items-center gap-1">
-          <a href={`${basePath}/sign-in`} className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Entrar</a>
-          <a href={`${basePath}/sign-up`} className="rounded-lg bg-[#1e6fff] px-4 py-2.5 text-xs font-medium text-white transition hover:bg-[#1557d6]">Começar grátis</a>
+          <a href={`${basePath}/sign-in`} data-testid="link-header-entrar" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Entrar</a>
+          <a href={`${basePath}/sign-up`} data-testid="link-header-cadastro" className="rounded-lg bg-[#1e6fff] px-4 py-2.5 text-xs font-medium text-white transition hover:bg-[#1557d6]">Começar grátis</a>
         </div>
       </header>
 
-      <section className="relative z-10 mx-auto max-w-[1024px] px-5 pb-8 pt-20 md:px-8 md:pt-24">
-        <div className="max-w-[720px]">
-          <h1 className="font-display text-[clamp(2.65rem,5.2vw,4.35rem)] font-normal leading-[1.05] tracking-[-0.055em] text-[hsl(var(--foreground))]">
-            <BlurReveal className="inline-block" forceAnimation>A </BlurReveal>
-            <BlurReveal className="inline-block rounded-md bg-[#d7ebff] px-2 text-[#0b1f3b]" delay={0.12} forceAnimation>energia simples e prática</BlurReveal>
-            <br />
-            <BlurReveal className="inline-block" delay={0.28} forceAnimation>para decisões melhores.</BlurReveal>
-          </h1>
-          <p className="mt-6 max-w-[610px] text-base leading-7 text-[hsl(var(--muted-foreground))]">Calcule, acompanhe e entenda sua energia em um espaço claro, feito para transformar números elétricos em decisões do dia a dia.</p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <a href={`${basePath}/sign-up`} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1e6fff] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#1557d6]">Começar grátis <span aria-hidden="true">→</span></a>
-            <a href={`${basePath}/sign-in`} className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#d7ebff] bg-[#f5f7fa] px-5 py-2.5 text-sm text-[hsl(var(--muted-foreground))] transition hover:border-[#1e6fff] hover:text-[hsl(var(--foreground))]">Ver a calculadora <span aria-hidden="true">⌁</span></a>
+      <section className="relative z-10 mx-auto max-w-[1180px] px-5 pb-20 pt-16 md:px-8 md:pb-28 md:pt-24">
+        <div className="grid items-center gap-12 lg:grid-cols-[.86fr_1.14fr] lg:gap-16">
+          <div className="max-w-[590px]">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#c8e4f7] bg-[#eaf5fc] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#17617a]" data-testid="badge-hero">
+              <Zap size={13} fill="currentColor" /> Energia em contexto
+            </div>
+            <h1 className="mt-6 font-display text-[clamp(2.8rem,5.4vw,5.1rem)] font-semibold leading-[1.02] tracking-[-0.065em] text-[hsl(var(--foreground))]">
+              <BlurReveal className="inline-block whitespace-nowrap" forceAnimation>Entenda sua </BlurReveal>
+              <BlurReveal className="inline-block whitespace-nowrap rounded-md bg-[#d7ebff] px-2 text-[#0b1f3b]" delay={0.12} forceAnimation>energia.</BlurReveal>
+              <br />
+              <BlurReveal className="inline-block whitespace-nowrap" delay={0.28} forceAnimation>Decida melhor.</BlurReveal>
+            </h1>
+            <p className="mt-6 max-w-[540px] text-base leading-7 text-[hsl(var(--muted-foreground))]">A Voltiva transforma grandezas elétricas, consumo e custos em uma leitura prática para sua casa, seu projeto ou seu negócio.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href={`${basePath}/sign-up`} data-testid="link-hero-cadastro" className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1e6fff] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1557d6]">Criar meu espaço <ArrowRight size={16} /></a>
+              <a href="#plataforma" data-testid="link-hero-plataforma" className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#c8e4f7] bg-[#f5f7fa] px-5 py-3 text-sm font-medium text-[#17617a] transition hover:border-[#1e6fff] hover:text-[#0b1f3b]">Conhecer a plataforma</a>
+            </div>
+            <div className="mt-9 grid max-w-[470px] grid-cols-2 gap-x-6 gap-y-4 border-t border-[#dfe8ed] pt-5 text-xs text-[#64748b] sm:grid-cols-4">
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Grandezas</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Consumo</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Economia</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Histórico</span>
+            </div>
+          </div>
+          <DashboardPreview />
+        </div>
+      </section>
+
+      <section id="recursos" className="relative z-10 border-t border-[hsl(var(--border))] bg-[#eef6fb]">
+        <div className="mx-auto max-w-[1180px] px-5 py-20 md:px-8 md:py-28">
+          <div className="max-w-[620px]">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1e6fff]">O que você resolve aqui</p>
+            <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.3rem)] font-semibold leading-[1.08] tracking-[-0.055em] text-[#0b1f3b]">Da dúvida elétrica ao próximo passo.</h2>
+            <p className="mt-4 text-base leading-7 text-[#64748b]">Uma plataforma para olhar os dados sem precisar atravessar planilhas, fórmulas soltas ou estimativas difíceis de conferir.</p>
+          </div>
+          <div className="mt-12 grid gap-4 md:grid-cols-12">
+            <Feature className="md:col-span-7 md:min-h-[250px]" eyebrow="01 · Precisão" title="Calcule grandezas com confiança" text="Tensão, corrente, resistência e potência em uma calculadora guiada, com fórmulas reconhecidas e entradas que fazem sentido." icon={<Calculator size={20} />} />
+            <Feature className="md:col-span-5 md:min-h-[250px]" eyebrow="02 · Leitura" title="Veja onde a energia pesa" text="Registre equipamentos, acompanhe o consumo e encontre os pontos que merecem atenção primeiro." icon={<BarChart3 size={20} />} />
+            <Feature className="md:col-span-5 md:min-h-[230px]" eyebrow="03 · Ação" title="Encontre oportunidades de economia" text="Compare cenários e transforme uma conta alta em uma lista de decisões possíveis." icon={<CircleDollarSign size={20} />} />
+            <Feature className="md:col-span-7 md:min-h-[230px]" eyebrow="04 · Continuidade" title="Guarde o raciocínio, não só o resultado" text="Seu histórico acompanha a evolução das escolhas para você voltar, revisar e compartilhar quando precisar." icon={<Clock3 size={20} />} />
           </div>
         </div>
-
-        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-[hsl(var(--border))] pt-5 text-xs font-medium text-[#a8a29e] sm:border-t-0 sm:pt-0">
-          <span>Fórmulas de Ohm</span>
-          <span>Código de cores</span>
-          <span>Consumo mensal</span>
-          <span>Histórico por conta</span>
-        </div>
-        <p className="mt-7 text-xs text-[#a8a29e]"><span className="mr-2 tracking-[0.16em] text-[#78716c]">★★★★★</span> Uma leitura mais simples para cada grandeza elétrica.</p>
-
-        <DashboardPreview />
       </section>
 
-      <section id="recursos" className="relative z-10 border-t border-[hsl(var(--border))] bg-white/75">
-        <div className="mx-auto grid max-w-[1024px] gap-4 px-5 py-16 md:grid-cols-3 md:px-8">
-          <Feature title="Calcule sem ruído" text="Tensão, corrente, resistência e potência com validações claras." icon="01" />
-          <Feature title="Entenda o resultado" text="Visualização automática e explicações para cada resposta." icon="02" />
-          <Feature title="Continue de onde parou" text="Seu perfil, histórico e equipamentos ficam organizados na sua conta." icon="03" />
+      <section id="como-funciona" className="relative z-10 bg-[#f5f7fa]">
+        <div className="mx-auto grid max-w-[1180px] gap-12 px-5 py-20 md:px-8 md:py-28 lg:grid-cols-[.72fr_1.28fr] lg:gap-20">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1e6fff]">Como funciona</p>
+            <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-[1.08] tracking-[-0.055em] text-[#0b1f3b]">Clareza em três movimentos.</h2>
+            <p className="mt-5 max-w-[430px] text-base leading-7 text-[#64748b]">Comece com uma pergunta prática. A Voltiva organiza o cálculo, dá contexto para o número e deixa o caminho salvo para a próxima decisão.</p>
+            <a href={`${basePath}/sign-up`} data-testid="link-como-funciona-cadastro" className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#1e6fff] hover:text-[#1557d6]">Experimentar agora <ArrowRight size={16} /></a>
+          </div>
+          <div className="divide-y divide-[#dfe8ed] border-y border-[#dfe8ed]" data-testid="block-como-funciona-etapas">
+            {[
+              ['01', 'Escolha o que você quer descobrir', 'Selecione uma grandeza, equipamento ou período de consumo para começar com o contexto certo.'],
+              ['02', 'Preencha apenas o necessário', 'Os campos são guiados para você não perder tempo procurando qual fórmula usar.'],
+              ['03', 'Leia, salve e compare', 'O resultado vem com unidade, explicação e um lugar no seu histórico para continuar depois.'],
+            ].map(([number, title, text]) => (
+              <div key={number} className="grid gap-3 py-7 sm:grid-cols-[64px_1fr] sm:gap-6">
+                <span className="font-data text-sm font-medium text-[#1e6fff]">{number}</span>
+                <div><h3 className="font-display text-xl font-semibold tracking-[-0.035em] text-[#0b1f3b]">{title}</h3><p className="mt-2 max-w-[520px] text-sm leading-6 text-[#64748b]">{text}</p></div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
+
+      <section id="clareza" className="relative z-10 border-y border-[#dfe8ed] bg-[#0b1f3b] text-white">
+        <div className="mx-auto grid max-w-[1180px] gap-12 px-5 py-20 md:px-8 md:py-28 lg:grid-cols-[1fr_.9fr] lg:items-center">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#8fc9eb]"><ShieldCheck size={16} /> Clareza dos dados</div>
+            <h2 className="mt-5 max-w-[650px] font-display text-[clamp(2rem,4vw,3.4rem)] font-semibold leading-[1.06] tracking-[-0.055em]">Número bom é número que você consegue conferir.</h2>
+            <p className="mt-5 max-w-[570px] text-base leading-7 text-white/65">A Voltiva mostra unidade, origem do cálculo e evolução do consumo sem esconder o raciocínio atrás de um índice. Você entende o que mudou antes de escolher o que fazer.</p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2" data-testid="block-confianca-dados">
+            <div className="rounded-2xl bg-white/[.08] p-5"><CheckCircle2 className="text-[#8fc9eb]" size={20} /><p className="mt-10 text-sm font-semibold">Fórmulas visíveis</p><p className="mt-2 text-xs leading-5 text-white/55">Grandezas e unidades no mesmo lugar.</p></div>
+            <div className="rounded-2xl bg-[#1e6fff] p-5"><Lightbulb className="text-[#ffc107]" size={20} /><p className="mt-10 text-sm font-semibold">Próximos passos</p><p className="mt-2 text-xs leading-5 text-white/70">Insights práticos para sair do número.</p></div>
+            <div className="rounded-2xl bg-white/[.08] p-5 sm:col-span-2"><BarChart3 className="text-[#8fc9eb]" size={20} /><p className="mt-5 text-sm font-semibold">Histórico que conta uma história</p><p className="mt-2 text-xs leading-5 text-white/55">Compare períodos e decisões sem perder o contexto.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="plataforma" className="relative z-10 bg-[#f5f7fa]">
+        <div className="mx-auto grid max-w-[1180px] gap-12 px-5 py-20 md:px-8 md:py-28 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
+          <div className="rounded-[24px] bg-[#eaf5fc] p-6 md:p-8" data-testid="block-plataforma-modulos">
+            <div className="flex items-center justify-between border-b border-[#c8e4f7] pb-5"><span className="text-xs font-bold uppercase tracking-[0.16em] text-[#17617a]">Seu espaço Voltiva</span><span className="font-data text-xs text-[#64748b]">01 — 04</span></div>
+            <div className="mt-2 divide-y divide-[#c8e4f7]">
+              {platformModules.map(([title, text, Icon]) => (
+                <div key={title as string} className="flex items-center gap-4 py-5">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-white text-[#1e6fff]"><Icon size={18} /></span>
+                  <div><p className="text-sm font-semibold text-[#0b1f3b]">{title as string}</p><p className="mt-1 text-xs text-[#64748b]">{text as string}</p></div>
+                  <ArrowRight size={16} className="ml-auto text-[#7da5bb]" />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1e6fff]">Uma plataforma, vários momentos</p>
+            <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.3rem)] font-semibold leading-[1.08] tracking-[-0.055em] text-[#0b1f3b]">Do primeiro cálculo à decisão que você revisita.</h2>
+            <p className="mt-5 max-w-[540px] text-base leading-7 text-[#64748b]">A Voltiva foi pensada para acompanhar a pergunta que aparece antes de uma compra, durante um diagnóstico ou quando a fatura pede uma explicação melhor.</p>
+            <div className="mt-7 flex flex-wrap gap-x-6 gap-y-3 text-sm text-[#374151]"><span className="flex items-center gap-2"><CheckCircle2 size={15} className="text-[#1e6fff]" /> Conta organizada</span><span className="flex items-center gap-2"><CheckCircle2 size={15} className="text-[#1e6fff]" /> Leitura acionável</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="cadastro" className="relative z-10 bg-[#d7ebff]">
+        <div className="mx-auto flex max-w-[1180px] flex-col gap-7 px-5 py-16 md:flex-row md:items-center md:justify-between md:px-8 md:py-20">
+          <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#17617a]">Pronto para começar?</p><h2 className="mt-3 max-w-[650px] font-display text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-[1.08] tracking-[-0.055em] text-[#0b1f3b]">Leve mais clareza para a próxima decisão elétrica.</h2></div>
+          <a href={`${basePath}/sign-up`} data-testid="link-final-cadastro" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#0b1f3b] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#17345c]">Criar conta grátis <ArrowRight size={16} /></a>
+        </div>
+      </section>
+
+      <footer className="relative z-10 bg-[#f5f7fa]">
+        <div className="mx-auto flex max-w-[1180px] flex-col gap-5 px-5 py-8 text-xs text-[#64748b] sm:flex-row sm:items-center sm:justify-between md:px-8">
+          <Brand compact />
+          <p data-testid="text-footer-description">Energia elétrica com clareza para decisões melhores.</p>
+          <div className="flex gap-4"><a href="#recursos" data-testid="link-footer-recursos" className="hover:text-[#0b1f3b]">Recursos</a><a href={`${basePath}/sign-in`} data-testid="link-footer-entrar" className="hover:text-[#0b1f3b]">Entrar</a></div>
+        </div>
+      </footer>
     </main>
   );
 }
@@ -144,12 +234,11 @@ function LandingPage() {
 function DashboardPreview() {
   const bars = [38, 56, 44, 72, 50, 66, 82, 58, 91, 70, 62, 78, 48, 68, 84, 54, 73, 88, 64, 79, 57, 76, 92, 69];
   return (
-    <div id="como-funciona" className="relative mt-8 md:mt-10">
-       <div className="absolute -right-1 -top-7 z-10 grid size-14 rotate-6 place-items-center overflow-hidden rounded-[20px] border-4 border-[#f5f7fa] bg-[#0b1f3b] shadow-[0_8px_18px_rgba(11,31,59,.2)]"><img src={`${basePath}/logo.png`} alt="" className="size-full object-contain p-1.5" /></div>
-      <div className="soft-shadow overflow-hidden rounded-[16px] border border-[#e8e6e5] bg-white p-2 md:p-3">
-        <div className="grid min-h-[430px] overflow-hidden rounded-[10px] border border-[#e8e6e5] bg-[#fbfbfa] sm:grid-cols-[148px_minmax(0,1fr)]">
+    <div className="relative mt-2 md:mt-6" data-testid="block-dashboard-preview">
+      <div className="soft-shadow overflow-hidden rounded-[16px] bg-white">
+        <div className="grid min-h-[430px] overflow-hidden bg-[#fbfbfa] sm:grid-cols-[148px_minmax(0,1fr)]">
           <aside className="hidden border-r border-[#e8e6e5] bg-white p-4 sm:block">
-             <div className="flex items-center gap-2 text-xs font-medium text-[#374151]"><span className="grid size-6 place-items-center overflow-hidden rounded-md bg-[#0b1f3b]"><img src={`${basePath}/logo.png`} alt="" className="size-full object-contain p-0.5" /></span> voltiva</div>
+             <div className="flex items-center gap-2 text-xs font-medium text-[#374151]"><img src={`${basePath}/logo.png`} alt="" className="size-6 object-contain" /> voltiva</div>
             <p className="mt-8 text-[9px] uppercase tracking-[0.14em] text-[#a8a29e]">Seu espaço</p>
             <div className="mt-3 space-y-1.5 text-[11px] text-[#78716c]">
               <div className="rounded-md bg-[#d7ebff] px-2.5 py-2 font-medium text-[#0b1f3b]">Visão geral</div>
@@ -197,12 +286,12 @@ function DashboardPreview() {
   );
 }
 
-function Feature({ title, text, icon }: { title: string; text: string; icon: string }) {
-  return <div className="soft-shadow rounded-2xl border border-[hsl(var(--border))] bg-white p-5"><span className="font-data text-xs font-bold text-[#3398e1]">{icon}</span><h2 className="mt-4 font-display text-lg">{title}</h2><p className="mt-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{text}</p></div>;
+function Feature({ title, text, icon, eyebrow, className = '' }: { title: string; text: string; icon: ReactNode; eyebrow: string; className?: string }) {
+  return <div className={`soft-shadow rounded-2xl border border-[#dfe8ed] bg-white p-6 ${className}`} data-testid={`card-feature-${eyebrow.split(' ')[0]}`}><div className="flex items-start justify-between gap-4"><span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#1e6fff]">{eyebrow}</span><span className="text-[#1e6fff]">{icon}</span></div><h3 className="mt-10 font-display text-xl font-semibold tracking-[-0.035em] text-[#0b1f3b]">{title}</h3><p className="mt-3 max-w-[440px] text-sm leading-6 text-[#64748b]">{text}</p></div>;
 }
 
 function Brand({ compact = false }: { compact?: boolean }) {
-  return <div className="flex items-center gap-2"><span className={`${compact ? 'size-8 rounded-lg' : 'size-10 rounded-xl'} grid shrink-0 place-items-center overflow-hidden`}><img src={`${basePath}/logo.png`} alt="" className="size-full object-cover" /></span><span className={`${compact ? 'text-lg' : 'text-[24px]'} font-display font-medium tracking-[-0.05em] text-[hsl(var(--foreground))]`}>voltiva</span></div>;
+  return <div className="flex items-center gap-2"><img src={`${basePath}/logo.png`} alt="" className={`${compact ? 'size-8' : 'size-10'} shrink-0 object-contain`} /><span className={`${compact ? 'text-lg' : 'text-[24px]'} font-display font-medium tracking-[-0.05em] text-[hsl(var(--foreground))]`}>voltiva</span></div>;
 }
 
 function AuthLayout({ children, mode }: { children: ReactNode; mode: 'sign-in' | 'sign-up' }) {
