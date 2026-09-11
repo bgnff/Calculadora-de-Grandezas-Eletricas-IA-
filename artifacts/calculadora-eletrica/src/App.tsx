@@ -104,8 +104,10 @@ function LandingPage() {
       <section className="relative mx-auto max-w-[1024px] px-5 pb-8 pt-20 md:px-8 md:pt-24">
         <div className="max-w-[720px]">
           <h1 className="font-display text-[clamp(2.65rem,5.2vw,4.35rem)] font-normal leading-[1.05] tracking-[-0.055em] text-[hsl(var(--foreground))]">
-            A <BlurReveal className="inline-block rounded-md bg-[#c1e1f7] px-2 text-[#2873a8]">energia simples e prática</BlurReveal><br />
-            para decisões melhores.
+            <BlurReveal className="inline-block" forceAnimation>A </BlurReveal>
+            <BlurReveal className="inline-block rounded-md bg-[#c1e1f7] px-2 text-[#2873a8]" delay={0.12} forceAnimation>energia simples e prática</BlurReveal>
+            <br />
+            <BlurReveal className="inline-block" delay={0.28} forceAnimation>para decisões melhores.</BlurReveal>
           </h1>
           <p className="mt-6 max-w-[610px] text-base leading-7 text-[hsl(var(--muted-foreground))]">Calcule, acompanhe e entenda sua energia em um espaço claro, feito para transformar números elétricos em decisões do dia a dia.</p>
           <div className="mt-7 flex flex-wrap gap-3">

@@ -12,6 +12,7 @@ type BlurRevealProps = {
   onAnimationStart?: () => void;
   style?: CSSProperties;
   inView?: boolean;
+  forceAnimation?: boolean;
 };
 
 export function BlurReveal({
@@ -25,10 +26,11 @@ export function BlurReveal({
   onAnimationStart,
   style,
   inView = false,
+  forceAnimation = false,
 }: BlurRevealProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const isVisible = useInView(ref, { once: true, amount: 0.75 });
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = useReducedMotion() && !forceAnimation;
   const shouldAnimate = trigger && (!inView || isVisible);
   const characters = Array.from(children);
   const lastCharacterIndex = characters.length - 1;
