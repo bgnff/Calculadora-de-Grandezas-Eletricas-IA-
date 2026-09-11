@@ -524,6 +524,16 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+
+  /* The auth illustration is an explicit user-requested animation. */
+  .walking-loader .walking-head,
+  .walking-loader .walking-body,
+  .walking-loader .walking-leg-left,
+  .walking-loader .walking-leg-right,
+  .walking-loader .walking-ground {
+    animation-duration: 1s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 /**
