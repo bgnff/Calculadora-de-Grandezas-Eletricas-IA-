@@ -460,6 +460,15 @@
     stroke: #d7ebff !important;
   }
 
+  .walking-body path:nth-of-type(1) {
+    fill: #1e6fff !important;
+    stroke: #d7ebff !important;
+  }
+
+  .walking-body path:nth-of-type(2) {
+    fill: #0b1f3b !important;
+  }
+
   .walking-head > g > g > path:nth-of-type(1) {
     stroke: #d7ebff !important;
   }
@@ -474,6 +483,20 @@
   }
 
   .walking-head > g > g > path:nth-of-type(4) {
+    stroke: #1e6fff !important;
+  }
+
+  .walking-head path:nth-of-type(2) {
+    fill: #1e6fff !important;
+    stroke: #d7ebff !important;
+  }
+
+  .walking-head path:nth-of-type(3) {
+    fill: #1e6fff !important;
+    stroke: #d7ebff !important;
+  }
+
+  .walking-head path:nth-of-type(4) {
     stroke: #1e6fff !important;
   }
 

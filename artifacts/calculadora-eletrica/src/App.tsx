@@ -232,20 +232,10 @@ function AuthLayout({ children, mode }: { children: ReactNode; mode: 'sign-in' |
                 : 'Crie seu espaço Voltiva para salvar cálculos e transformar números em decisões melhores.'}
             </p>
           </div>
-          <div className="relative mt-6 min-h-[245px] flex-1 overflow-hidden rounded-[26px] border border-white/10 bg-[#071a33]/35">
+          <div className="relative mt-6 min-h-[245px] flex-1 overflow-hidden rounded-[26px] bg-[#071a33]/35">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(30,111,255,.22),transparent_58%)]" />
             <WalkingLoader />
             <p className="absolute inset-x-0 bottom-5 text-center text-[11px] text-white/60">Mova o cursor para explorar</p>
-          </div>
-          <div className="relative grid grid-cols-2 gap-3">
-            <div className="rounded-2xl border border-white/10 bg-white/[.07] p-4">
-              <span className="text-2xl font-bold text-[#ffc107]">01</span>
-              <p className="mt-2 text-xs leading-5 text-white/60">Fórmulas de Ohm sem ruído.</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[.07] p-4">
-              <span className="text-2xl font-bold text-[#d7ebff]">V</span>
-              <p className="mt-2 text-xs leading-5 text-white/60">Seu histórico em um só lugar.</p>
-            </div>
           </div>
         </section>
         <section className="flex items-center justify-center px-3 py-6 sm:px-8 lg:px-12">
