@@ -78,7 +78,7 @@ const clerkAppearance = {
 
 function LandingPage() {
   return (
-   <main className="min-h-[100dvh] overflow-hidden bg-[#f7f5f3]">
+   <main className="min-h-[100dvh] overflow-hidden bg-[#fafaf9]">
       <header className="relative mx-auto flex max-w-6xl items-center justify-between px-5 py-6 md:px-10 md:py-8">
         <Brand />
         <div className="flex items-center gap-2">
@@ -89,15 +89,15 @@ function LandingPage() {
       <section className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-12 md:grid-cols-[1.05fr_0.95fr] md:px-10 md:pb-28 md:pt-20">
         <div>
            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#c9dcf2] bg-[#eaf2ff] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.13em] text-[#004eba]"><span className="size-1.5 rounded-full bg-[#006bff]" /> Clareza para cada grandeza</p>
-           <h1 className="max-w-2xl font-display text-[clamp(3rem,6.4vw,5.7rem)] font-normal leading-[0.88] tracking-[-0.075em] text-[hsl(var(--foreground))]">
-              Energia bem entendida muda decisões.
+           <h1 className="max-w-2xl font-display text-[clamp(2.9rem,6vw,5.2rem)] font-normal leading-[0.98] tracking-[-0.05em] text-[hsl(var(--foreground))]">
+               <span className="block">Energia</span><span className="inline-block rounded-md bg-[#c1e1f7] px-2 text-[#3398e1]">bem entendida</span><span className="block">muda decisões.</span>
            </h1>
           <p className="mt-7 max-w-xl text-lg leading-8 text-[hsl(var(--muted-foreground))]">A Voltiva reúne cálculo elétrico, acompanhamento de consumo e histórico em um espaço simples para quem quer agir com mais confiança.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row"><a href={`${basePath}/sign-up`} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#004eba]">Começar agora <span aria-hidden="true">→</span></a><a href={`${basePath}/sign-in`} className="inline-flex items-center justify-center rounded-lg border border-[hsl(var(--border))] bg-white px-5 py-3.5 text-sm font-bold text-[hsl(var(--foreground))] transition hover:border-[#9bbce0]">Já tenho uma conta</a></div>
           <div className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-xs font-semibold text-[hsl(var(--muted-foreground))]"><span>Fórmulas de Ohm</span><span>Código de cores</span><span>Histórico por conta</span></div>
         </div>
         <div className="relative">
-            <div className="relative rounded-2xl border border-[#9bbce0] bg-white p-5 sm:p-7">
+            <div className="soft-shadow relative rounded-2xl border border-[#e8e6e5] bg-white p-5 sm:p-7">
              <div className="flex items-center justify-between border-b border-[hsl(var(--border))] pb-5"><Brand compact /><span className="rounded-full bg-[#e6f0ff] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#004eba]">Ao vivo</span></div>
             <p className="mt-7 text-xs font-bold uppercase tracking-[0.14em] text-[hsl(var(--muted-foreground))]">Calculadora elétrica</p>
             <div className="mt-3 rounded-2xl bg-[#eaf2ff] p-5"><p className="text-sm font-medium text-[#004eba]">Resultado de resistência</p><div className="mt-2 flex items-end gap-2"><strong className="font-data text-5xl font-medium tracking-[-0.08em] text-[#0b3558]">600</strong><span className="mb-1 font-data text-base text-[#476788]">Ω</span></div><p className="mt-4 border-t border-[#c9dcf2] pt-3 font-data text-xs text-[#476788]">R = V ÷ I · 12 V ÷ 0,02 A</p></div>
@@ -111,19 +111,19 @@ function LandingPage() {
 }
 
 function Feature({ title, text, icon }: { title: string; text: string; icon: string }) {
-  return <div className="rounded-2xl border border-[hsl(var(--border))] bg-white/80 p-5"><span className="font-data text-xs font-bold text-[#2d958c]">{icon}</span><h2 className="mt-4 font-display text-lg font-semibold">{title}</h2><p className="mt-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{text}</p></div>;
+  return <div className="soft-shadow rounded-2xl border border-[hsl(var(--border))] bg-white p-5"><span className="font-data text-xs font-bold text-[#3398e1]">{icon}</span><h2 className="mt-4 font-display text-lg">{title}</h2><p className="mt-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{text}</p></div>;
 }
 
 function Brand({ compact = false }: { compact?: boolean }) {
-  return <div className="flex items-center gap-2"><span className={`${compact ? 'size-8 rounded-lg' : 'size-10 rounded-xl'} grid place-items-center bg-[hsl(var(--sidebar))] text-[#65dfd9]`}><img src={`${basePath}/logo.svg`} alt="" className="size-full p-1.5" /></span><span className={`${compact ? 'text-lg' : 'text-[24px]'} font-display font-bold tracking-[-0.05em] text-[hsl(var(--foreground))]`}>voltiva</span></div>;
+  return <div className="flex items-center gap-2"><span className={`${compact ? 'size-8 rounded-lg' : 'size-10 rounded-xl'} grid place-items-center bg-[hsl(var(--sidebar))] text-[#7ecbff]`}><img src={`${basePath}/logo.svg`} alt="" className="size-full p-1.5" /></span><span className={`${compact ? 'text-lg' : 'text-[24px]'} font-display font-medium tracking-[-0.05em] text-[hsl(var(--foreground))]`}>voltiva</span></div>;
 }
 
 function SignInPage() {
-  return <div className="flex min-h-[100dvh] items-center justify-center bg-[#f7f5f3] px-4 py-8"><SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} /></div>;
+  return <div className="flex min-h-[100dvh] items-center justify-center bg-[#fafaf9] px-4 py-8"><SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} /></div>;
 }
 
 function SignUpPage() {
-  return <div className="flex min-h-[100dvh] items-center justify-center bg-[#f7f5f3] px-4 py-8"><SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} /></div>;
+  return <div className="flex min-h-[100dvh] items-center justify-center bg-[#fafaf9] px-4 py-8"><SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} /></div>;
 }
 
 function HomeRoute() {
@@ -167,7 +167,7 @@ function AuthenticatedApp({ section }: { section: string }) {
 }
 
 function LoadingScreen() {
-  return <div className="grid min-h-[100dvh] place-items-center bg-[#f7f5f3]"><div className="text-center"><Brand /><p className="mt-4 text-sm text-[hsl(var(--muted-foreground))]">Preparando seu espaço...</p></div></div>;
+  return <div className="grid min-h-[100dvh] place-items-center bg-[#fafaf9]"><div className="text-center"><Brand /><p className="mt-4 text-sm text-[hsl(var(--muted-foreground))]">Preparando seu espaço...</p></div></div>;
 }
 
 function ClerkQueryClientCacheInvalidator() {

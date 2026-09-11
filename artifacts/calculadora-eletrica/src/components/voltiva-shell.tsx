@@ -121,7 +121,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
       </AnimatePresence>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-4 z-30 mx-4 flex h-[64px] items-center justify-between rounded-2xl border border-[hsl(var(--border))] bg-white/90 px-4 backdrop-blur-xl md:mx-9 md:px-6">
+        <header className="sticky top-0 z-30 flex h-[72px] items-center justify-between border-b border-[hsl(var(--border))] bg-[#fafaf9]/95 px-5 backdrop-blur-xl md:px-9">
           <div className="flex items-center gap-3">
             <button onClick={() => setMobileOpen(true)} className="rounded-lg p-2 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))] md:hidden" aria-label="Abrir menu" data-testid="button-open-mobile-menu">
               <Menu size={21} />
@@ -149,7 +149,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
         </header>
 
         <main className="voltiva-grid relative flex-1 overflow-hidden">
-           <div className="mx-auto w-full max-w-[1440px] px-5 pb-7 pt-9 md:px-9 md:pb-10 md:pt-12">
+           <div className="mx-auto w-full max-w-[1440px] px-5 py-8 md:px-9 md:py-10">
             {profileIncomplete && onResumeProfile && (
                <div className="mb-5 flex flex-col gap-3 rounded-2xl border border-[#c9dcf2] bg-[#eaf2ff] p-4 sm:flex-row sm:items-center sm:justify-between" data-testid="banner-profile-paused">
                 <div>

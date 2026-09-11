@@ -106,9 +106,6 @@ export function ProfileOnboarding({
 
   return (
     <div className="relative min-h-[100dvh] overflow-hidden bg-[hsl(var(--background))]" data-testid="screen-profile-onboarding">
-       <div className="pointer-events-none absolute -right-20 -top-32 size-[30rem] rounded-full bg-[#dcecff]/70 blur-3xl" />
-       <div className="pointer-events-none absolute -bottom-56 -left-24 size-[26rem] rounded-full bg-[#eaf2ff]/80 blur-3xl" />
-
       <header className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-6 md:px-10 md:py-8">
         <div className="flex items-center gap-3" data-testid="brand-onboarding">
            <span className="grid size-10 place-items-center rounded-lg bg-[hsl(var(--sidebar))] text-[#7eb3ff] shadow-[0_0_0_5px_rgba(0,107,255,.12)]">
