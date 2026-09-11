@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, CheckCircle2, CircleHelp, Eraser, Lightbulb, RotateCcw, Save, Zap } from 'lucide-react';
 import { ResistorVisual } from '@/components/resistor-visual';
+import { BorderGlow } from '@/components/border-glow';
 import {
   calculateCurrent,
   calculatePower,
@@ -283,7 +284,16 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
           </div>
         </motion.div>
 
-        <motion.div initial={reducedMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { delay: 0.16, duration: 0.45 }} className="soft-shadow min-h-[530px] rounded-2xl border border-[hsl(var(--card-border))] bg-white p-5 sm:p-7" data-testid="card-calculation-result">
+        <motion.div initial={reducedMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { delay: 0.16, duration: 0.45 }} data-testid="card-calculation-result">
+          <BorderGlow
+            className="min-h-[530px]"
+            borderRadius={24}
+            glowRadius={24}
+            glowColor="210 100 68"
+            colors={['#006bff', '#0099ff', '#e55cff']}
+            fillOpacity={0.1}
+          >
+          <div className="min-h-[530px] p-5 sm:p-7">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">03 / Resultado</p>
@@ -354,6 +364,8 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
               )}
             </motion.div>
           )}
+          </div>
+          </BorderGlow>
         </motion.div>
       </section>
 
