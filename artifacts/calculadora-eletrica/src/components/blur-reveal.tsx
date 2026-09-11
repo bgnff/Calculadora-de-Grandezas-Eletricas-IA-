@@ -32,18 +32,23 @@ export function BlurReveal({
   const isVisible = useInView(ref, { once: true, amount: 0.75 });
   const reducedMotion = useReducedMotion() && !forceAnimation;
   const shouldAnimate = trigger && (!inView || isVisible);
-  const characters = Array.from(children);
-  const lastCharacterIndex = characters.length - 1;
+  const segments = children.match(/\S+|\s+/g) ?? [children];
+  const revealableSegments = segments.filter((segment) => /\S/.test(segment));
+  let revealIndex = -1;
 
   return (
     <span ref={ref} className={className} style={style}>
-      {characters.map((character, index) => {
-        const isLastCharacter = index === lastCharacterIndex;
-        const content = character === ' ' ? '\u00a0' : character;
+      {segments.map((segment, index) => {
+        if (!/\S/.test(segment)) {
+          return <span key={`space-${index}`}>{segment}</span>;
+        }
+
+        revealIndex += 1;
+        const isLastSegment = revealIndex === revealableSegments.length - 1;
 
         return (
           <motion.span
-            key={`${character}-${index}`}
+            key={`${segment}-${index}`}
             aria-hidden="true"
             className="inline-block"
             initial={reducedMotion ? false : { opacity: 0, y: 18, filter: 'blur(12px)' }}
@@ -56,15 +61,15 @@ export function BlurReveal({
               reducedMotion
                 ? { duration: 0 }
                 : {
-                    delay: delay + index * speedSegment,
+                    delay: delay + revealIndex * speedSegment,
                     duration: speedReveal,
                     ease: [0.22, 1, 0.36, 1],
                   }
             }
-            onAnimationStart={index === 0 ? onAnimationStart : undefined}
-            onAnimationComplete={isLastCharacter ? onAnimationComplete : undefined}
+            onAnimationStart={revealIndex === 0 ? onAnimationStart : undefined}
+            onAnimationComplete={isLastSegment ? onAnimationComplete : undefined}
           >
-            {content}
+            {segment}
           </motion.span>
         );
       })}

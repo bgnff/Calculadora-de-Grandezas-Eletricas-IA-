@@ -5,7 +5,9 @@ import { shadcn } from '@clerk/themes';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { Redirect, Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { ArrowRight, BarChart3, Calculator, CheckCircle2, CircleDollarSign, Clock3, Lightbulb, ShieldCheck } from 'lucide-react';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { ErrorBoundary } from '@/components/error-boundary';
+import { BlurReveal } from '@/components/blur-reveal';
 import Rays from '@/components/light-rays';
 import { ProfileOnboarding } from '@/components/profile-onboarding';
 import { VoltivaShell } from '@/components/voltiva-shell';
@@ -86,6 +88,25 @@ const platformModules = [
   ['Histórico', 'Decisões que continuam disponíveis', Clock3],
 ] as const;
 
+function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.16 });
+  const reducedMotion = useReducedMotion();
+  const show = isInView || reducedMotion;
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial={reducedMotion ? false : { opacity: 0, y: 28 }}
+      animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+      transition={{ duration: reducedMotion ? 0 : 0.65, delay: reducedMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 function LandingPage() {
   return (
     <main className="relative min-h-[100dvh] overflow-hidden bg-[#f5f7fa]">
@@ -109,16 +130,16 @@ function LandingPage() {
 
       <section className="relative z-10 mx-auto max-w-[1180px] px-5 pb-20 pt-16 md:px-8 md:pb-28 md:pt-24">
         <div className="grid items-center gap-12 lg:grid-cols-[1.02fr_1fr] lg:gap-12">
-          <div className="max-w-[590px]">
+          <Reveal className="max-w-[590px]">
             <h1 className="max-w-[720px] font-display text-[clamp(2.8rem,5.4vw,5.1rem)] font-semibold leading-[1.02] tracking-[-0.065em] text-[hsl(var(--foreground))]">
-              <span>Entenda sua </span>
-              <span className="inline-block whitespace-nowrap rounded-md bg-[#d7ebff] px-2 text-[#0b1f3b]">energia.</span>
-              <span className="block">Decida melhor.</span>
+              <BlurReveal className="inline" forceAnimation>Entenda sua </BlurReveal>
+              <BlurReveal className="inline-block whitespace-nowrap rounded-md bg-[#d7ebff] px-2 text-[#0b1f3b]" delay={0.12} forceAnimation>energia.</BlurReveal>
+              <span className="block"><BlurReveal className="inline-block whitespace-nowrap" delay={0.28} forceAnimation>Decida melhor.</BlurReveal></span>
             </h1>
             <p className="mt-6 max-w-[540px] text-base leading-7 text-[hsl(var(--muted-foreground))]">A Voltiva transforma grandezas elétricas, consumo e custos em uma leitura prática para sua casa, seu projeto ou seu negócio.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={`${basePath}/sign-up`} data-testid="link-hero-cadastro" className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1e6fff] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1557d6]">Criar meu espaço <ArrowRight size={16} /></a>
-              <a href="#plataforma" data-testid="link-hero-plataforma" className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#c8e4f7] bg-[#f5f7fa] px-5 py-3 text-sm font-medium text-[#17617a] transition hover:border-[#1e6fff] hover:text-[#0b1f3b]">Conhecer a plataforma</a>
+              <motion.a href={`${basePath}/sign-up`} data-testid="link-hero-cadastro" whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1e6fff] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1557d6]">Criar meu espaço <ArrowRight size={16} /></motion.a>
+              <motion.a href="#plataforma" data-testid="link-hero-plataforma" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#c8e4f7] bg-[#f5f7fa] px-5 py-3 text-sm font-medium text-[#17617a] transition hover:border-[#1e6fff] hover:text-[#0b1f3b]">Conhecer a plataforma</motion.a>
             </div>
             <div className="mt-9 grid max-w-[470px] grid-cols-2 gap-x-6 gap-y-4 border-t border-[#dfe8ed] pt-5 text-xs text-[#64748b] sm:grid-cols-4">
               <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Grandezas</span>
@@ -126,36 +147,38 @@ function LandingPage() {
               <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Economia</span>
               <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Histórico</span>
             </div>
-          </div>
+          </Reveal>
           <DashboardPreview />
         </div>
       </section>
 
       <section id="recursos" className="relative z-10 border-t border-[hsl(var(--border))] bg-[#eef6fb]">
         <div className="mx-auto max-w-[1180px] px-5 py-20 md:px-8 md:py-28">
-          <div className="max-w-[620px]">
+          <Reveal className="max-w-[620px]">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1e6fff]">O que você resolve aqui</p>
             <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.3rem)] font-semibold leading-[1.08] tracking-[-0.055em] text-[#0b1f3b]">Da dúvida elétrica ao próximo passo.</h2>
             <p className="mt-4 text-base leading-7 text-[#64748b]">Uma plataforma para olhar os dados sem precisar atravessar planilhas, fórmulas soltas ou estimativas difíceis de conferir.</p>
-          </div>
-          <div className="mt-12 grid gap-4 md:grid-cols-12">
-            <Feature className="md:col-span-7 md:min-h-[250px]" eyebrow="01 · Precisão" title="Calcule grandezas com confiança" text="Tensão, corrente, resistência e potência em uma calculadora guiada, com fórmulas reconhecidas e entradas que fazem sentido." icon={<Calculator size={20} />} />
-            <Feature className="md:col-span-5 md:min-h-[250px]" eyebrow="02 · Leitura" title="Veja onde a energia pesa" text="Registre equipamentos, acompanhe o consumo e encontre os pontos que merecem atenção primeiro." icon={<BarChart3 size={20} />} />
-            <Feature className="md:col-span-5 md:min-h-[230px]" eyebrow="03 · Ação" title="Encontre oportunidades de economia" text="Compare cenários e transforme uma conta alta em uma lista de decisões possíveis." icon={<CircleDollarSign size={20} />} />
-            <Feature className="md:col-span-7 md:min-h-[230px]" eyebrow="04 · Continuidade" title="Guarde o raciocínio, não só o resultado" text="Seu histórico acompanha a evolução das escolhas para você voltar, revisar e compartilhar quando precisar." icon={<Clock3 size={20} />} />
-          </div>
+          </Reveal>
+          <Reveal className="mt-12" delay={0.1}>
+            <div className="grid gap-4 md:grid-cols-12">
+              <Feature className="md:col-span-7 md:min-h-[250px]" eyebrow="01 · Precisão" title="Calcule grandezas com confiança" text="Tensão, corrente, resistência e potência em uma calculadora guiada, com fórmulas reconhecidas e entradas que fazem sentido." icon={<Calculator size={20} />} />
+              <Feature className="md:col-span-5 md:min-h-[250px]" eyebrow="02 · Leitura" title="Veja onde a energia pesa" text="Registre equipamentos, acompanhe o consumo e encontre os pontos que merecem atenção primeiro." icon={<BarChart3 size={20} />} />
+              <Feature className="md:col-span-5 md:min-h-[230px]" eyebrow="03 · Ação" title="Encontre oportunidades de economia" text="Compare cenários e transforme uma conta alta em uma lista de decisões possíveis." icon={<CircleDollarSign size={20} />} />
+              <Feature className="md:col-span-7 md:min-h-[230px]" eyebrow="04 · Continuidade" title="Guarde o raciocínio, não só o resultado" text="Seu histórico acompanha a evolução das escolhas para você voltar, revisar e compartilhar quando precisar." icon={<Clock3 size={20} />} />
+            </div>
+          </Reveal>
         </div>
       </section>
 
       <section id="como-funciona" className="relative z-10 bg-[#f5f7fa]">
         <div className="mx-auto grid max-w-[1180px] gap-12 px-5 py-20 md:px-8 md:py-28 lg:grid-cols-[.72fr_1.28fr] lg:gap-20">
-          <div>
+          <Reveal>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1e6fff]">Como funciona</p>
             <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-[1.08] tracking-[-0.055em] text-[#0b1f3b]">Clareza em três movimentos.</h2>
             <p className="mt-5 max-w-[430px] text-base leading-7 text-[#64748b]">Comece com uma pergunta prática. A Voltiva organiza o cálculo, dá contexto para o número e deixa o caminho salvo para a próxima decisão.</p>
             <a href={`${basePath}/sign-up`} data-testid="link-como-funciona-cadastro" className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#1e6fff] hover:text-[#1557d6]">Experimentar agora <ArrowRight size={16} /></a>
-          </div>
-          <div className="divide-y divide-[#dfe8ed] border-y border-[#dfe8ed]" data-testid="block-como-funciona-etapas">
+          </Reveal>
+          <Reveal delay={0.12} className="divide-y divide-[#dfe8ed] border-y border-[#dfe8ed]" >
             {[
               ['01', 'Escolha o que você quer descobrir', 'Selecione uma grandeza, equipamento ou período de consumo para começar com o contexto certo.'],
               ['02', 'Preencha apenas o necessário', 'Os campos são guiados para você não perder tempo procurando qual fórmula usar.'],
@@ -166,28 +189,28 @@ function LandingPage() {
                 <div><h3 className="font-display text-xl font-semibold tracking-[-0.035em] text-[#0b1f3b]">{title}</h3><p className="mt-2 max-w-[520px] text-sm leading-6 text-[#64748b]">{text}</p></div>
               </div>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 
       <section id="clareza" className="relative z-10 border-y border-[#dfe8ed] bg-[#0b1f3b] text-white">
         <div className="mx-auto grid max-w-[1180px] gap-12 px-5 py-20 md:px-8 md:py-28 lg:grid-cols-[1fr_.9fr] lg:items-center">
-          <div>
+          <Reveal>
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#8fc9eb]"><ShieldCheck size={16} /> Clareza dos dados</div>
             <h2 className="mt-5 max-w-[650px] font-display text-[clamp(2rem,4vw,3.4rem)] font-semibold leading-[1.06] tracking-[-0.055em]">Número bom é número que você consegue conferir.</h2>
             <p className="mt-5 max-w-[570px] text-base leading-7 text-white/65">A Voltiva mostra unidade, origem do cálculo e evolução do consumo sem esconder o raciocínio atrás de um índice. Você entende o que mudou antes de escolher o que fazer.</p>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2" data-testid="block-confianca-dados">
+          </Reveal>
+          <Reveal className="grid gap-3 sm:grid-cols-2" delay={0.12}>
             <div className="rounded-2xl bg-white/[.08] p-5"><CheckCircle2 className="text-[#8fc9eb]" size={20} /><p className="mt-10 text-sm font-semibold">Fórmulas visíveis</p><p className="mt-2 text-xs leading-5 text-white/55">Grandezas e unidades no mesmo lugar.</p></div>
             <div className="rounded-2xl bg-[#1e6fff] p-5"><Lightbulb className="text-[#ffc107]" size={20} /><p className="mt-10 text-sm font-semibold">Próximos passos</p><p className="mt-2 text-xs leading-5 text-white/70">Insights práticos para sair do número.</p></div>
             <div className="rounded-2xl bg-white/[.08] p-5 sm:col-span-2"><BarChart3 className="text-[#8fc9eb]" size={20} /><p className="mt-5 text-sm font-semibold">Histórico que conta uma história</p><p className="mt-2 text-xs leading-5 text-white/55">Compare períodos e decisões sem perder o contexto.</p></div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       <section id="plataforma" className="relative z-10 bg-[#f5f7fa]">
         <div className="mx-auto grid max-w-[1180px] gap-12 px-5 py-20 md:px-8 md:py-28 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
-          <div className="rounded-[24px] bg-[#eaf5fc] p-6 md:p-8" data-testid="block-plataforma-modulos">
+          <Reveal className="rounded-[24px] bg-[#eaf5fc] p-6 md:p-8">
             <div className="flex items-center justify-between border-b border-[#c8e4f7] pb-5"><span className="text-xs font-bold uppercase tracking-[0.16em] text-[#17617a]">Seu espaço Voltiva</span><span className="font-data text-xs text-[#64748b]">01 — 04</span></div>
             <div className="mt-2 divide-y divide-[#c8e4f7]">
               {platformModules.map(([title, text, Icon]) => (
@@ -198,20 +221,20 @@ function LandingPage() {
                 </div>
               ))}
             </div>
-          </div>
-          <div>
+          </Reveal>
+          <Reveal delay={0.12}>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1e6fff]">Uma plataforma, vários momentos</p>
             <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.3rem)] font-semibold leading-[1.08] tracking-[-0.055em] text-[#0b1f3b]">Do primeiro cálculo à decisão que você revisita.</h2>
             <p className="mt-5 max-w-[540px] text-base leading-7 text-[#64748b]">A Voltiva foi pensada para acompanhar a pergunta que aparece antes de uma compra, durante um diagnóstico ou quando a fatura pede uma explicação melhor.</p>
             <div className="mt-7 flex flex-wrap gap-x-6 gap-y-3 text-sm text-[#374151]"><span className="flex items-center gap-2"><CheckCircle2 size={15} className="text-[#1e6fff]" /> Conta organizada</span><span className="flex items-center gap-2"><CheckCircle2 size={15} className="text-[#1e6fff]" /> Leitura acionável</span></div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       <section id="cadastro" className="relative z-10 bg-[#d7ebff]">
         <div className="mx-auto flex max-w-[1180px] flex-col gap-7 px-5 py-16 md:flex-row md:items-center md:justify-between md:px-8 md:py-20">
-          <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#17617a]">Pronto para começar?</p><h2 className="mt-3 max-w-[650px] font-display text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-[1.08] tracking-[-0.055em] text-[#0b1f3b]">Leve mais clareza para a próxima decisão elétrica.</h2></div>
-          <a href={`${basePath}/sign-up`} data-testid="link-final-cadastro" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#0b1f3b] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#17345c]">Criar conta grátis <ArrowRight size={16} /></a>
+          <Reveal><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#17617a]">Pronto para começar?</p><h2 className="mt-3 max-w-[650px] font-display text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-[1.08] tracking-[-0.055em] text-[#0b1f3b]">Leve mais clareza para a próxima decisão elétrica.</h2></Reveal>
+          <motion.a href={`${basePath}/sign-up`} data-testid="link-final-cadastro" whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#0b1f3b] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#17345c]">Criar conta grátis <ArrowRight size={16} /></motion.a>
         </div>
       </section>
 
@@ -228,10 +251,10 @@ function LandingPage() {
 
 function DashboardPreview() {
   return (
-    <div className="relative mt-2 md:mt-6" data-testid="block-dashboard-preview">
+    <Reveal className="relative mt-2 w-full max-w-[680px] md:mt-6 lg:justify-self-end" delay={0.1}>
       <div className="soft-shadow overflow-hidden rounded-[18px] border border-[#dfe8ed] bg-[#f9fbfd]">
-        <div className="grid min-h-[500px] overflow-hidden sm:grid-cols-[148px_minmax(0,1fr)]">
-          <aside className="hidden border-r border-[#dbe7f1] bg-white p-4 sm:block">
+        <div className="grid min-h-[500px] overflow-hidden lg:grid-cols-[148px_minmax(0,1fr)]">
+          <aside className="hidden border-r border-[#dbe7f1] bg-white p-4 lg:block">
             <div className="flex items-center gap-2 text-xs font-medium text-[#0b3558]"><img src={`${basePath}/logo.png`} alt="" className="size-6 object-contain" /> voltiva</div>
             <p className="mt-8 text-[9px] font-bold uppercase tracking-[0.14em] text-[#8ba8c9]">Seu espaço</p>
             <div className="mt-3 space-y-1.5 text-[10px] text-[#64748b]">
@@ -257,7 +280,7 @@ function DashboardPreview() {
                 ['Equipamentos', '08', 'Neste espaço', CircleDollarSign],
               ].map(([label, value, caption, Icon]) => <div key={label as string} className="rounded-xl border border-[#dbe7f1] bg-white p-2.5"><div className="flex items-start justify-between gap-1"><p className="text-[8px] font-bold uppercase tracking-[0.08em] text-[#64748b]">{label as string}</p><span className="hidden size-6 place-items-center rounded-md bg-[#e6f0ff] text-[#1e6fff] sm:grid"><Icon size={12} /></span></div><p className="mt-3 font-data text-sm font-medium tracking-[-0.04em] text-[#0b1f3b]">{value as string}</p><p className="mt-0.5 text-[8px] text-[#64748b]">{caption as string}</p></div>)}
             </div>
-            <div className="grid gap-3 md:grid-cols-[1.15fr_0.85fr]">
+            <div className="grid gap-3 lg:grid-cols-[1.15fr_0.85fr]">
               <div className="rounded-xl border border-[#dbe7f1] bg-white p-3">
                 <div className="flex items-end justify-between"><div><p className="text-[8px] font-bold uppercase tracking-[0.12em] text-[#64748b]">Atividade recente</p><p className="mt-1 text-[12px] font-semibold text-[#0b1f3b]">Últimos cálculos</p></div><span className="text-[8px] font-bold text-[#1e6fff]">Ver histórico</span></div>
                 <div className="mt-3 divide-y divide-[#e6eef5]">
@@ -285,7 +308,7 @@ function DashboardPreview() {
           </div>
         </div>
       </div>
-    </div>
+    </Reveal>
   );
 }
 
