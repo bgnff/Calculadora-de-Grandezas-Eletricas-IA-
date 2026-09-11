@@ -80,17 +80,18 @@
   --elevate-1: rgba(0, 0, 0, 0.03);
   --elevate-2: rgba(0, 0, 0, 0.08);
 
-  --background: 210 33% 97%;
+  /* Cosmos canvas, with Voltiva blue preserved as the action color. */
+  --background: 36 23% 96%;
 
-  --foreground: 207 78% 19%;
+  --foreground: 207 62% 18%;
 
-  --border: 211 42% 88%;
+  --border: 34 18% 85%;
 
   --card: 0 0% 100%;
 
-  --card-foreground: 207 78% 19%;
+  --card-foreground: 207 62% 18%;
 
-  --card-border: 211 28% 86%;
+  --card-border: 34 16% 83%;
 
   --sidebar: 207 78% 19%;
 
@@ -112,7 +113,7 @@
 
   --popover-foreground: 207 78% 19%;
 
-  --popover-border: 211 28% 86%;
+  --popover-border: 34 16% 83%;
 
   --primary: 216 100% 50%;
 
@@ -122,9 +123,9 @@
 
   --secondary-foreground: 213 77% 29%;
 
-  --muted: 213 35% 94%;
+  --muted: 36 20% 92%;
 
-  --muted-foreground: 211 30% 41%;
+  --muted-foreground: 24 8% 42%;
 
   --accent: 199 100% 50%;
 
@@ -134,7 +135,7 @@
 
   --destructive-foreground: 0 0% 100%;
 
-  --input: 211 42% 82%;
+  --input: 34 17% 76%;
   --ring: 216 100% 50%;
   --chart-1: 216 100% 50%;
   --chart-2: 199 100% 50%;
@@ -143,9 +144,9 @@
   --chart-5: 1 72% 52%;
 
   --app-font-sans: 'Lato', Arial, sans-serif;
-  --app-font-serif: 'Lato', Arial, sans-serif;
+  --app-font-serif: Georgia, 'Times New Roman', serif;
   --app-font-mono: 'DM Mono', monospace;
-  --radius: 0.5rem;
+  --radius: 1rem;
   --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0); /*replace with H S L */
   --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0); /*replace with H S L */
   --shadow-sm:
@@ -334,7 +335,7 @@
     font-family: 'Lato', Arial, sans-serif;
     min-width: 320px;
     min-height: 100dvh;
-    background: hsl(var(--background));
+    background: #f7f5f3;
   }
 
   button,
@@ -345,6 +346,13 @@
   ::selection {
     background: hsl(var(--primary) / 0.18);
     color: hsl(var(--foreground));
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 400;
   }
 }
 
@@ -358,11 +366,18 @@
   }
 
   .voltiva-grid {
-    background-color: hsl(var(--background));
+    background-color: #f7f5f3;
   }
 
   .soft-shadow {
-    box-shadow: 0 30px 50px rgba(71, 103, 136, 0.08), 0 8px 15px rgba(71, 103, 136, 0.03), 0 4px 5px rgba(71, 103, 136, 0.04);
+    box-shadow: none;
+  }
+
+  /* Cosmos uses one quiet signature radius for the working surface. */
+  .rounded-lg,
+  .rounded-xl,
+  .rounded-2xl {
+    border-radius: 1rem;
   }
 
   .focus-ring:focus-visible {

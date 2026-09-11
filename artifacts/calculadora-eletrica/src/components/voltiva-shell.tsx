@@ -55,7 +55,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
             ? { delay: 0.06, duration: 1.45, ease: [0.22, 1, 0.36, 1] }
             : { duration: 0 }
         }
-        className="relative hidden shrink-0 overflow-hidden bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))] md:flex"
+        className="relative hidden shrink-0 overflow-hidden rounded-r-[28px] bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))] md:flex"
         aria-label="Navegação principal"
       >
         <motion.div
@@ -121,7 +121,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
       </AnimatePresence>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-[72px] items-center justify-between border-b border-[hsl(var(--border))] bg-[#f8f9fb]/95 px-5 backdrop-blur-xl md:px-9">
+        <header className="sticky top-4 z-30 mx-4 flex h-[64px] items-center justify-between rounded-2xl border border-[hsl(var(--border))] bg-white/90 px-4 backdrop-blur-xl md:mx-9 md:px-6">
           <div className="flex items-center gap-3">
             <button onClick={() => setMobileOpen(true)} className="rounded-lg p-2 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))] md:hidden" aria-label="Abrir menu" data-testid="button-open-mobile-menu">
               <Menu size={21} />
@@ -130,18 +130,18 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
               <span className="grid size-8 place-items-center rounded-lg bg-[hsl(var(--primary))] text-white"><Bolt size={17} fill="currentColor" /></span>
               <span className="font-display text-lg font-bold tracking-tight text-[hsl(var(--foreground))]">voltiva</span>
             </div>
-            <div className="hidden items-center gap-2 text-sm md:flex">
-              <span className="text-[hsl(var(--muted-foreground))]">Espaço de trabalho</span>
+             <div className="hidden items-center gap-2 text-sm md:flex">
+               <span className="font-display text-base text-[hsl(var(--muted-foreground))]">Espaço de trabalho</span>
               <ChevronRight size={15} className="text-[hsl(var(--muted-foreground))]" />
-              <span className="font-semibold text-[hsl(var(--foreground))]">{activeLabel}</span>
+               <span className="font-display text-base text-[hsl(var(--foreground))]">{activeLabel}</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
-             <div className="hidden items-center gap-2 rounded-full border border-[#c9dcf2] bg-[#eaf2ff] px-3 py-1.5 text-xs font-semibold text-[#004eba] sm:flex">
+              <div className="hidden items-center gap-2 rounded-full border border-[#c9dcf2] bg-[#eaf2ff] px-3 py-1.5 text-xs font-semibold text-[#004eba] sm:flex">
                <span className="size-1.5 rounded-full bg-[#006bff]" />
               Sistema operacional
             </div>
-            <button onClick={onEditProfile} className="rounded-xl border border-[hsl(var(--border))] bg-white p-2 text-[hsl(var(--muted-foreground))] shadow-sm transition hover:border-[#a8c6c3] hover:text-[hsl(var(--primary))]" aria-label="Editar perfil" data-testid="button-open-settings">
+             <button onClick={onEditProfile} className="rounded-xl border border-[hsl(var(--border))] bg-white p-2 text-[hsl(var(--muted-foreground))] transition hover:border-[#9bbce0] hover:text-[hsl(var(--primary))]" aria-label="Editar perfil" data-testid="button-open-settings">
               <Settings2 size={18} />
             </button>
             <div className="grid size-9 place-items-center rounded-full bg-[#d9edf0] text-sm font-bold text-[#17617a]" aria-label={`Perfil de ${firstName}`} data-testid="avatar-user">{initials}</div>
@@ -149,12 +149,12 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
         </header>
 
         <main className="voltiva-grid relative flex-1 overflow-hidden">
-          <div className="mx-auto w-full max-w-[1440px] px-5 py-7 md:px-9 md:py-10">
+           <div className="mx-auto w-full max-w-[1440px] px-5 pb-7 pt-9 md:px-9 md:pb-10 md:pt-12">
             {profileIncomplete && onResumeProfile && (
-              <div className="mb-5 flex flex-col gap-3 rounded-2xl border border-[#d8e3df] bg-[#f2f8f6] p-4 sm:flex-row sm:items-center sm:justify-between" data-testid="banner-profile-paused">
+               <div className="mb-5 flex flex-col gap-3 rounded-2xl border border-[#c9dcf2] bg-[#eaf2ff] p-4 sm:flex-row sm:items-center sm:justify-between" data-testid="banner-profile-paused">
                 <div>
-                  <p className="text-sm font-bold text-[#27736d]">Seu perfil está pausado</p>
-                  <p className="mt-1 text-xs leading-5 text-[#5c7e7b]">As respostas estão salvas neste dispositivo. Retome quando quiser para concluir o perfil.</p>
+                  <p className="text-sm font-bold text-[#004eba]">Seu perfil está pausado</p>
+                  <p className="mt-1 text-xs leading-5 text-[#476788]">As respostas estão salvas neste dispositivo. Retome quando quiser para concluir o perfil.</p>
                 </div>
                  <button onClick={onResumeProfile} className="focus-ring inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#006bff] px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-[#004eba]" data-testid="button-resume-profile">
                   Retomar perfil <ChevronRight size={15} />

@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, CheckCircle2, CircleHelp, Eraser, Lightbulb, RotateCcw, Save, Zap } from 'lucide-react';
 import { ResistorVisual } from '@/components/resistor-visual';
-import { BorderGlow } from '@/components/border-glow';
 import {
   calculateCurrent,
   calculatePower,
@@ -181,13 +180,13 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
 
   return (
     <div className="space-y-8">
-      <motion.section initial={reducedMotion ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { duration: 0.45 }} className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+       <motion.section initial={reducedMotion ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { duration: 0.45 }} className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
           <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[hsl(var(--primary))]">
              <span className="grid size-6 place-items-center rounded-md bg-[#e6f0ff]"><Zap size={13} fill="currentColor" /></span>
             Ferramenta de precisão
           </div>
-          <h1 className="font-display text-[clamp(2rem,4vw,3.35rem)] font-semibold leading-[1.05] tracking-[-0.055em] text-[hsl(var(--foreground))]">Calculadora elétrica</h1>
+           <h1 className="font-display text-[clamp(2.15rem,4vw,3.6rem)] font-normal leading-[0.98] tracking-[-0.055em] text-[hsl(var(--foreground))]">Calculadora elétrica</h1>
           <p className="mt-3 max-w-xl text-[15px] leading-7 text-[hsl(var(--muted-foreground))]">Resolva grandezas elétricas e identifique o resistor correspondente em poucos segundos.</p>
         </div>
         <button onClick={() => reset(true)} className="focus-ring group inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-xl border border-[hsl(var(--border))] bg-white px-4 py-2.5 text-sm font-semibold text-[hsl(var(--foreground))] shadow-sm transition hover:border-[#9fc8c5] hover:text-[hsl(var(--primary))] md:self-end" data-testid="button-new-calculation">
@@ -284,16 +283,8 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
           </div>
         </motion.div>
 
-        <motion.div initial={reducedMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { delay: 0.16, duration: 0.45 }} data-testid="card-calculation-result">
-          <BorderGlow
-            className="min-h-[530px]"
-            borderRadius={24}
-            glowRadius={24}
-            glowColor="210 100 68"
-            colors={['#006bff', '#0099ff', '#e55cff']}
-            fillOpacity={0.1}
-          >
-          <div className="min-h-[530px] p-5 sm:p-7">
+         <motion.div initial={reducedMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { delay: 0.16, duration: 0.45 }} className="min-h-[530px] rounded-2xl border border-[hsl(var(--card-border))] bg-white" data-testid="card-calculation-result">
+           <div className="min-h-[530px] p-5 sm:p-7">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">03 / Resultado</p>
@@ -304,8 +295,8 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
 
           {!result || !Number.isFinite(result.value) ? (
             <div className="flex min-h-[430px] flex-col items-center justify-center text-center">
-              <div className="relative mb-7 grid size-24 place-items-center rounded-[28px] bg-[#eef7f5] text-[#39a9a2]">
-                <div className="absolute inset-2 rounded-[21px] border border-dashed border-[#9bd2cd]" />
+               <div className="relative mb-7 grid size-24 place-items-center rounded-2xl bg-[#eaf2ff] text-[#006bff]">
+                 <div className="absolute inset-2 rounded-2xl border border-dashed border-[#9bbce0]" />
                 <Zap size={34} strokeWidth={1.6} />
               </div>
               <h3 className="font-display text-xl font-semibold tracking-[-0.03em] text-[hsl(var(--foreground))]">Seu resultado aparece aqui</h3>
@@ -348,7 +339,7 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
                   </div>
                 </div>
               ) : (
-                <div className="mt-6 rounded-xl border border-dashed border-[#c7d9d7] bg-[#fbfdfc] p-4 text-sm leading-6 text-[hsl(var(--muted-foreground))]">
+               <div className="mt-6 rounded-xl border border-dashed border-[#c9dcf2] bg-[#f8fbff] p-4 text-sm leading-6 text-[hsl(var(--muted-foreground))]">
                   O código de cores fica disponível quando o resultado for uma resistência.
                 </div>
               )}
@@ -364,22 +355,21 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
               )}
             </motion.div>
           )}
-          </div>
-          </BorderGlow>
+           </div>
         </motion.div>
       </section>
 
       <section className="grid gap-5 md:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-2xl border border-[#cfe0de] bg-[#eaf5f3] p-5 sm:p-6">
+         <div className="rounded-2xl border border-[#c9dcf2] bg-[#eaf2ff] p-5 sm:p-6">
           <div className="flex gap-4">
-            <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-white text-[#2c9d91] shadow-sm"><Lightbulb size={19} /></div>
+             <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-white text-[#006bff]"><Lightbulb size={19} /></div>
             <div>
-              <h3 className="font-display text-lg font-semibold tracking-[-0.03em] text-[#226c6b]">Como a Voltiva pensa</h3>
-              <p className="mt-1.5 max-w-2xl text-sm leading-6 text-[#4d7f7c]">Os valores são tratados como grandezas reais. Entradas vazias, caracteres inválidos e divisões por zero são interrompidos antes de qualquer resultado.</p>
+               <h3 className="font-display text-lg font-normal tracking-[-0.03em] text-[#0b3558]">Como a Voltiva pensa</h3>
+               <p className="mt-1.5 max-w-2xl text-sm leading-6 text-[#476788]">Os valores são tratados como grandezas reais. Entradas vazias, caracteres inválidos e divisões por zero são interrompidos antes de qualquer resultado.</p>
             </div>
           </div>
         </div>
-        <div className="rounded-2xl border border-[hsl(var(--border))] bg-white/75 p-5 sm:p-6">
+         <div className="rounded-2xl border border-[hsl(var(--border))] bg-white p-5 sm:p-6">
           <p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">Referência rápida</p>
           <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 font-data text-sm text-[hsl(var(--foreground))]">
             <span>V = R × I</span><span>I = V ÷ R</span><span>R = V ÷ I</span><span>P = V × I</span>
@@ -394,7 +384,7 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.98 }}
             transition={reducedMotion ? { duration: 0 } : { duration: 0.2 }}
-            className={`fixed bottom-5 right-5 z-40 flex max-w-[calc(100vw-2.5rem)] items-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold shadow-[0_16px_36px_hsl(215_41%_17%/.14)] ${
+             className={`fixed bottom-5 right-5 z-40 flex max-w-[calc(100vw-2.5rem)] items-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold ${
               feedback.tone === 'success'
                 ? 'border-[#bfe4d2] bg-[#f0fbf5] text-[#287653]'
                 : feedback.tone === 'error'

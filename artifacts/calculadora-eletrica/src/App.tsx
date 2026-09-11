@@ -4,8 +4,6 @@ import { publishableKeyFromHost } from '@clerk/react/internal';
 import { shadcn } from '@clerk/themes';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { Redirect, Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
-import { BorderGlow } from '@/components/border-glow';
-import { BlurReveal } from '@/components/blur-reveal';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { ProfileOnboarding } from '@/components/profile-onboarding';
 import { VoltivaShell } from '@/components/voltiva-shell';
@@ -80,8 +78,7 @@ const clerkAppearance = {
 
 function LandingPage() {
   return (
-    <main className="min-h-[100dvh] overflow-hidden bg-[hsl(var(--background))]">
-       <div className="pointer-events-none absolute -right-20 -top-24 size-[28rem] rounded-full bg-[#dcecff]/75 blur-3xl" />
+   <main className="min-h-[100dvh] overflow-hidden bg-[#f7f5f3]">
       <header className="relative mx-auto flex max-w-6xl items-center justify-between px-5 py-6 md:px-10 md:py-8">
         <Brand />
         <div className="flex items-center gap-2">
@@ -92,36 +89,23 @@ function LandingPage() {
       <section className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-12 md:grid-cols-[1.05fr_0.95fr] md:px-10 md:pb-28 md:pt-20">
         <div>
            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#c9dcf2] bg-[#eaf2ff] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.13em] text-[#004eba]"><span className="size-1.5 rounded-full bg-[#006bff]" /> Clareza para cada grandeza</p>
-           <h1 className="max-w-3xl font-display text-[clamp(3rem,7vw,5.8rem)] font-bold leading-[0.98] tracking-[-0.075em] text-[hsl(var(--foreground))]">
-             <BlurReveal delay={0.08} speedReveal={0.72} speedSegment={0.022}>
-               Energia bem entendida muda decisões.
-             </BlurReveal>
+           <h1 className="max-w-2xl font-display text-[clamp(3rem,6.4vw,5.7rem)] font-normal leading-[0.88] tracking-[-0.075em] text-[hsl(var(--foreground))]">
+              Energia bem entendida muda decisões.
            </h1>
           <p className="mt-7 max-w-xl text-lg leading-8 text-[hsl(var(--muted-foreground))]">A Voltiva reúne cálculo elétrico, acompanhamento de consumo e histórico em um espaço simples para quem quer agir com mais confiança.</p>
-           <div className="mt-8 flex flex-col gap-3 sm:flex-row"><a href={`${basePath}/sign-up`} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-white shadow-[0_15px_30px_rgba(71,103,136,.12)] transition hover:-translate-y-0.5 hover:bg-[#004eba]">Começar agora <span aria-hidden="true">→</span></a><a href={`${basePath}/sign-in`} className="inline-flex items-center justify-center rounded-lg border border-[hsl(var(--border))] bg-white px-5 py-3.5 text-sm font-bold text-[hsl(var(--foreground))] transition hover:border-[#9bbce0]">Já tenho uma conta</a></div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><a href={`${basePath}/sign-up`} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#004eba]">Começar agora <span aria-hidden="true">→</span></a><a href={`${basePath}/sign-in`} className="inline-flex items-center justify-center rounded-lg border border-[hsl(var(--border))] bg-white px-5 py-3.5 text-sm font-bold text-[hsl(var(--foreground))] transition hover:border-[#9bbce0]">Já tenho uma conta</a></div>
           <div className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-xs font-semibold text-[hsl(var(--muted-foreground))]"><span>Fórmulas de Ohm</span><span>Código de cores</span><span>Histórico por conta</span></div>
         </div>
         <div className="relative">
-           <div className="absolute inset-8 rounded-[32px] bg-[#e55cff]/20 blur-2xl" />
-           <BorderGlow
-             className="relative"
-             borderRadius={24}
-             glowRadius={24}
-             glowColor="210 100 68"
-             colors={['#006bff', '#0099ff', '#e55cff']}
-             fillOpacity={0.12}
-             animated
-           >
-             <div className="p-5 sm:p-7">
+            <div className="relative rounded-2xl border border-[#9bbce0] bg-white p-5 sm:p-7">
              <div className="flex items-center justify-between border-b border-[hsl(var(--border))] pb-5"><Brand compact /><span className="rounded-full bg-[#e6f0ff] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#004eba]">Ao vivo</span></div>
             <p className="mt-7 text-xs font-bold uppercase tracking-[0.14em] text-[hsl(var(--muted-foreground))]">Calculadora elétrica</p>
             <div className="mt-3 rounded-2xl bg-[#eaf2ff] p-5"><p className="text-sm font-medium text-[#004eba]">Resultado de resistência</p><div className="mt-2 flex items-end gap-2"><strong className="font-data text-5xl font-medium tracking-[-0.08em] text-[#0b3558]">600</strong><span className="mb-1 font-data text-base text-[#476788]">Ω</span></div><p className="mt-4 border-t border-[#c9dcf2] pt-3 font-data text-xs text-[#476788]">R = V ÷ I · 12 V ÷ 0,02 A</p></div>
             <div className="mt-5 grid grid-cols-4 gap-2">{['Azul', 'Preto', 'Marrom', 'Dourado'].map((item, index) => <div key={item} className="rounded-xl bg-[#f6f9f8] p-2 text-center"><span className={`mx-auto block size-5 rounded-full ${['bg-[#3466a1]', 'bg-[#202b30]', 'bg-[#8d5c32]', 'bg-[#d8a940]'][index]}`} /><span className="mt-2 block truncate text-[10px] font-bold text-[hsl(var(--muted-foreground))]">{item}</span></div>)}</div>
-             </div>
-           </BorderGlow>
+            </div>
         </div>
       </section>
-      <section className="relative border-t border-[hsl(var(--border))] bg-white/70"><div className="mx-auto grid max-w-6xl gap-4 px-5 py-10 md:grid-cols-3 md:px-10"><Feature title="Calcule sem ruído" text="Tensão, corrente, resistência e potência com validações claras." icon="01" /><Feature title="Entenda o resultado" text="Visualização automática do resistor em quatro faixas." icon="02" /><Feature title="Continue de onde parou" text="Seu perfil, histórico e equipamentos ficam organizados na sua conta." icon="03" /></div></section>
+       <section className="relative border-t border-[hsl(var(--border))] bg-white"><div className="mx-auto grid max-w-6xl gap-4 px-5 py-10 md:grid-cols-3 md:px-10"><Feature title="Calcule sem ruído" text="Tensão, corrente, resistência e potência com validações claras." icon="01" /><Feature title="Entenda o resultado" text="Visualização automática do resistor em quatro faixas." icon="02" /><Feature title="Continue de onde parou" text="Seu perfil, histórico e equipamentos ficam organizados na sua conta." icon="03" /></div></section>
     </main>
   );
 }
@@ -135,11 +119,11 @@ function Brand({ compact = false }: { compact?: boolean }) {
 }
 
 function SignInPage() {
-  return <div className="flex min-h-[100dvh] items-center justify-center bg-[hsl(var(--background))] px-4 py-8"><SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} /></div>;
+  return <div className="flex min-h-[100dvh] items-center justify-center bg-[#f7f5f3] px-4 py-8"><SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} /></div>;
 }
 
 function SignUpPage() {
-  return <div className="flex min-h-[100dvh] items-center justify-center bg-[hsl(var(--background))] px-4 py-8"><SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} /></div>;
+  return <div className="flex min-h-[100dvh] items-center justify-center bg-[#f7f5f3] px-4 py-8"><SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} /></div>;
 }
 
 function HomeRoute() {
@@ -183,7 +167,7 @@ function AuthenticatedApp({ section }: { section: string }) {
 }
 
 function LoadingScreen() {
-  return <div className="grid min-h-[100dvh] place-items-center bg-[hsl(var(--background))]"><div className="text-center"><Brand /><p className="mt-4 text-sm text-[hsl(var(--muted-foreground))]">Preparando seu espaço...</p></div></div>;
+  return <div className="grid min-h-[100dvh] place-items-center bg-[#f7f5f3]"><div className="text-center"><Brand /><p className="mt-4 text-sm text-[hsl(var(--muted-foreground))]">Preparando seu espaço...</p></div></div>;
 }
 
 function ClerkQueryClientCacheInvalidator() {
