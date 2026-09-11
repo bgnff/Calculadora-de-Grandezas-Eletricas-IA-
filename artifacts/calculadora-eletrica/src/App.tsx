@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/reac
 import { Redirect, Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { BlurReveal } from '@/components/blur-reveal';
+import Rays from '@/components/light-rays';
 import { ProfileOnboarding } from '@/components/profile-onboarding';
 import { VoltivaShell } from '@/components/voltiva-shell';
 import { useEnergyProfile } from '@/hooks/use-energy-profile';
@@ -80,10 +81,11 @@ const clerkAppearance = {
 function LandingPage() {
   return (
     <main className="relative min-h-[100dvh] overflow-hidden bg-[#fafaf9]">
-      <div className="pointer-events-none absolute -left-[340px] top-10 size-[620px] rounded-full border-[10px] border-[#e8e6e5]/55" />
-      <div className="pointer-events-none absolute -right-[380px] top-[500px] size-[700px] rounded-full border-[10px] border-[#e8e6e5]/45" />
+      <Rays backgroundColor="hsl(var(--background))" style={{ zIndex: 0 }} />
+      <div className="pointer-events-none absolute -left-[340px] top-10 z-[1] size-[620px] rounded-full border-[10px] border-[#e8e6e5]/55" />
+      <div className="pointer-events-none absolute -right-[380px] top-[500px] z-[1] size-[700px] rounded-full border-[10px] border-[#e8e6e5]/45" />
 
-      <header className="relative mx-auto flex max-w-[1024px] items-center justify-between px-5 py-5 md:px-8 md:py-4">
+      <header className="relative z-10 mx-auto flex max-w-[1024px] items-center justify-between px-5 py-5 md:px-8 md:py-4">
         <Brand />
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Navegação principal">
           <a href="#recursos" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Recursos</a>
@@ -101,7 +103,7 @@ function LandingPage() {
         </div>
       </header>
 
-      <section className="relative mx-auto max-w-[1024px] px-5 pb-8 pt-20 md:px-8 md:pt-24">
+      <section className="relative z-10 mx-auto max-w-[1024px] px-5 pb-8 pt-20 md:px-8 md:pt-24">
         <div className="max-w-[720px]">
           <h1 className="font-display text-[clamp(2.65rem,5.2vw,4.35rem)] font-normal leading-[1.05] tracking-[-0.055em] text-[hsl(var(--foreground))]">
             <BlurReveal className="inline-block" forceAnimation>A </BlurReveal>
@@ -127,7 +129,7 @@ function LandingPage() {
         <DashboardPreview />
       </section>
 
-      <section id="recursos" className="relative border-t border-[hsl(var(--border))] bg-white/75">
+      <section id="recursos" className="relative z-10 border-t border-[hsl(var(--border))] bg-white/75">
         <div className="mx-auto grid max-w-[1024px] gap-4 px-5 py-16 md:grid-cols-3 md:px-8">
           <Feature title="Calcule sem ruído" text="Tensão, corrente, resistência e potência com validações claras." icon="01" />
           <Feature title="Entenda o resultado" text="Visualização automática e explicações para cada resposta." icon="02" />
