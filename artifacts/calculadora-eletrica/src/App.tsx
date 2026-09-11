@@ -144,11 +144,11 @@ function DashboardPreview() {
   const bars = [38, 56, 44, 72, 50, 66, 82, 58, 91, 70, 62, 78, 48, 68, 84, 54, 73, 88, 64, 79, 57, 76, 92, 69];
   return (
     <div id="como-funciona" className="relative mt-8 md:mt-10">
-      <div className="absolute -right-1 -top-7 z-10 grid size-14 rotate-6 place-items-center rounded-[20px] border-4 border-[#fafaf9] bg-[#0b3558] text-2xl text-[#7ecbff] shadow-[0_8px_18px_rgba(12,52,88,.18)]">ϟ</div>
+       <div className="absolute -right-1 -top-7 z-10 grid size-14 rotate-6 place-items-center overflow-hidden rounded-[20px] border-4 border-[#fafaf9] bg-[#0b3558] shadow-[0_8px_18px_rgba(12,52,88,.18)]"><img src={`${basePath}/logo.png`} alt="" className="size-full object-contain p-1.5" /></div>
       <div className="soft-shadow overflow-hidden rounded-[16px] border border-[#e8e6e5] bg-white p-2 md:p-3">
         <div className="grid min-h-[430px] overflow-hidden rounded-[10px] border border-[#e8e6e5] bg-[#fbfbfa] sm:grid-cols-[148px_minmax(0,1fr)]">
           <aside className="hidden border-r border-[#e8e6e5] bg-white p-4 sm:block">
-            <div className="flex items-center gap-2 text-xs font-medium text-[#0c0a09]"><span className="grid size-6 place-items-center rounded-md bg-[#0b3558] text-sm text-[#7ecbff]">ϟ</span> voltiva</div>
+             <div className="flex items-center gap-2 text-xs font-medium text-[#0c0a09]"><span className="grid size-6 place-items-center overflow-hidden rounded-md bg-[#0b3558]"><img src={`${basePath}/logo.png`} alt="" className="size-full object-contain p-0.5" /></span> voltiva</div>
             <p className="mt-8 text-[9px] uppercase tracking-[0.14em] text-[#a8a29e]">Seu espaço</p>
             <div className="mt-3 space-y-1.5 text-[11px] text-[#78716c]">
               <div className="rounded-md bg-[#eaf5fc] px-2.5 py-2 font-medium text-[#2873a8]">Visão geral</div>
