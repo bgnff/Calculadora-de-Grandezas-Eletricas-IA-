@@ -78,35 +78,116 @@ const clerkAppearance = {
 
 function LandingPage() {
   return (
-   <main className="min-h-[100dvh] overflow-hidden bg-[#fafaf9]">
-      <header className="relative mx-auto flex max-w-6xl items-center justify-between px-5 py-6 md:px-10 md:py-8">
+    <main className="relative min-h-[100dvh] overflow-hidden bg-[#fafaf9]">
+      <div className="pointer-events-none absolute -left-[340px] top-10 size-[620px] rounded-full border-[10px] border-[#e8e6e5]/55" />
+      <div className="pointer-events-none absolute -right-[380px] top-[500px] size-[700px] rounded-full border-[10px] border-[#e8e6e5]/45" />
+
+      <header className="relative mx-auto flex max-w-[1024px] items-center justify-between px-5 py-5 md:px-8 md:py-4">
         <Brand />
-        <div className="flex items-center gap-2">
-          <a href={`${basePath}/sign-in`} className="rounded-xl px-3 py-2 text-sm font-bold text-[hsl(var(--muted-foreground))] transition hover:bg-white hover:text-[hsl(var(--foreground))]">Entrar</a>
-           <a href={`${basePath}/sign-up`} className="rounded-lg bg-[hsl(var(--primary))] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#004eba]">Criar conta</a>
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Navegação principal">
+          <a href="#recursos" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Recursos</a>
+          <a href="#como-funciona" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Como funciona</a>
+          <a href="#recursos" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Plataforma <span className="ml-1 text-[10px]">⌄</span></a>
+          <a href="#recursos" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Guias</a>
+          <span className="mx-2 h-4 w-px bg-[hsl(var(--border))]" />
+          <div className="flex -space-x-1.5" aria-label="Comunidade Voltiva">
+            {['V', 'O', 'E', 'R'].map((letter, index) => <span key={letter} className={`grid size-6 place-items-center rounded-full border-2 border-[#fafaf9] text-[9px] font-bold text-white ${['bg-[#0b3558]', 'bg-[#3ba6f1]', 'bg-[#7a9bb9]', 'bg-[#4c6f8f]'][index]}`}>{letter}</span>)}
+          </div>
+        </nav>
+        <div className="flex items-center gap-1">
+          <a href={`${basePath}/sign-in`} className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Entrar</a>
+          <a href={`${basePath}/sign-up`} className="rounded-lg bg-[#3ba6f1] px-4 py-2.5 text-xs font-medium text-white transition hover:bg-[#3398e1]">Começar grátis</a>
         </div>
       </header>
-      <section className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-12 md:grid-cols-[1.05fr_0.95fr] md:px-10 md:pb-28 md:pt-20">
-        <div>
-           <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#c9dcf2] bg-[#eaf2ff] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.13em] text-[#004eba]"><span className="size-1.5 rounded-full bg-[#006bff]" /> Clareza para cada grandeza</p>
-           <h1 className="max-w-2xl font-display text-[clamp(2.9rem,6vw,5.2rem)] font-normal leading-[0.98] tracking-[-0.05em] text-[hsl(var(--foreground))]">
-               <span className="block">Energia</span><span className="inline-block rounded-md bg-[#c1e1f7] px-2 text-[#3398e1]">bem entendida</span><span className="block">muda decisões.</span>
-           </h1>
-          <p className="mt-7 max-w-xl text-lg leading-8 text-[hsl(var(--muted-foreground))]">A Voltiva reúne cálculo elétrico, acompanhamento de consumo e histórico em um espaço simples para quem quer agir com mais confiança.</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><a href={`${basePath}/sign-up`} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#004eba]">Começar agora <span aria-hidden="true">→</span></a><a href={`${basePath}/sign-in`} className="inline-flex items-center justify-center rounded-lg border border-[hsl(var(--border))] bg-white px-5 py-3.5 text-sm font-bold text-[hsl(var(--foreground))] transition hover:border-[#9bbce0]">Já tenho uma conta</a></div>
-          <div className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-xs font-semibold text-[hsl(var(--muted-foreground))]"><span>Fórmulas de Ohm</span><span>Código de cores</span><span>Histórico por conta</span></div>
+
+      <section className="relative mx-auto max-w-[1024px] px-5 pb-8 pt-20 md:px-8 md:pt-24">
+        <div className="max-w-[720px]">
+          <h1 className="font-display text-[clamp(2.65rem,5.2vw,4.35rem)] font-normal leading-[1.05] tracking-[-0.055em] text-[hsl(var(--foreground))]">
+            A <span className="rounded-md bg-[#c1e1f7] px-2 text-[#2873a8]">energia simples e prática</span><br />
+            para decisões melhores.
+          </h1>
+          <p className="mt-6 max-w-[610px] text-base leading-7 text-[hsl(var(--muted-foreground))]">Calcule, acompanhe e entenda sua energia em um espaço claro, feito para transformar números elétricos em decisões do dia a dia.</p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <a href={`${basePath}/sign-up`} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#3ba6f1] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#3398e1]">Começar grátis <span aria-hidden="true">→</span></a>
+            <a href={`${basePath}/sign-in`} className="inline-flex items-center justify-center gap-2 rounded-lg border border-[hsl(var(--border))] bg-[#f1f0ee] px-5 py-2.5 text-sm text-[hsl(var(--muted-foreground))] transition hover:border-[#c9c6c2] hover:text-[hsl(var(--foreground))]">Ver a calculadora <span aria-hidden="true">⌁</span></a>
+          </div>
         </div>
-        <div className="relative">
-            <div className="soft-shadow relative rounded-2xl border border-[#e8e6e5] bg-white p-5 sm:p-7">
-             <div className="flex items-center justify-between border-b border-[hsl(var(--border))] pb-5"><Brand compact /><span className="rounded-full bg-[#e6f0ff] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#004eba]">Ao vivo</span></div>
-            <p className="mt-7 text-xs font-bold uppercase tracking-[0.14em] text-[hsl(var(--muted-foreground))]">Calculadora elétrica</p>
-            <div className="mt-3 rounded-2xl bg-[#eaf2ff] p-5"><p className="text-sm font-medium text-[#004eba]">Resultado de resistência</p><div className="mt-2 flex items-end gap-2"><strong className="font-data text-5xl font-medium tracking-[-0.08em] text-[#0b3558]">600</strong><span className="mb-1 font-data text-base text-[#476788]">Ω</span></div><p className="mt-4 border-t border-[#c9dcf2] pt-3 font-data text-xs text-[#476788]">R = V ÷ I · 12 V ÷ 0,02 A</p></div>
-            <div className="mt-5 grid grid-cols-4 gap-2">{['Azul', 'Preto', 'Marrom', 'Dourado'].map((item, index) => <div key={item} className="rounded-xl bg-[#f6f9f8] p-2 text-center"><span className={`mx-auto block size-5 rounded-full ${['bg-[#3466a1]', 'bg-[#202b30]', 'bg-[#8d5c32]', 'bg-[#d8a940]'][index]}`} /><span className="mt-2 block truncate text-[10px] font-bold text-[hsl(var(--muted-foreground))]">{item}</span></div>)}</div>
-            </div>
+
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-[hsl(var(--border))] pt-5 text-xs font-medium text-[#a8a29e] sm:border-t-0 sm:pt-0">
+          <span>Fórmulas de Ohm</span>
+          <span>Código de cores</span>
+          <span>Consumo mensal</span>
+          <span>Histórico por conta</span>
+        </div>
+        <p className="mt-7 text-xs text-[#a8a29e]"><span className="mr-2 tracking-[0.16em] text-[#78716c]">★★★★★</span> Uma leitura mais simples para cada grandeza elétrica.</p>
+
+        <DashboardPreview />
+      </section>
+
+      <section id="recursos" className="relative border-t border-[hsl(var(--border))] bg-white/75">
+        <div className="mx-auto grid max-w-[1024px] gap-4 px-5 py-16 md:grid-cols-3 md:px-8">
+          <Feature title="Calcule sem ruído" text="Tensão, corrente, resistência e potência com validações claras." icon="01" />
+          <Feature title="Entenda o resultado" text="Visualização automática e explicações para cada resposta." icon="02" />
+          <Feature title="Continue de onde parou" text="Seu perfil, histórico e equipamentos ficam organizados na sua conta." icon="03" />
         </div>
       </section>
-       <section className="relative border-t border-[hsl(var(--border))] bg-white"><div className="mx-auto grid max-w-6xl gap-4 px-5 py-10 md:grid-cols-3 md:px-10"><Feature title="Calcule sem ruído" text="Tensão, corrente, resistência e potência com validações claras." icon="01" /><Feature title="Entenda o resultado" text="Visualização automática do resistor em quatro faixas." icon="02" /><Feature title="Continue de onde parou" text="Seu perfil, histórico e equipamentos ficam organizados na sua conta." icon="03" /></div></section>
     </main>
+  );
+}
+
+function DashboardPreview() {
+  const bars = [38, 56, 44, 72, 50, 66, 82, 58, 91, 70, 62, 78, 48, 68, 84, 54, 73, 88, 64, 79, 57, 76, 92, 69];
+  return (
+    <div id="como-funciona" className="relative mt-8 md:mt-10">
+      <div className="absolute -right-1 -top-7 z-10 grid size-14 rotate-6 place-items-center rounded-[20px] border-4 border-[#fafaf9] bg-[#0b3558] text-2xl text-[#7ecbff] shadow-[0_8px_18px_rgba(12,52,88,.18)]">ϟ</div>
+      <div className="soft-shadow overflow-hidden rounded-[16px] border border-[#e8e6e5] bg-white p-2 md:p-3">
+        <div className="grid min-h-[430px] overflow-hidden rounded-[10px] border border-[#e8e6e5] bg-[#fbfbfa] sm:grid-cols-[148px_minmax(0,1fr)]">
+          <aside className="hidden border-r border-[#e8e6e5] bg-white p-4 sm:block">
+            <div className="flex items-center gap-2 text-xs font-medium text-[#0c0a09]"><span className="grid size-6 place-items-center rounded-md bg-[#0b3558] text-sm text-[#7ecbff]">ϟ</span> voltiva</div>
+            <p className="mt-8 text-[9px] uppercase tracking-[0.14em] text-[#a8a29e]">Seu espaço</p>
+            <div className="mt-3 space-y-1.5 text-[11px] text-[#78716c]">
+              <div className="rounded-md bg-[#eaf5fc] px-2.5 py-2 font-medium text-[#2873a8]">Visão geral</div>
+              <div className="px-2.5 py-2">Calculadora</div>
+              <div className="px-2.5 py-2">Consumo</div>
+              <div className="px-2.5 py-2">Histórico</div>
+            </div>
+            <div className="mt-20 border-t border-[#e8e6e5] pt-3 text-[10px] text-[#a8a29e]">Perfil completo</div>
+          </aside>
+          <div className="min-w-0 p-4 md:p-5">
+            <div className="flex items-start justify-between gap-3">
+              <div><p className="text-[9px] uppercase tracking-[0.14em] text-[#a8a29e]">Visão geral</p><h2 className="mt-1 text-lg font-medium tracking-[-0.03em] text-[#0c0a09]">Seu painel elétrico</h2></div>
+              <div className="rounded-md border border-[#e8e6e5] bg-white px-2.5 py-1.5 text-[10px] text-[#78716c]">Este mês⌄</div>
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4">
+              {[
+                ['Consumo', '186,4', 'kWh'],
+                ['Custo estimado', 'R$ 142', 'mês'],
+                ['Equipamentos', '08', 'ativos'],
+                ['Economia', '12%', 'vs. mês anterior'],
+              ].map(([label, value, helper]) => <div key={label} className="rounded-md border border-[#e8e6e5] bg-white p-3"><p className="text-[9px] text-[#78716c]">{label}</p><p className="mt-2 text-lg font-medium tracking-[-0.04em] text-[#0c0a09]">{value} <span className="text-[9px] font-normal text-[#a8a29e]">{helper}</span></p><div className="mt-2 h-1 rounded-full bg-[#eaf5fc]"><div className="h-1 w-2/3 rounded-full bg-[#3ba6f1]" /></div></div>)}
+            </div>
+            <div className="mt-3 grid gap-3 md:grid-cols-[1.35fr_1fr]">
+              <div className="rounded-md border border-[#e8e6e5] bg-white p-3">
+                <div className="flex items-center justify-between"><p className="text-[11px] font-medium text-[#0c0a09]">Consumo ao longo do mês</p><span className="text-[9px] text-[#a8a29e]">kWh</span></div>
+                <div className="mt-5 flex h-[132px] items-end gap-1.5 border-b border-[#e8e6e5] px-1">
+                  {bars.map((height, index) => <span key={index} className={`min-w-0 flex-1 rounded-t-[2px] ${index > 17 ? 'bg-[#8fc9eb]' : 'bg-[#3ba6f1]'}`} style={{ height: `${height}%` }} />)}
+                </div>
+                <div className="mt-2 flex justify-between text-[8px] text-[#a8a29e]"><span>01</span><span>08</span><span>15</span><span>22</span><span>30</span></div>
+              </div>
+              <div className="rounded-md border border-[#e8e6e5] bg-white p-3">
+                <div className="flex items-center justify-between"><p className="text-[11px] font-medium text-[#0c0a09]">Onde está o consumo</p><span className="text-[9px] text-[#a8a29e]">agora</span></div>
+                <div className="mt-4 space-y-3">
+                  {[['Chuveiro elétrico', '42%', 'bg-[#3ba6f1]'], ['Geladeira', '24%', 'bg-[#8fc9eb]'], ['Iluminação', '18%', 'bg-[#c1e1f7]'], ['Outros', '16%', 'bg-[#d6d3d1]']].map(([label, percentage, color]) => <div key={label}><div className="mb-1 flex justify-between text-[9px] text-[#78716c]"><span>{label}</span><span>{percentage}</span></div><div className="h-2 rounded-full bg-[#f1f0ee]"><div className={`h-2 rounded-full ${color}`} style={{ width: percentage }} /></div></div>)}
+                </div>
+              </div>
+            </div>
+            <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[#e8e6e5] pt-3 text-[10px]">
+              {['Visão geral', 'Calculadora', 'Consumo', 'Histórico'].map((tab, index) => <span key={tab} className={`rounded-full px-3 py-1.5 ${index === 0 ? 'bg-[#1c1917] text-white' : 'border border-[#e8e6e5] text-[#78716c]'}`}>{tab}</span>)}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
