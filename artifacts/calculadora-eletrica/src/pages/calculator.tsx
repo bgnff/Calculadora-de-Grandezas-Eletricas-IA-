@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, CheckCircle2, CircleHelp, Eraser, Lightbulb, RotateCcw, Save, Zap } from 'lucide-react';
+import { BlurReveal } from '@/components/blur-reveal';
 import { ResistorVisual } from '@/components/resistor-visual';
 import {
   calculateCurrent,
@@ -186,7 +187,9 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
              <span className="grid size-6 place-items-center rounded-md bg-[#e6f0ff]"><Zap size={13} fill="currentColor" /></span>
             Ferramenta de precisão
           </div>
-           <h1 className="font-display text-[clamp(2.15rem,4vw,3.6rem)] font-normal leading-[0.98] tracking-[-0.055em] text-[hsl(var(--foreground))]">Calculadora elétrica</h1>
+            <h1 className="font-display text-[clamp(2.15rem,4vw,3.6rem)] font-normal leading-[0.98] tracking-[-0.055em] text-[hsl(var(--foreground))]">
+              <BlurReveal>Calculadora elétrica</BlurReveal>
+            </h1>
           <p className="mt-3 max-w-xl text-[15px] leading-7 text-[hsl(var(--muted-foreground))]">Resolva grandezas elétricas e identifique o resistor correspondente em poucos segundos.</p>
         </div>
         <button onClick={() => reset(true)} className="focus-ring group inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-xl border border-[hsl(var(--border))] bg-white px-4 py-2.5 text-sm font-semibold text-[hsl(var(--foreground))] shadow-sm transition hover:border-[#9fc8c5] hover:text-[hsl(var(--primary))] md:self-end" data-testid="button-new-calculation">
