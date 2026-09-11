@@ -9,6 +9,7 @@ import { BlurReveal } from '@/components/blur-reveal';
 import Rays from '@/components/light-rays';
 import { ProfileOnboarding } from '@/components/profile-onboarding';
 import { VoltivaShell } from '@/components/voltiva-shell';
+import { WalkingLoader } from '@/components/walking-loader';
 import { useEnergyProfile } from '@/hooks/use-energy-profile';
 import { useVoltivaData } from '@/hooks/use-voltiva-data';
 import CalculatorPage from '@/pages/calculator';
@@ -230,6 +231,11 @@ function AuthLayout({ children, mode }: { children: ReactNode; mode: 'sign-in' |
                 ? 'Acompanhe seus cálculos, consumo e próximos passos em um espaço feito para você.'
                 : 'Crie seu espaço Voltiva para salvar cálculos e transformar números em decisões melhores.'}
             </p>
+          </div>
+          <div className="relative mt-6 min-h-[245px] flex-1 overflow-hidden rounded-[26px] border border-white/10 bg-[#071a33]/35">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(30,111,255,.22),transparent_58%)]" />
+            <WalkingLoader />
+            <p className="absolute inset-x-0 bottom-5 text-center text-[11px] text-white/60">Mova o cursor para explorar</p>
           </div>
           <div className="relative grid grid-cols-2 gap-3">
             <div className="rounded-2xl border border-white/10 bg-white/[.07] p-4">
