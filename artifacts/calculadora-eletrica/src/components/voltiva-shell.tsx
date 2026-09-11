@@ -69,9 +69,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
           className="pointer-events-none absolute inset-x-0 top-0 z-10 grid h-[72px] place-items-center"
           aria-hidden="true"
         >
-          <span className="grid size-9 place-items-center rounded-lg bg-[#006bff] text-white shadow-[0_0_0_5px_rgba(0,107,255,.14)]">
-            <Bolt size={19} fill="currentColor" strokeWidth={2.4} />
-          </span>
+          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="size-9 rounded-lg object-cover shadow-[0_0_0_5px_rgba(30,111,255,.18)]" />
         </motion.div>
         <motion.div
           initial={{
@@ -97,7 +95,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40 bg-[#102537]/45 md:hidden"
+               className="fixed inset-0 z-40 bg-[#0b1f3b]/55 backdrop-blur-[2px] md:hidden"
               onClick={() => setMobileOpen(false)}
               aria-label="Fechar menu"
               data-testid="button-close-mobile-menu-overlay"
@@ -121,7 +119,7 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
       </AnimatePresence>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-[72px] items-center justify-between border-b border-[hsl(var(--border))] bg-[#fafaf9]/95 px-5 backdrop-blur-xl md:px-9">
+         <header className="sticky top-0 z-30 flex h-[72px] items-center justify-between border-b border-[hsl(var(--border))] bg-[#f5f7fa]/95 px-5 backdrop-blur-xl md:px-9">
           <div className="flex items-center gap-3">
             <button onClick={() => setMobileOpen(true)} className="rounded-lg p-2 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))] md:hidden" aria-label="Abrir menu" data-testid="button-open-mobile-menu">
               <Menu size={21} />
@@ -137,8 +135,8 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
             </div>
           </div>
           <div className="flex items-center gap-3">
-              <div className="hidden items-center gap-2 rounded-full border border-[#c9dcf2] bg-[#eaf2ff] px-3 py-1.5 text-xs font-semibold text-[#004eba] sm:flex">
-               <span className="size-1.5 rounded-full bg-[#006bff]" />
+               <div className="hidden items-center gap-2 rounded-full border border-[#d7ebff] bg-[#d7ebff] px-3 py-1.5 text-xs font-semibold text-[#0b1f3b] sm:flex">
+                <span className="size-1.5 rounded-full bg-[#ffc107]" />
               Sistema operacional
             </div>
              <button onClick={onEditProfile} className="rounded-xl border border-[hsl(var(--border))] bg-white p-2 text-[hsl(var(--muted-foreground))] transition hover:border-[#9bbce0] hover:text-[hsl(var(--primary))]" aria-label="Editar perfil" data-testid="button-open-settings">
@@ -151,12 +149,12 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
         <main className="voltiva-grid relative flex-1 overflow-hidden">
            <div className="mx-auto w-full max-w-[1440px] px-5 py-8 md:px-9 md:py-10">
             {profileIncomplete && onResumeProfile && (
-               <div className="mb-5 flex flex-col gap-3 rounded-2xl border border-[#c9dcf2] bg-[#eaf2ff] p-4 sm:flex-row sm:items-center sm:justify-between" data-testid="banner-profile-paused">
+                <div className="mb-5 flex flex-col gap-3 rounded-2xl border border-[#d7ebff] bg-[#d7ebff] p-4 sm:flex-row sm:items-center sm:justify-between" data-testid="banner-profile-paused">
                 <div>
-                  <p className="text-sm font-bold text-[#004eba]">Seu perfil está pausado</p>
-                  <p className="mt-1 text-xs leading-5 text-[#476788]">As respostas estão salvas neste dispositivo. Retome quando quiser para concluir o perfil.</p>
+                   <p className="text-sm font-bold text-[#0b1f3b]">Seu perfil está pausado</p>
+                   <p className="mt-1 text-xs leading-5 text-[#64748b]">As respostas estão salvas neste dispositivo. Retome quando quiser para concluir o perfil.</p>
                 </div>
-                 <button onClick={onResumeProfile} className="focus-ring inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#006bff] px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-[#004eba]" data-testid="button-resume-profile">
+                  <button onClick={onResumeProfile} className="focus-ring inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-[#1e6fff] px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-[#1557d6]" data-testid="button-resume-profile">
                   Retomar perfil <ChevronRight size={15} />
                 </button>
               </div>
@@ -181,15 +179,19 @@ function SidebarContent({ onEditProfile, reducedMotion, activePath, onClose, onS
         <nav className="space-y-1" aria-label="Navegação principal">
           {navItems.map(({ label, icon: Icon, path }) => (
             activePath === path ? (
-              <motion.div
+               <motion.div
                 key={label}
                 layoutId="active-nav"
+                 whileHover={reducedMotion ? undefined : { x: 3 }}
+                 whileTap={reducedMotion ? undefined : { scale: 0.985 }}
                 transition={reducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 520, damping: 34 }}
-                 className="mt-1 flex items-center gap-3 rounded-lg bg-[#174c78] px-3 py-2.5 text-[13px] font-semibold text-white shadow-[inset_3px_0_0_#006bff]"
+                  className="group relative mt-1 flex items-center gap-3 rounded-xl bg-[#1e6fff] px-3 py-2.5 text-[13px] font-semibold text-white shadow-[inset_3px_0_0_#ffc107,0_8px_20px_rgba(30,111,255,.2)]"
                 aria-current="page"
                 data-testid={`nav-${label.toLowerCase().replaceAll(' ', '-')}-ativa`}
               >
-                 <Icon size={17} className="text-[#7eb3ff]" />
+                  <motion.span animate={reducedMotion ? undefined : { rotate: [0, -5, 0], scale: [1, 1.08, 1] }} transition={{ duration: 0.5 }}>
+                    <Icon size={17} className="text-[#ffc107]" />
+                  </motion.span>
                 {label}
               </motion.div>
             ) : (
@@ -201,7 +203,7 @@ function SidebarContent({ onEditProfile, reducedMotion, activePath, onClose, onS
               >
                 <Link href={path} onClick={onClose} className="group relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition-colors hover:text-white" data-testid={`button-nav-${label.toLowerCase().replaceAll(' ', '-')}`}>
                   <span className="absolute inset-1 rounded-[10px] bg-white/[.08] opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true" />
-                   <Icon size={17} strokeWidth={1.8} className="relative text-white/45 transition-colors duration-200 group-hover:text-[#7eb3ff]" />
+                    <Icon size={17} strokeWidth={1.8} className="relative text-white/45 transition-colors duration-200 group-hover:text-[#ffc107]" />
                   <span className="relative">{label}</span>
                 </Link>
               </motion.div>
@@ -211,15 +213,15 @@ function SidebarContent({ onEditProfile, reducedMotion, activePath, onClose, onS
         <div className="my-7 h-px bg-white/10" />
         <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">Gerencie</p>
         <button onClick={onEditProfile} className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition hover:bg-white/8 hover:text-white" data-testid="button-nav-configuracoes">
-           <Settings2 size={17} strokeWidth={1.8} className="text-white/45 group-hover:text-[#7eb3ff]" />
+            <Settings2 size={17} strokeWidth={1.8} className="text-white/45 group-hover:text-[#ffc107]" />
           Configurações
         </button>
         <button onClick={onSignOut} className="group mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-medium text-white/65 transition hover:bg-white/8 hover:text-white" data-testid="button-sign-out">
-           <LogOut size={17} strokeWidth={1.8} className="text-white/45 group-hover:text-[#7eb3ff]" />
+            <LogOut size={17} strokeWidth={1.8} className="text-white/45 group-hover:text-[#ffc107]" />
           Sair da conta
         </button>
         <div className="mt-auto rounded-2xl border border-white/10 bg-white/[.06] p-4">
-           <div className="mb-3 flex items-center gap-2 text-[#8ebaff]"><span className="grid size-7 place-items-center rounded-lg bg-[#2c61a1]/50"><Bolt size={14} fill="currentColor" /></span><span className="text-xs font-bold">Dica Voltiva</span></div>
+           <div className="mb-3 flex items-center gap-2 text-[#d7ebff]"><span className="grid size-7 place-items-center rounded-lg bg-[#1e6fff]/30 text-[#ffc107]"><Bolt size={14} fill="currentColor" /></span><span className="text-xs font-bold">Dica Voltiva</span></div>
           <p className="text-[11px] leading-relaxed text-white/55">Use a calculadora para validar uma grandeza antes de fechar seu diagnóstico.</p>
         </div>
       </div>

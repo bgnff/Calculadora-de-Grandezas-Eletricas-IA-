@@ -40,39 +40,39 @@ const clerkAppearance = {
      logoImageUrl: `${window.location.origin}${basePath}/logo.png`,
   },
   variables: {
-    colorPrimary: '#006bff',
-    colorForeground: '#0b3558',
-    colorMutedForeground: '#476788',
-    colorDanger: '#b04f4c',
+    colorPrimary: '#1e6fff',
+    colorForeground: '#0b1f3b',
+    colorMutedForeground: '#64748b',
+    colorDanger: '#dc2626',
     colorBackground: '#ffffff',
-    colorInput: '#f0f3f8',
-    colorInputForeground: '#0b3558',
-    colorNeutral: '#d4e0ed',
+    colorInput: '#f5f7fa',
+    colorInputForeground: '#374151',
+    colorNeutral: '#d7ebff',
     fontFamily: 'Lato, Arial, sans-serif',
-    borderRadius: '0.5rem',
+    borderRadius: '0.75rem',
   },
   elements: {
     rootBox: 'w-full flex justify-center',
-    cardBox: 'bg-white rounded-2xl w-[440px] max-w-full overflow-hidden shadow-xl',
+    cardBox: 'bg-white rounded-[22px] w-[440px] max-w-full overflow-hidden shadow-[0_24px_70px_rgba(11,31,59,.14)]',
     card: '!shadow-none !border-0 !bg-transparent !rounded-none',
     footer: '!shadow-none !border-0 !bg-transparent !rounded-none',
-    headerTitle: 'font-display text-[#0b3558]',
-    headerSubtitle: 'text-[#476788]',
-    socialButtonsBlockButtonText: 'text-[#0b3558]',
-    formFieldLabel: 'text-[#0b3558]',
-    footerActionLink: 'text-[#006bff]',
-    footerActionText: 'text-[#476788]',
-    dividerText: 'text-[#476788]',
-    formFieldSuccessText: 'text-[#287b76]',
-    alertText: 'text-[#b04f4c]',
+    headerTitle: 'font-display text-[#0b1f3b]',
+    headerSubtitle: 'text-[#64748b]',
+    socialButtonsBlockButtonText: 'text-[#0b1f3b]',
+    formFieldLabel: 'text-[#374151]',
+    footerActionLink: 'text-[#1e6fff]',
+    footerActionText: 'text-[#64748b]',
+    dividerText: 'text-[#64748b]',
+    formFieldSuccessText: 'text-[#15803d]',
+    alertText: 'text-[#dc2626]',
     logoBox: 'rounded-xl overflow-hidden',
-    socialButtonsBlockButton: 'border-[#d4e0ed] hover:bg-[#f0f3f8]',
-    formButtonPrimary: 'bg-[#006bff] hover:bg-[#004eba] text-white',
-    formFieldInput: 'border-[#d4e0ed] bg-[#f0f3f8] text-[#0b3558]',
+    socialButtonsBlockButton: 'border-[#d7ebff] hover:bg-[#f5f7fa]',
+    formButtonPrimary: 'bg-[#1e6fff] hover:bg-[#1557d6] text-white',
+    formFieldInput: 'border-[#d7ebff] bg-[#f5f7fa] text-[#374151]',
     footerAction: 'bg-transparent',
-    dividerLine: 'bg-[#d4e0ed]',
-    alert: 'bg-[#fff6f5] border-[#efcfcc]',
-    otpCodeFieldInput: 'border-[#d4e0ed]',
+    dividerLine: 'bg-[#d7ebff]',
+    alert: 'bg-[#fff7ed] border-[#fed7aa]',
+    otpCodeFieldInput: 'border-[#d7ebff]',
     formFieldRow: 'gap-2',
     main: 'bg-transparent',
   },
@@ -80,10 +80,10 @@ const clerkAppearance = {
 
 function LandingPage() {
   return (
-    <main className="relative min-h-[100dvh] overflow-hidden bg-[#fafaf9]">
+    <main className="relative min-h-[100dvh] overflow-hidden bg-[#f5f7fa]">
       <Rays backgroundColor="hsl(var(--background))" forceAnimation style={{ zIndex: 0 }} />
-      <div className="pointer-events-none absolute -left-[340px] top-10 z-[1] size-[620px] rounded-full border-[10px] border-[#e8e6e5]/55" />
-      <div className="pointer-events-none absolute -right-[380px] top-[500px] z-[1] size-[700px] rounded-full border-[10px] border-[#e8e6e5]/45" />
+      <div className="pointer-events-none absolute -left-[340px] top-10 z-[1] size-[620px] rounded-full border-[10px] border-[#d7ebff]/65" />
+      <div className="pointer-events-none absolute -right-[380px] top-[500px] z-[1] size-[700px] rounded-full border-[10px] border-[#d7ebff]/55" />
 
       <header className="relative z-10 mx-auto flex max-w-[1024px] items-center justify-between px-5 py-5 md:px-8 md:py-4">
         <Brand />
@@ -94,12 +94,12 @@ function LandingPage() {
           <a href="#recursos" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Guias</a>
           <span className="mx-2 h-4 w-px bg-[hsl(var(--border))]" />
           <div className="flex -space-x-1.5" aria-label="Comunidade Voltiva">
-            {['V', 'O', 'E', 'R'].map((letter, index) => <span key={letter} className={`grid size-6 place-items-center rounded-full border-2 border-[#fafaf9] text-[9px] font-bold text-white ${['bg-[#0b3558]', 'bg-[#3ba6f1]', 'bg-[#7a9bb9]', 'bg-[#4c6f8f]'][index]}`}>{letter}</span>)}
+            {['V', 'O', 'E', 'R'].map((letter, index) => <span key={letter} className={`grid size-6 place-items-center rounded-full border-2 border-[#f5f7fa] text-[9px] font-bold text-white ${['bg-[#0b1f3b]', 'bg-[#1e6fff]', 'bg-[#64748b]', 'bg-[#374151]'][index]}`}>{letter}</span>)}
           </div>
         </nav>
         <div className="flex items-center gap-1">
           <a href={`${basePath}/sign-in`} className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Entrar</a>
-          <a href={`${basePath}/sign-up`} className="rounded-lg bg-[#3ba6f1] px-4 py-2.5 text-xs font-medium text-white transition hover:bg-[#3398e1]">Começar grátis</a>
+          <a href={`${basePath}/sign-up`} className="rounded-lg bg-[#1e6fff] px-4 py-2.5 text-xs font-medium text-white transition hover:bg-[#1557d6]">Começar grátis</a>
         </div>
       </header>
 
@@ -107,14 +107,14 @@ function LandingPage() {
         <div className="max-w-[720px]">
           <h1 className="font-display text-[clamp(2.65rem,5.2vw,4.35rem)] font-normal leading-[1.05] tracking-[-0.055em] text-[hsl(var(--foreground))]">
             <BlurReveal className="inline-block" forceAnimation>A </BlurReveal>
-            <BlurReveal className="inline-block rounded-md bg-[#c1e1f7] px-2 text-[#2873a8]" delay={0.12} forceAnimation>energia simples e prática</BlurReveal>
+            <BlurReveal className="inline-block rounded-md bg-[#d7ebff] px-2 text-[#0b1f3b]" delay={0.12} forceAnimation>energia simples e prática</BlurReveal>
             <br />
             <BlurReveal className="inline-block" delay={0.28} forceAnimation>para decisões melhores.</BlurReveal>
           </h1>
           <p className="mt-6 max-w-[610px] text-base leading-7 text-[hsl(var(--muted-foreground))]">Calcule, acompanhe e entenda sua energia em um espaço claro, feito para transformar números elétricos em decisões do dia a dia.</p>
           <div className="mt-7 flex flex-wrap gap-3">
-            <a href={`${basePath}/sign-up`} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#3ba6f1] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#3398e1]">Começar grátis <span aria-hidden="true">→</span></a>
-            <a href={`${basePath}/sign-in`} className="inline-flex items-center justify-center gap-2 rounded-lg border border-[hsl(var(--border))] bg-[#f1f0ee] px-5 py-2.5 text-sm text-[hsl(var(--muted-foreground))] transition hover:border-[#c9c6c2] hover:text-[hsl(var(--foreground))]">Ver a calculadora <span aria-hidden="true">⌁</span></a>
+            <a href={`${basePath}/sign-up`} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1e6fff] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#1557d6]">Começar grátis <span aria-hidden="true">→</span></a>
+            <a href={`${basePath}/sign-in`} className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#d7ebff] bg-[#f5f7fa] px-5 py-2.5 text-sm text-[hsl(var(--muted-foreground))] transition hover:border-[#1e6fff] hover:text-[hsl(var(--foreground))]">Ver a calculadora <span aria-hidden="true">⌁</span></a>
           </div>
         </div>
 
@@ -144,14 +144,14 @@ function DashboardPreview() {
   const bars = [38, 56, 44, 72, 50, 66, 82, 58, 91, 70, 62, 78, 48, 68, 84, 54, 73, 88, 64, 79, 57, 76, 92, 69];
   return (
     <div id="como-funciona" className="relative mt-8 md:mt-10">
-       <div className="absolute -right-1 -top-7 z-10 grid size-14 rotate-6 place-items-center overflow-hidden rounded-[20px] border-4 border-[#fafaf9] bg-[#0b3558] shadow-[0_8px_18px_rgba(12,52,88,.18)]"><img src={`${basePath}/logo.png`} alt="" className="size-full object-contain p-1.5" /></div>
+       <div className="absolute -right-1 -top-7 z-10 grid size-14 rotate-6 place-items-center overflow-hidden rounded-[20px] border-4 border-[#f5f7fa] bg-[#0b1f3b] shadow-[0_8px_18px_rgba(11,31,59,.2)]"><img src={`${basePath}/logo.png`} alt="" className="size-full object-contain p-1.5" /></div>
       <div className="soft-shadow overflow-hidden rounded-[16px] border border-[#e8e6e5] bg-white p-2 md:p-3">
         <div className="grid min-h-[430px] overflow-hidden rounded-[10px] border border-[#e8e6e5] bg-[#fbfbfa] sm:grid-cols-[148px_minmax(0,1fr)]">
           <aside className="hidden border-r border-[#e8e6e5] bg-white p-4 sm:block">
-             <div className="flex items-center gap-2 text-xs font-medium text-[#0c0a09]"><span className="grid size-6 place-items-center overflow-hidden rounded-md bg-[#0b3558]"><img src={`${basePath}/logo.png`} alt="" className="size-full object-contain p-0.5" /></span> voltiva</div>
+             <div className="flex items-center gap-2 text-xs font-medium text-[#374151]"><span className="grid size-6 place-items-center overflow-hidden rounded-md bg-[#0b1f3b]"><img src={`${basePath}/logo.png`} alt="" className="size-full object-contain p-0.5" /></span> voltiva</div>
             <p className="mt-8 text-[9px] uppercase tracking-[0.14em] text-[#a8a29e]">Seu espaço</p>
             <div className="mt-3 space-y-1.5 text-[11px] text-[#78716c]">
-              <div className="rounded-md bg-[#eaf5fc] px-2.5 py-2 font-medium text-[#2873a8]">Visão geral</div>
+              <div className="rounded-md bg-[#d7ebff] px-2.5 py-2 font-medium text-[#0b1f3b]">Visão geral</div>
               <div className="px-2.5 py-2">Calculadora</div>
               <div className="px-2.5 py-2">Consumo</div>
               <div className="px-2.5 py-2">Histórico</div>
@@ -204,12 +204,58 @@ function Brand({ compact = false }: { compact?: boolean }) {
   return <div className="flex items-center gap-2"><span className={`${compact ? 'size-8 rounded-lg' : 'size-10 rounded-xl'} grid shrink-0 place-items-center overflow-hidden`}><img src={`${basePath}/logo.png`} alt="" className="size-full object-cover" /></span><span className={`${compact ? 'text-lg' : 'text-[24px]'} font-display font-medium tracking-[-0.05em] text-[hsl(var(--foreground))]`}>voltiva</span></div>;
 }
 
+function AuthLayout({ children, mode }: { children: ReactNode; mode: 'sign-in' | 'sign-up' }) {
+  const isSignIn = mode === 'sign-in';
+  return (
+    <main className="relative min-h-[100dvh] overflow-hidden bg-[#f5f7fa] px-4 py-5 sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute -right-28 -top-32 size-[520px] rounded-full bg-[#d7ebff]/70 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-48 -left-24 size-[420px] rounded-full bg-[#ffc107]/10 blur-3xl" />
+      <div className="relative mx-auto grid min-h-[calc(100dvh-2.5rem)] max-w-6xl overflow-hidden rounded-[28px] bg-[#f5f7fa] shadow-[0_28px_90px_rgba(11,31,59,.12)] lg:grid-cols-[.9fr_1.1fr]">
+        <section className="relative hidden overflow-hidden bg-[#0b1f3b] p-9 text-white lg:flex lg:flex-col lg:justify-between">
+          <div className="pointer-events-none absolute -right-32 top-10 size-[420px] rounded-full border-[70px] border-[#1e6fff]/15" />
+          <div className="pointer-events-none absolute -bottom-44 -left-20 size-[440px] rounded-full bg-[#1e6fff]/20 blur-3xl" />
+          <div className="relative">
+            <div className="flex items-center gap-3">
+              <img src={`${basePath}/logo.png`} alt="" className="size-11 object-contain" />
+              <span className="font-display text-2xl font-bold tracking-[-0.05em]">voltiva</span>
+            </div>
+            <span className="mt-14 inline-flex rounded-full border border-[#d7ebff]/25 bg-[#d7ebff]/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-[#d7ebff]">
+              {isSignIn ? 'Seu espaço de energia' : 'Comece com a Voltiva'}
+            </span>
+            <h1 className="mt-5 max-w-md font-display text-[clamp(2rem,4vw,3.5rem)] font-semibold leading-[1.03] tracking-[-0.055em]">
+              {isSignIn ? 'Decisões elétricas mais claras.' : 'Organize sua energia desde o primeiro cálculo.'}
+            </h1>
+            <p className="mt-5 max-w-md text-sm leading-7 text-white/65">
+              {isSignIn
+                ? 'Acompanhe seus cálculos, consumo e próximos passos em um espaço feito para você.'
+                : 'Crie seu espaço Voltiva para salvar cálculos e transformar números em decisões melhores.'}
+            </p>
+          </div>
+          <div className="relative grid grid-cols-2 gap-3">
+            <div className="rounded-2xl border border-white/10 bg-white/[.07] p-4">
+              <span className="text-2xl font-bold text-[#ffc107]">01</span>
+              <p className="mt-2 text-xs leading-5 text-white/60">Fórmulas de Ohm sem ruído.</p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[.07] p-4">
+              <span className="text-2xl font-bold text-[#d7ebff]">V</span>
+              <p className="mt-2 text-xs leading-5 text-white/60">Seu histórico em um só lugar.</p>
+            </div>
+          </div>
+        </section>
+        <section className="flex items-center justify-center px-3 py-6 sm:px-8 lg:px-12">
+          <div className="w-full max-w-[440px]">{children}</div>
+        </section>
+      </div>
+    </main>
+  );
+}
+
 function SignInPage() {
-  return <div className="flex min-h-[100dvh] items-center justify-center bg-[#fafaf9] px-4 py-8"><SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} /></div>;
+  return <AuthLayout mode="sign-in"><SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} /></AuthLayout>;
 }
 
 function SignUpPage() {
-  return <div className="flex min-h-[100dvh] items-center justify-center bg-[#fafaf9] px-4 py-8"><SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} /></div>;
+  return <AuthLayout mode="sign-up"><SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} /></AuthLayout>;
 }
 
 function HomeRoute() {
