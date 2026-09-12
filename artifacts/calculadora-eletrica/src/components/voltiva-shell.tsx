@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useClerk, useUser } from '@clerk/react';
+import { Sidebar001, Sidebar001Item } from '@/components/unlumen-ui/sidebar-001';
 import {
   Activity,
   BarChart3,
@@ -47,15 +48,14 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
   const initials = (user?.firstName?.[0] || user?.emailAddresses[0]?.emailAddress?.[0] || 'V').toUpperCase();
   return (
     <div className="flex min-h-[100dvh] bg-transparent text-foreground">
-      <aside
-        style={{ width: sidebarCollapsed ? 76 : 252 }}
-        className="sticky top-3 hidden h-[calc(100dvh-1.5rem)] shrink-0 overflow-hidden rounded-[28px] border border-[#d8e0ea] bg-white text-[#0b1f3b] shadow-[0_10px_30px_rgba(11,31,59,.08)] md:flex"
+      <Sidebar001
+        controlledWidth={sidebarCollapsed ? 76 : 252}
+        resizable={false}
+        className="sticky top-3 hidden h-[calc(100dvh-1.5rem)] overflow-hidden rounded-[28px] border border-[#d8e0ea] bg-white text-[#0b1f3b] shadow-[0_10px_30px_rgba(11,31,59,.08)] md:flex"
         aria-label="Navegação principal"
       >
-        <div className={`h-full ${sidebarCollapsed ? 'min-w-[76px]' : 'min-w-[252px]'}`}>
-          <SidebarContent collapsed={sidebarCollapsed} onToggleCollapsed={() => setSidebarCollapsed((current) => !current)} onEditProfile={onEditProfile} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} firstName={firstName} initials={initials} />
-        </div>
-      </aside>
+        <SidebarContent collapsed={sidebarCollapsed} onToggleCollapsed={() => setSidebarCollapsed((current) => !current)} onEditProfile={onEditProfile} activePath={location} onClose={() => setMobileOpen(false)} onSignOut={() => signOut({ redirectUrl: '/' })} firstName={firstName} initials={initials} />
+      </Sidebar001>
 
       {mobileOpen && (
         <>
@@ -128,6 +128,8 @@ export function VoltivaShell({ children, onEditProfile, profileIncomplete = fals
 }
 
 function SidebarContent({ collapsed, onToggleCollapsed, onEditProfile, activePath, onClose, onSignOut, firstName, initials }: { collapsed: boolean; onToggleCollapsed?: () => void; onEditProfile?: () => void; activePath: string; onClose: () => void; onSignOut: () => void; firstName: string; initials: string }) {
+  const [, setLocation] = useLocation();
+
   return (
     <div className="flex h-full min-h-0 flex-col">
       <div className={`flex h-[72px] shrink-0 items-center border-b border-[#edf1f6] ${collapsed ? 'justify-center px-2' : 'justify-between px-5'}`}>
@@ -166,6 +168,30 @@ function SidebarContent({ collapsed, onToggleCollapsed, onEditProfile, activePat
         <nav className="space-y-1" aria-label="Navegação principal">
           {navItems.map(({ label, icon: Icon, path }) => {
             const isActive = activePath === path;
+            if (!collapsed) {
+              return (
+                <Sidebar001Item
+                  key={label}
+                  href={path}
+                  isActive={isActive}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setLocation(path);
+                    onClose();
+                  }}
+                  className={isActive
+                    ? 'rounded-xl bg-[#1e6fff]/10 font-semibold text-[#0b1f3b]'
+                    : 'rounded-xl text-[#687587] hover:text-[#0b1f3b]'}
+                  label={(
+                    <>
+                      <Icon size={17} strokeWidth={1.8} className={isActive ? 'shrink-0 text-[#1e6fff]' : 'shrink-0 text-[#8b98a8]'} />
+                      <span className="truncate">{label}</span>
+                    </>
+                  )}
+                />
+              );
+            }
+
             return isActive ? (
               <div
                 key={label}
