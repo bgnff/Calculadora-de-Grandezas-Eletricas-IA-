@@ -16,13 +16,14 @@ interface AnimatedNavLinkProps {
   href: string;
   children: string;
   dark?: boolean;
+  className?: string;
 }
 
-export function AnimatedNavLink({ href, children, dark = false }: AnimatedNavLinkProps) {
+export function AnimatedNavLink({ href, children, dark = false, className = '' }: AnimatedNavLinkProps) {
   return (
     <motion.a
       href={href}
-      className={`group relative block overflow-hidden rounded-full px-3 py-2 text-xs ${dark ? 'text-white/70' : 'text-[hsl(var(--muted-foreground))]'}`}
+      className={`group relative block overflow-hidden rounded-full px-3 py-2 text-xs ${dark ? 'text-white/70' : 'text-[hsl(var(--muted-foreground))]'} ${className}`}
       initial="rest"
       whileHover="hover"
       whileFocus="hover"

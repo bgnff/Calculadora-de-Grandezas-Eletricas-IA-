@@ -4,10 +4,9 @@ import { publishableKeyFromHost } from '@clerk/react/internal';
 import { shadcn } from '@clerk/themes';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { Redirect, Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
-import { ArrowRight, BarChart3, Calculator, CheckCircle2, CircleDollarSign, Clock3, Lightbulb, ShieldCheck } from 'lucide-react';
+import { ArrowRight, BarChart3, Calculator, CheckCircle2, CircleDollarSign, Clock3, Lightbulb, Menu, ShieldCheck, X } from 'lucide-react';
 import { MotionConfig, motion, useInView } from 'framer-motion';
 import { ErrorBoundary } from '@/components/error-boundary';
-import { BlurReveal } from '@/components/blur-reveal';
 import Rays from '@/components/light-rays';
 import { ProfileOnboarding } from '@/components/profile-onboarding';
 import { VoltivaShell } from '@/components/voltiva-shell';
@@ -113,51 +112,139 @@ function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; 
 }
 
 function LandingPage() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [enterState, setEnterState] = useState<'pending' | 'run' | 'done'>('pending');
+  const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setEnterState('done');
+      return;
+    }
+
+    let cancelled = false;
+    let fallbackTimer = 0;
+    let finishTimer = 0;
+    let firstFrame = 0;
+    let secondFrame = 0;
+
+    const start = () => {
+      firstFrame = window.requestAnimationFrame(() => {
+        secondFrame = window.requestAnimationFrame(() => {
+          if (cancelled) return;
+          setEnterState('run');
+          finishTimer = window.setTimeout(() => setEnterState('done'), 2600);
+        });
+      });
+    };
+
+    fallbackTimer = window.setTimeout(start, 1200);
+    document.fonts?.ready.then(() => {
+      if (cancelled) return;
+      window.clearTimeout(fallbackTimer);
+      start();
+    });
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(fallbackTimer);
+      window.clearTimeout(finishTimer);
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
+    };
+  }, []);
+
+  useEffect(() => {
+    const closeOnOutsideClick = (event: MouseEvent) => {
+      if (menuOpen && navRef.current && !navRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    document.addEventListener('mousedown', closeOnOutsideClick);
+    document.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.removeEventListener('mousedown', closeOnOutsideClick);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <MotionConfig reducedMotion="never">
-      <main className="relative min-h-[100dvh] overflow-x-hidden bg-white">
-      <Rays backgroundColor="hsl(var(--background))" forceAnimation style={{ zIndex: 0 }} />
+      <main className="landing-page relative min-h-[100dvh] overflow-x-hidden bg-white" data-enter={enterState}>
+      <Rays backgroundColor="hsl(var(--background))" style={{ zIndex: 0 }} />
 
-      <header className="relative z-20 mx-auto mt-5 flex h-14 max-w-[980px] items-center justify-between rounded-full bg-[#0b1f3b] px-3 pl-5 shadow-[0_16px_36px_rgba(11,31,59,.16)] md:mt-7">
+      <header ref={navRef} className="landing-nav relative z-20 mx-auto mt-5 flex h-14 max-w-[980px] items-center justify-between rounded-full bg-[#0b1f3b] px-3 pl-5 shadow-[0_16px_36px_rgba(11,31,59,.16)] md:mt-7">
         <Brand inverse />
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Navegação principal">
-           <AnimatedNavLink href="#recursos" dark>Recursos</AnimatedNavLink>
-           <AnimatedNavLink href="#como-funciona" dark>Como funciona</AnimatedNavLink>
-           <AnimatedNavLink href="#plataforma" dark>Plataforma</AnimatedNavLink>
-           <AnimatedNavLink href="#clareza" dark>Clareza dos dados</AnimatedNavLink>
+           <AnimatedNavLink href="#recursos" dark className="landing-nav-link">Recursos</AnimatedNavLink>
+           <AnimatedNavLink href="#como-funciona" dark className="landing-nav-link">Como funciona</AnimatedNavLink>
+           <AnimatedNavLink href="#plataforma" dark className="landing-nav-link">Plataforma</AnimatedNavLink>
+           <AnimatedNavLink href="#clareza" dark className="landing-nav-link">Clareza dos dados</AnimatedNavLink>
           <span className="mx-2 h-4 w-px bg-white/20" />
-          <span className="text-[11px] font-medium text-white/55">Feito para decisões reais</span>
+           <span className="landing-nav-note text-[11px] font-medium text-white/55">Feito para decisões reais</span>
         </nav>
         <div className="flex items-center gap-1">
-          <a href={`${basePath}/sign-in`} data-testid="link-header-entrar" className="rounded-full px-3 py-2 text-xs text-white/70 transition hover:text-white">Entrar</a>
-          <a href={`${basePath}/sign-up`} data-testid="link-header-cadastro" className="rounded-full bg-white px-4 py-2.5 text-xs font-bold text-[#0b1f3b] transition hover:bg-[#d7ebff]">Começar grátis</a>
+           <a href={`${basePath}/sign-in`} data-testid="link-header-entrar" className="landing-nav-account rounded-full px-3 py-2 text-xs text-white/70 transition hover:text-white">Entrar</a>
+           <a href={`${basePath}/sign-up`} data-testid="link-header-cadastro" className="landing-nav-account rounded-full bg-white px-4 py-2.5 text-xs font-bold text-[#0b1f3b] transition hover:bg-[#d7ebff]">Começar grátis</a>
+           <button
+             type="button"
+             className="landing-burger"
+             aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
+             aria-expanded={menuOpen}
+             aria-controls="landing-nav-menu"
+             onClick={() => setMenuOpen((open) => !open)}
+           >
+             <span />
+             <span />
+           </button>
+        </div>
+        <div id="landing-nav-menu" className="landing-mobile-menu" data-open={menuOpen}>
+          <a href="#recursos" onClick={closeMenu}>Recursos</a>
+          <a href="#como-funciona" onClick={closeMenu}>Como funciona</a>
+          <a href="#plataforma" onClick={closeMenu}>Plataforma</a>
+          <a href="#clareza" onClick={closeMenu}>Clareza dos dados</a>
+          <a href={`${basePath}/sign-up`} onClick={closeMenu} className="landing-mobile-menu__cta">Começar grátis</a>
         </div>
       </header>
 
        <section className="relative z-10 mx-auto max-w-[1180px] px-5 pb-0 pt-16 md:px-8 md:pt-20">
         <div className="flex flex-col items-center">
-          <Reveal className="max-w-[820px] text-center">
-            <h1 className="max-w-[850px] font-display text-[clamp(2.8rem,5.4vw,5.1rem)] font-semibold leading-[1.02] tracking-[-0.065em] text-[#0b1f3b]">
-              <BlurReveal className="inline" forceAnimation>Entenda sua </BlurReveal>
-              <BlurReveal className="inline-block whitespace-nowrap rounded-md bg-[#d7ebff] px-2 text-[#0b1f3b]" delay={0.12} forceAnimation>energia.</BlurReveal>
-              <span className="block"><BlurReveal className="inline-block whitespace-nowrap" delay={0.28} forceAnimation>Decida melhor.</BlurReveal></span>
+           <div className="landing-hero-copy max-w-[820px] text-center">
+             <h1 className="landing-hero-title max-w-[850px] font-display text-[clamp(2.8rem,5.4vw,5.1rem)] font-semibold leading-[1.02] tracking-[-0.065em] text-[#0b1f3b]">
+               <span>Entenda sua <strong>energia.</strong></span>
+               <span>Decida melhor.</span>
             </h1>
-            <p className="mx-auto mt-6 max-w-[650px] text-base leading-7 text-[#64748b]">A Voltiva transforma grandezas elétricas, consumo e custos em uma leitura prática para sua casa, seu projeto ou seu negócio.</p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <motion.a href={`${basePath}/sign-up`} data-testid="link-hero-cadastro" whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1e6fff] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1557d6]">Criar meu espaço <ArrowRight size={16} /></motion.a>
-              <motion.a href="#plataforma" data-testid="link-hero-plataforma" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#c8e4f7] bg-white px-5 py-3 text-sm font-medium text-[#17617a] transition hover:border-[#1e6fff] hover:text-[#0b1f3b]">Conhecer a plataforma</motion.a>
+             <p className="landing-hero-sub mx-auto mt-6 max-w-[650px] text-base leading-7 text-[#64748b]">A Voltiva transforma grandezas elétricas, consumo e custos em uma leitura prática para sua casa, seu projeto ou seu negócio.</p>
+             <div className="landing-hero-actions mt-8 flex flex-wrap justify-center gap-3">
+               <motion.a href={`${basePath}/sign-up`} data-testid="link-hero-cadastro" whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1e6fff] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1557d6]">Criar meu espaço <ArrowRight size={16} /></motion.a>
+               <motion.a href="#plataforma" data-testid="link-hero-plataforma" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#c8e4f7] bg-white px-5 py-3 text-sm font-medium text-[#17617a] transition hover:border-[#1e6fff] hover:text-[#0b1f3b]">Conhecer a plataforma</motion.a>
             </div>
-            <div className="mx-auto mt-9 grid max-w-[560px] grid-cols-2 gap-x-6 gap-y-4 border-t border-[#dfe8ed] pt-5 text-left text-xs text-[#64748b] sm:grid-cols-4">
+             <div className="landing-hero-proof mx-auto mt-9 grid max-w-[560px] grid-cols-2 gap-x-6 gap-y-4 border-t border-[#dfe8ed] pt-5 text-left text-xs text-[#64748b] sm:grid-cols-4">
               <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Grandezas</span>
               <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Consumo</span>
               <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Economia</span>
               <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Histórico</span>
             </div>
-          </Reveal>
-          <div className="relative -mx-5 mt-14 w-[calc(100%+2.5rem)] overflow-hidden bg-[#1e6fff] px-5 pt-10 sm:-mx-8 sm:w-[calc(100%+4rem)] sm:px-8 md:mt-16 md:pt-14">
+           </div>
+           <div className="landing-band relative -mx-5 mt-14 w-[calc(100%+2.5rem)] overflow-hidden bg-[#0db5ed] px-5 pt-10 sm:-mx-8 sm:w-[calc(100%+4rem)] sm:px-8 md:mt-16 md:pt-14">
+             <video
+               className="landing-band__video"
+               autoPlay
+               muted
+               loop
+               playsInline
+               poster="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_125039_45a71f04-36dd-4620-99d8-7526316d439e.png"
+               src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_125119_4963ddd4-c287-4044-b014-b68943cdd8bd.mp4"
+               aria-hidden="true"
+             />
             <AnimatedEnergyLines />
-            <div className="relative z-10 mx-auto max-w-[1020px]">
-              <DashboardPreview banded />
+             <div className="landing-product-card relative z-10 mx-auto max-w-[1020px]">
+               <DashboardPreview banded landingAnimated />
             </div>
           </div>
         </div>
@@ -261,65 +348,73 @@ function LandingPage() {
   );
 }
 
-function DashboardPreview({ banded = false }: { banded?: boolean }) {
-  return (
-    <Reveal className={`relative w-full ${banded ? 'mt-0' : 'mt-14 md:mt-20'}`} delay={0.1}>
-      <div className="soft-shadow overflow-hidden rounded-[18px] border border-[#dfe8ed] bg-[#f9fbfd]">
-        <div className="grid min-h-[500px] overflow-hidden md:min-h-[610px] lg:grid-cols-[190px_minmax(0,1fr)]">
-          <aside className="hidden border-r border-[#dbe7f1] bg-white p-5 lg:block">
-            <div className="flex items-center gap-2 text-sm font-medium text-[#0b3558]"><img src={`${basePath}/logo.png`} alt="" className="size-7 object-contain" /> voltiva</div>
-            <p className="mt-10 text-[10px] font-bold uppercase tracking-[0.14em] text-[#8ba8c9]">Seu espaço</p>
-            <div className="mt-4 space-y-1.5 text-[11px] text-[#64748b]">
-              <div className="rounded-lg bg-[#dff0ff] px-2.5 py-2 font-semibold text-[#004eba]">Visão geral</div>
-              <div className="px-2.5 py-2">Calculadora</div>
-              <div className="px-2.5 py-2">Consumo</div>
-              <div className="px-2.5 py-2">Histórico</div>
-            </div>
-            <div className="mt-28 border-t border-[#dbe7f1] pt-3 text-[10px] text-[#8ba8c9]">Perfil completo</div>
-          </aside>
-          <div className="min-w-0 space-y-4 p-4 md:p-7">
-            <div className="flex items-end justify-between gap-3">
-              <div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#1e6fff]">Visão geral</p><h2 className="mt-1 font-display text-2xl font-semibold tracking-[-0.04em] text-[#0b1f3b] md:text-3xl">Olá, por aqui.</h2><p className="mt-1 hidden text-[11px] leading-4 text-[#64748b] md:block">Seu espaço para entender grandezas e tomar decisões elétricas.</p></div>
-              <span className="inline-flex shrink-0 items-center gap-1 rounded-lg bg-[#1e6fff] px-3 py-2.5 text-[10px] font-bold text-white">Novo cálculo <ArrowRight size={12} /></span>
-            </div>
-            <div className="rounded-xl border border-[#c9dcf2] bg-[#eaf2ff] p-4">
-              <div className="flex items-center gap-3"><span className="grid size-9 shrink-0 place-items-center rounded-lg bg-white text-[#1e6fff]"><Lightbulb size={17} /></span><div><p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#004eba]">Seu ponto de partida</p><p className="mt-0.5 text-[13px] font-semibold text-[#0b3558]">Encontrar oportunidades</p></div><span className="ml-auto hidden rounded-lg border border-[#b5cdec] bg-white px-2.5 py-1.5 text-[10px] font-bold text-[#004eba] md:inline-flex">Ver perfil</span></div>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                ['Cálculos salvos', '12', 'No histórico', Calculator],
-                ['Consumo estimado', '186,4 kWh', 'Equipamentos', BarChart3],
-                ['Equipamentos', '08', 'Neste espaço', CircleDollarSign],
-              ].map(([label, value, caption, Icon]) => <div key={label as string} className="rounded-xl border border-[#dbe7f1] bg-white p-3"><div className="flex items-start justify-between gap-1"><p className="text-[9px] font-bold uppercase tracking-[0.08em] text-[#64748b]">{label as string}</p><span className="hidden size-7 place-items-center rounded-md bg-[#e6f0ff] text-[#1e6fff] sm:grid"><Icon size={13} /></span></div><p className="mt-4 font-data text-base font-medium tracking-[-0.04em] text-[#0b1f3b]">{value as string}</p><p className="mt-0.5 text-[9px] text-[#64748b]">{caption as string}</p></div>)}
-            </div>
-            <div className="grid gap-3 lg:grid-cols-[1.15fr_0.85fr]">
-              <div className="rounded-xl border border-[#dbe7f1] bg-white p-4">
-                <div className="flex items-end justify-between"><div><p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#64748b]">Atividade recente</p><p className="mt-1 text-[14px] font-semibold text-[#0b1f3b]">Últimos cálculos</p></div><span className="text-[9px] font-bold text-[#1e6fff]">Ver histórico</span></div>
-                <div className="mt-3 divide-y divide-[#e6eef5]">
-                  {[
-                    ['Potência do chuveiro', 'Calculadora elétrica', 'agora'],
-                    ['Consumo mensal da cozinha', 'Consumo', 'ontem'],
-                    ['Economia com LED', 'Relatório', '12 jun'],
-                  ].map(([title, type, date]) => <div key={title} className="flex items-center gap-2 py-3 first:pt-0 last:pb-0"><span className="grid size-7 shrink-0 place-items-center rounded-md bg-[#e6f0ff] text-[#1e6fff]"><Clock3 size={12} /></span><span className="min-w-0 flex-1"><strong className="block truncate text-[10px] font-semibold text-[#0b1f3b]">{title}</strong><span className="text-[9px] text-[#64748b]">{type}</span></span><span className="text-[9px] text-[#8ba8c9]">{date}</span></div>)}
-                </div>
-              </div>
-              <div className="rounded-xl border border-[#dbe7f1] bg-white/80 p-4">
-                <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#64748b]">Acesso rápido</p>
-                <div className="mt-3 space-y-2">
-                  {[
-                    ['Calcular uma grandeza', 'Use as fórmulas de Ohm.', Calculator],
-                    ['Mapear consumo', 'Cadastre equipamentos.', BarChart3],
-                    ['Gerar relatório', 'Exporte seus dados.', Clock3],
-                  ].map(([title, text, Icon]) => <div key={title as string} className="flex items-center gap-2 rounded-lg p-1.5"><span className="grid size-7 shrink-0 place-items-center rounded-md bg-[#e6f0ff] text-[#1e6fff]"><Icon size={12} /></span><span className="min-w-0"><strong className="block truncate text-[10px] font-semibold text-[#0b1f3b]">{title as string}</strong><span className="block truncate text-[9px] text-[#64748b]">{text as string}</span></span></div>)}
-                </div>
+function DashboardPreview({ banded = false, landingAnimated = false }: { banded?: boolean; landingAnimated?: boolean }) {
+  const preview = (
+    <div className="soft-shadow overflow-hidden rounded-[18px] border border-[#dfe8ed] bg-[#f9fbfd]">
+      <div className="grid min-h-[500px] overflow-hidden md:min-h-[610px] lg:grid-cols-[190px_minmax(0,1fr)]">
+        <aside className="hidden border-r border-[#dbe7f1] bg-white p-5 lg:block">
+          <div className="flex items-center gap-2 text-sm font-medium text-[#0b3558]"><img src={`${basePath}/logo.png`} alt="" className="size-7 object-contain" /> voltiva</div>
+          <p className="mt-10 text-[10px] font-bold uppercase tracking-[0.14em] text-[#8ba8c9]">Seu espaço</p>
+          <div className="mt-4 space-y-1.5 text-[11px] text-[#64748b]">
+            <div className="rounded-lg bg-[#dff0ff] px-2.5 py-2 font-semibold text-[#004eba]">Visão geral</div>
+            <div className="px-2.5 py-2">Calculadora</div>
+            <div className="px-2.5 py-2">Consumo</div>
+            <div className="px-2.5 py-2">Histórico</div>
+          </div>
+          <div className="mt-28 border-t border-[#dbe7f1] pt-3 text-[10px] text-[#8ba8c9]">Perfil completo</div>
+        </aside>
+        <div className="min-w-0 space-y-4 p-4 md:p-7">
+          <div className="flex items-end justify-between gap-3">
+            <div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#1e6fff]">Visão geral</p><h2 className="mt-1 font-display text-2xl font-semibold tracking-[-0.04em] text-[#0b1f3b] md:text-3xl">Olá, por aqui.</h2><p className="mt-1 hidden text-[11px] leading-4 text-[#64748b] md:block">Seu espaço para entender grandezas e tomar decisões elétricas.</p></div>
+            <span className="inline-flex shrink-0 items-center gap-1 rounded-lg bg-[#1e6fff] px-3 py-2.5 text-[10px] font-bold text-white">Novo cálculo <ArrowRight size={12} /></span>
+          </div>
+          <div className="rounded-xl border border-[#c9dcf2] bg-[#eaf2ff] p-4">
+            <div className="flex items-center gap-3"><span className="grid size-9 shrink-0 place-items-center rounded-lg bg-white text-[#1e6fff]"><Lightbulb size={17} /></span><div><p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#004eba]">Seu ponto de partida</p><p className="mt-0.5 text-[13px] font-semibold text-[#0b3558]">Encontrar oportunidades</p></div><span className="ml-auto hidden rounded-lg border border-[#b5cdec] bg-white px-2.5 py-1.5 text-[10px] font-bold text-[#004eba] md:inline-flex">Ver perfil</span></div>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              ['Cálculos salvos', '12', 'No histórico', Calculator],
+              ['Consumo estimado', '186,4 kWh', 'Equipamentos', BarChart3],
+              ['Equipamentos', '08', 'Neste espaço', CircleDollarSign],
+            ].map(([label, value, caption, Icon]) => <div key={label as string} className="rounded-xl border border-[#dbe7f1] bg-white p-3"><div className="flex items-start justify-between gap-1"><p className="text-[9px] font-bold uppercase tracking-[0.08em] text-[#64748b]">{label as string}</p><span className="hidden size-7 place-items-center rounded-md bg-[#e6f0ff] text-[#1e6fff] sm:grid"><Icon size={13} /></span></div><p className="mt-4 font-data text-base font-medium tracking-[-0.04em] text-[#0b1f3b]">{value as string}</p><p className="mt-0.5 text-[9px] text-[#64748b]">{caption as string}</p></div>)}
+          </div>
+          <div className="grid gap-3 lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="rounded-xl border border-[#dbe7f1] bg-white p-4">
+              <div className="flex items-end justify-between"><div><p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#64748b]">Atividade recente</p><p className="mt-1 text-[14px] font-semibold text-[#0b1f3b]">Últimos cálculos</p></div><span className="text-[9px] font-bold text-[#1e6fff]">Ver histórico</span></div>
+              <div className="mt-3 divide-y divide-[#e6eef5]">
+                {[
+                  ['Potência do chuveiro', 'Calculadora elétrica', 'agora'],
+                  ['Consumo mensal da cozinha', 'Consumo', 'ontem'],
+                  ['Economia com LED', 'Relatório', '12 jun'],
+                ].map(([title, type, date]) => <div key={title} className="flex items-center gap-2 py-3 first:pt-0 last:pb-0"><span className="grid size-7 shrink-0 place-items-center rounded-md bg-[#e6f0ff] text-[#1e6fff]"><Clock3 size={12} /></span><span className="min-w-0 flex-1"><strong className="block truncate text-[10px] font-semibold text-[#0b1f3b]">{title}</strong><span className="text-[9px] text-[#64748b]">{type}</span></span><span className="text-[9px] text-[#8ba8c9]">{date}</span></div>)}
               </div>
             </div>
-            <div className="flex flex-wrap items-center gap-2 border-t border-[#dbe7f1] pt-4 text-[10px]">
-              {['Visão geral', 'Calculadora', 'Consumo', 'Histórico'].map((tab, index) => <span key={tab} className={`rounded-full px-3 py-1.5 ${index === 0 ? 'bg-[#0b1f3b] font-semibold text-white' : 'border border-[#dbe7f1] text-[#64748b]'}`}>{tab}</span>)}
+            <div className="rounded-xl border border-[#dbe7f1] bg-white/80 p-4">
+              <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#64748b]">Acesso rápido</p>
+              <div className="mt-3 space-y-2">
+                {[
+                  ['Calcular uma grandeza', 'Use as fórmulas de Ohm.', Calculator],
+                  ['Mapear consumo', 'Cadastre equipamentos.', BarChart3],
+                  ['Gerar relatório', 'Exporte seus dados.', Clock3],
+                ].map(([title, text, Icon]) => <div key={title as string} className="flex items-center gap-2 rounded-lg p-1.5"><span className="grid size-7 shrink-0 place-items-center rounded-md bg-[#e6f0ff] text-[#1e6fff]"><Icon size={12} /></span><span className="min-w-0"><strong className="block truncate text-[10px] font-semibold text-[#0b1f3b]">{title as string}</strong><span className="block truncate text-[9px] text-[#64748b]">{text as string}</span></span></div>)}
+              </div>
             </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2 border-t border-[#dbe7f1] pt-4 text-[10px]">
+            {['Visão geral', 'Calculadora', 'Consumo', 'Histórico'].map((tab, index) => <span key={tab} className={`rounded-full px-3 py-1.5 ${index === 0 ? 'bg-[#0b1f3b] font-semibold text-white' : 'border border-[#dbe7f1] text-[#64748b]'}`}>{tab}</span>)}
           </div>
         </div>
       </div>
+    </div>
+  );
+
+  if (landingAnimated) {
+    return <div className={`relative w-full ${banded ? 'mt-0' : 'mt-14 md:mt-20'}`}>{preview}</div>;
+  }
+
+  return (
+    <Reveal className={`relative w-full ${banded ? 'mt-0' : 'mt-14 md:mt-20'}`} delay={0.1}>
+      {preview}
     </Reveal>
   );
 }
@@ -329,7 +424,7 @@ function Feature({ title, text, icon, eyebrow, className = '' }: { title: string
 }
 
 function Brand({ compact = false, inverse = false }: { compact?: boolean; inverse?: boolean }) {
-  return <div className="flex items-center gap-2"><img src={`${basePath}/logo.png`} alt="" className={`${compact ? 'size-8' : 'size-10'} shrink-0 object-contain`} /><span className={`${compact ? 'text-lg' : 'text-[24px]'} font-display font-medium tracking-[-0.05em] ${inverse ? 'text-white' : 'text-[hsl(var(--foreground))]'}`}>voltiva</span></div>;
+  return <div className="landing-brand flex items-center gap-2"><img src={`${basePath}/logo.png`} alt="" className={`landing-brand__logo ${compact ? 'size-8' : 'size-10'} shrink-0 object-contain`} /><span className={`landing-brand__wordmark ${compact ? 'text-lg' : 'text-[24px]'} font-display font-medium tracking-[-0.05em] ${inverse ? 'text-white' : 'text-[hsl(var(--foreground))]'}`}>voltiva</span></div>;
 }
 
 function AuthLayout({ children, mode }: { children: ReactNode; mode: 'sign-in' | 'sign-up' }) {
