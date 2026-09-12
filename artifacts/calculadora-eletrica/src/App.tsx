@@ -115,38 +115,37 @@ function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; 
 function LandingPage() {
   return (
     <MotionConfig reducedMotion="never">
-      <main className="relative min-h-[100dvh] overflow-x-hidden bg-[#f5f7fa]">
+      <main className="relative min-h-[100dvh] overflow-x-hidden bg-white">
       <Rays backgroundColor="hsl(var(--background))" forceAnimation style={{ zIndex: 0 }} />
 
-      <header className="relative z-10 mx-auto flex max-w-[1180px] items-center justify-between px-5 py-5 md:px-8 md:py-6">
-        <Brand />
+      <header className="relative z-20 mx-auto mt-5 flex h-14 max-w-[980px] items-center justify-between rounded-full bg-[#0b1f3b] px-3 pl-5 shadow-[0_16px_36px_rgba(11,31,59,.16)] md:mt-7">
+        <Brand inverse />
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Navegação principal">
-           <AnimatedNavLink href="#recursos">Recursos</AnimatedNavLink>
-           <AnimatedNavLink href="#como-funciona">Como funciona</AnimatedNavLink>
-           <AnimatedNavLink href="#plataforma">Plataforma</AnimatedNavLink>
-           <AnimatedNavLink href="#clareza">Clareza dos dados</AnimatedNavLink>
-          <span className="mx-2 h-4 w-px bg-[hsl(var(--border))]" />
-          <span className="text-[11px] font-medium text-[#64748b]">Feito para decisões reais</span>
+           <AnimatedNavLink href="#recursos" dark>Recursos</AnimatedNavLink>
+           <AnimatedNavLink href="#como-funciona" dark>Como funciona</AnimatedNavLink>
+           <AnimatedNavLink href="#plataforma" dark>Plataforma</AnimatedNavLink>
+           <AnimatedNavLink href="#clareza" dark>Clareza dos dados</AnimatedNavLink>
+          <span className="mx-2 h-4 w-px bg-white/20" />
+          <span className="text-[11px] font-medium text-white/55">Feito para decisões reais</span>
         </nav>
         <div className="flex items-center gap-1">
-          <a href={`${basePath}/sign-in`} data-testid="link-header-entrar" className="rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--foreground))]">Entrar</a>
-          <a href={`${basePath}/sign-up`} data-testid="link-header-cadastro" className="rounded-lg bg-[#1e6fff] px-4 py-2.5 text-xs font-medium text-white transition hover:bg-[#1557d6]">Começar grátis</a>
+          <a href={`${basePath}/sign-in`} data-testid="link-header-entrar" className="rounded-full px-3 py-2 text-xs text-white/70 transition hover:text-white">Entrar</a>
+          <a href={`${basePath}/sign-up`} data-testid="link-header-cadastro" className="rounded-full bg-white px-4 py-2.5 text-xs font-bold text-[#0b1f3b] transition hover:bg-[#d7ebff]">Começar grátis</a>
         </div>
       </header>
 
-       <section className="relative z-10 mx-auto max-w-[1180px] px-5 pb-20 pt-16 md:px-8 md:pb-28 md:pt-24">
-         <AnimatedEnergyLines />
+       <section className="relative z-10 mx-auto max-w-[1180px] px-5 pb-0 pt-16 md:px-8 md:pt-20">
         <div className="flex flex-col items-center">
           <Reveal className="max-w-[820px] text-center">
-            <h1 className="max-w-[850px] font-display text-[clamp(2.8rem,5.4vw,5.1rem)] font-semibold leading-[1.02] tracking-[-0.065em] text-[hsl(var(--foreground))]">
+            <h1 className="max-w-[850px] font-display text-[clamp(2.8rem,5.4vw,5.1rem)] font-semibold leading-[1.02] tracking-[-0.065em] text-[#0b1f3b]">
               <BlurReveal className="inline" forceAnimation>Entenda sua </BlurReveal>
               <BlurReveal className="inline-block whitespace-nowrap rounded-md bg-[#d7ebff] px-2 text-[#0b1f3b]" delay={0.12} forceAnimation>energia.</BlurReveal>
               <span className="block"><BlurReveal className="inline-block whitespace-nowrap" delay={0.28} forceAnimation>Decida melhor.</BlurReveal></span>
             </h1>
-            <p className="mx-auto mt-6 max-w-[650px] text-base leading-7 text-[hsl(var(--muted-foreground))]">A Voltiva transforma grandezas elétricas, consumo e custos em uma leitura prática para sua casa, seu projeto ou seu negócio.</p>
+            <p className="mx-auto mt-6 max-w-[650px] text-base leading-7 text-[#64748b]">A Voltiva transforma grandezas elétricas, consumo e custos em uma leitura prática para sua casa, seu projeto ou seu negócio.</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <motion.a href={`${basePath}/sign-up`} data-testid="link-hero-cadastro" whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1e6fff] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1557d6]">Criar meu espaço <ArrowRight size={16} /></motion.a>
-              <motion.a href="#plataforma" data-testid="link-hero-plataforma" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#c8e4f7] bg-[#f5f7fa] px-5 py-3 text-sm font-medium text-[#17617a] transition hover:border-[#1e6fff] hover:text-[#0b1f3b]">Conhecer a plataforma</motion.a>
+              <motion.a href="#plataforma" data-testid="link-hero-plataforma" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#c8e4f7] bg-white px-5 py-3 text-sm font-medium text-[#17617a] transition hover:border-[#1e6fff] hover:text-[#0b1f3b]">Conhecer a plataforma</motion.a>
             </div>
             <div className="mx-auto mt-9 grid max-w-[560px] grid-cols-2 gap-x-6 gap-y-4 border-t border-[#dfe8ed] pt-5 text-left text-xs text-[#64748b] sm:grid-cols-4">
               <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Grandezas</span>
@@ -155,7 +154,12 @@ function LandingPage() {
               <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Histórico</span>
             </div>
           </Reveal>
-          <DashboardPreview />
+          <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2 overflow-hidden bg-[#1e6fff] px-5 pt-10 sm:px-8 md:mt-16 md:pt-14">
+            <AnimatedEnergyLines />
+            <div className="relative z-10 mx-auto max-w-[1020px]">
+              <DashboardPreview banded />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -257,9 +261,9 @@ function LandingPage() {
   );
 }
 
-function DashboardPreview() {
+function DashboardPreview({ banded = false }: { banded?: boolean }) {
   return (
-    <Reveal className="relative mt-14 w-full max-w-[1020px] md:mt-20" delay={0.1}>
+    <Reveal className={`relative w-full ${banded ? 'mt-0' : 'mt-14 md:mt-20'}`} delay={0.1}>
       <div className="soft-shadow overflow-hidden rounded-[18px] border border-[#dfe8ed] bg-[#f9fbfd]">
         <div className="grid min-h-[500px] overflow-hidden md:min-h-[610px] lg:grid-cols-[190px_minmax(0,1fr)]">
           <aside className="hidden border-r border-[#dbe7f1] bg-white p-5 lg:block">
@@ -324,8 +328,8 @@ function Feature({ title, text, icon, eyebrow, className = '' }: { title: string
   return <div className={`soft-shadow rounded-2xl border border-[#dfe8ed] bg-white p-6 ${className}`} data-testid={`card-feature-${eyebrow.split(' ')[0]}`}><div className="flex items-start justify-between gap-4"><span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#1e6fff]">{eyebrow}</span><span className="text-[#1e6fff]">{icon}</span></div><h3 className="mt-10 font-display text-xl font-semibold tracking-[-0.035em] text-[#0b1f3b]">{title}</h3><p className="mt-3 max-w-[440px] text-sm leading-6 text-[#64748b]">{text}</p></div>;
 }
 
-function Brand({ compact = false }: { compact?: boolean }) {
-  return <div className="flex items-center gap-2"><img src={`${basePath}/logo.png`} alt="" className={`${compact ? 'size-8' : 'size-10'} shrink-0 object-contain`} /><span className={`${compact ? 'text-lg' : 'text-[24px]'} font-display font-medium tracking-[-0.05em] text-[hsl(var(--foreground))]`}>voltiva</span></div>;
+function Brand({ compact = false, inverse = false }: { compact?: boolean; inverse?: boolean }) {
+  return <div className="flex items-center gap-2"><img src={`${basePath}/logo.png`} alt="" className={`${compact ? 'size-8' : 'size-10'} shrink-0 object-contain`} /><span className={`${compact ? 'text-lg' : 'text-[24px]'} font-display font-medium tracking-[-0.05em] ${inverse ? 'text-white' : 'text-[hsl(var(--foreground))]'}`}>voltiva</span></div>;
 }
 
 function AuthLayout({ children, mode }: { children: ReactNode; mode: 'sign-in' | 'sign-up' }) {

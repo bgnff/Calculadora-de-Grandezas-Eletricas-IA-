@@ -15,13 +15,14 @@ const washTransition: Transition = {
 interface AnimatedNavLinkProps {
   href: string;
   children: string;
+  dark?: boolean;
 }
 
-export function AnimatedNavLink({ href, children }: AnimatedNavLinkProps) {
+export function AnimatedNavLink({ href, children, dark = false }: AnimatedNavLinkProps) {
   return (
     <motion.a
       href={href}
-      className="group relative block overflow-hidden rounded-full px-3 py-2 text-xs text-[hsl(var(--muted-foreground))]"
+      className={`group relative block overflow-hidden rounded-full px-3 py-2 text-xs ${dark ? 'text-white/70' : 'text-[hsl(var(--muted-foreground))]'}`}
       initial="rest"
       whileHover="hover"
       whileFocus="hover"
