@@ -202,7 +202,7 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
       </div>
 
       <section className="grid items-start gap-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(390px,1.05fr)]">
-        <motion.div initial={reducedMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { delay: 0.08, duration: 0.45 }} className="soft-shadow rounded-2xl border border-[hsl(var(--card-border))] bg-white p-5 sm:p-7" data-testid="card-calculator-form">
+         <motion.form onSubmit={(event) => { event.preventDefault(); calculate(); }} initial={reducedMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { delay: 0.08, duration: 0.45 }} className="soft-shadow rounded-2xl border border-[hsl(var(--card-border))] bg-white p-5 sm:p-7" data-testid="card-calculator-form" aria-label="Formulário de cálculo elétrico">
           <div className="mb-6 flex items-start justify-between gap-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">01 / Escolha a grandeza</p>
@@ -218,9 +218,11 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
               return (
                 <button
                   key={option}
+                   type="button"
                   onClick={() => handleTypeChange(option)}
                   role="radio"
                   aria-checked={selected}
+                   aria-label={`Calcular ${optionMeta.label.toLowerCase()}`}
                    className={`focus-ring rounded-lg border px-2 py-3 text-center transition ${selected ? 'border-[#006bff] bg-[#e6f0ff] text-[#004eba] shadow-[inset_0_0_0_1px_#006bff]' : 'border-[hsl(var(--border))] bg-[#fcfdfd] text-[hsl(var(--muted-foreground))] hover:border-[#9bbce0] hover:bg-[#f4f8ff]'}`}
                   data-testid={`button-select-${option}`}
                 >
@@ -274,16 +276,16 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
           {formError && <div className="mt-5 rounded-xl border border-[#f0c8c6] bg-[#fff6f5] px-4 py-3 text-sm font-medium text-[#b74d49]" role="alert" data-testid="alert-calculation">{formError}</div>}
 
           <div className="mt-7 flex flex-col-reverse gap-3 border-t border-[hsl(var(--border))] pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <button onClick={() => reset()} className="focus-ring inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold text-[hsl(var(--muted-foreground))] transition hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))]" data-testid="button-clear">
+             <button type="button" onClick={() => reset()} className="focus-ring inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold text-[hsl(var(--muted-foreground))] transition hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))]" data-testid="button-clear">
               <Eraser size={16} /> Limpar
             </button>
-            <button onClick={calculate} className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_18px_hsl(var(--primary)/.18)] transition hover:-translate-y-0.5 hover:bg-[#004eba] active:translate-y-0" data-testid="button-calculate">
+             <button type="submit" className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_18px_hsl(var(--primary)/.18)] transition hover:-translate-y-0.5 hover:bg-[#004eba] active:translate-y-0" data-testid="button-calculate">
               Calcular <ArrowRight size={17} />
             </button>
           </div>
-        </motion.div>
+         </motion.form>
 
-         <motion.div initial={reducedMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { delay: 0.16, duration: 0.45 }} className="min-h-[530px] rounded-2xl border border-[hsl(var(--card-border))] bg-white" data-testid="card-calculation-result">
+          <motion.div initial={reducedMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={reducedMotion ? { duration: 0 } : { delay: 0.16, duration: 0.45 }} className="min-h-[530px] rounded-2xl border border-[hsl(var(--card-border))] bg-white" data-testid="card-calculation-result" aria-live="polite">
            <div className="min-h-[530px] p-5 sm:p-7">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -355,6 +357,7 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
               )}
               {onSaveCalculation && (
                 <button
+                  type="button"
                   onClick={saveResult}
                   disabled={saved}
                   className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#b7d8d3] bg-white px-4 py-3 text-sm font-bold text-[#247772] transition hover:border-[#48aaa2] hover:bg-[#f3fbf9] disabled:cursor-default disabled:opacity-60"

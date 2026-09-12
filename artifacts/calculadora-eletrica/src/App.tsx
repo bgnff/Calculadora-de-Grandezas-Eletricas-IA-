@@ -32,6 +32,105 @@ const clerkPubKey = publishableKeyFromHost(window.location.hostname, import.meta
 const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 
+const routeMetadata: Record<string, { title: string; description: string; robots: string }> = {
+  '/': {
+    title: 'Calculadora elétrica, consumo e custos | Voltiva',
+    description: 'Calcule tensão, corrente, resistência e potência e organize consumo e custos para tomar decisões elétricas melhores.',
+    robots: 'index, follow',
+  },
+  '/sign-in': {
+    title: 'Entrar no seu espaço de energia | Voltiva',
+    description: 'Acesse seu espaço Voltiva para acompanhar cálculos, consumo e decisões elétricas salvas.',
+    robots: 'noindex, nofollow',
+  },
+  '/sign-up': {
+    title: 'Crie seu espaço de energia | Voltiva',
+    description: 'Crie sua conta Voltiva e transforme cálculos e consumo em decisões elétricas mais claras.',
+    robots: 'noindex, nofollow',
+  },
+  '/app/dashboard': {
+    title: 'Visão geral da sua energia | Voltiva',
+    description: 'Acompanhe cálculos salvos, consumo estimado e próximos passos no seu espaço Voltiva.',
+    robots: 'noindex, nofollow',
+  },
+  '/app/calculator': {
+    title: 'Calculadora elétrica de Ohm | Voltiva',
+    description: 'Calcule tensão, corrente, resistência e potência com fórmulas de Ohm e validação guiada.',
+    robots: 'noindex, nofollow',
+  },
+  '/app/consumption': {
+    title: 'Consumo de energia | Voltiva',
+    description: 'Registre equipamentos e acompanhe uma estimativa mensal de consumo no seu espaço Voltiva.',
+    robots: 'noindex, nofollow',
+  },
+  '/app/savings': {
+    title: 'Economia de energia | Voltiva',
+    description: 'Encontre oportunidades de economia e compare o uso de energia com a sua meta mensal.',
+    robots: 'noindex, nofollow',
+  },
+  '/app/history': {
+    title: 'Histórico de cálculos | Voltiva',
+    description: 'Reveja os cálculos que você salvou e mantenha o contexto das suas decisões elétricas.',
+    robots: 'noindex, nofollow',
+  },
+  '/app/reports': {
+    title: 'Relatórios de energia | Voltiva',
+    description: 'Exporte um resumo dos seus cálculos e equipamentos para continuar sua análise.',
+    robots: 'noindex, nofollow',
+  },
+  '/app/settings': {
+    title: 'Configurações do espaço | Voltiva',
+    description: 'Atualize seu perfil energético, meta de consumo e preferências da Voltiva.',
+    robots: 'noindex, nofollow',
+  },
+};
+
+function updateMetaTag(attribute: 'name' | 'property', key: string, content: string) {
+  let element = document.head.querySelector<HTMLMetaElement>(`meta[${attribute}="${key}"]`);
+  if (!element) {
+    element = document.createElement('meta');
+    element.setAttribute(attribute, key);
+    document.head.appendChild(element);
+  }
+  element.content = content;
+}
+
+function RouteMetadata() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    const pathname = location.split('?')[0].replace(/\/+$/, '') || '/';
+    const meta = routeMetadata[pathname] ?? {
+      title: 'Página não encontrada | Voltiva',
+      description: 'A página solicitada não foi encontrada na Voltiva.',
+      robots: 'noindex, nofollow',
+    };
+    const canonicalPath = `${basePath}${pathname === '/' ? '/' : pathname}`;
+    const canonicalUrl = new URL(canonicalPath || '/', window.location.origin).href;
+
+    document.title = meta.title;
+    updateMetaTag('name', 'description', meta.description);
+    updateMetaTag('name', 'robots', meta.robots);
+    updateMetaTag('property', 'og:title', meta.title);
+    updateMetaTag('property', 'og:description', meta.description);
+    updateMetaTag('property', 'og:url', canonicalUrl);
+    updateMetaTag('property', 'og:type', 'website');
+    updateMetaTag('property', 'og:site_name', 'Voltiva');
+    updateMetaTag('name', 'twitter:title', meta.title);
+    updateMetaTag('name', 'twitter:description', meta.description);
+
+    let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
+    }
+    canonical.href = canonicalUrl;
+  }, [location]);
+
+  return null;
+}
+
 function stripBase(path: string) {
   return basePath && path.startsWith(basePath) ? path.slice(basePath.length) || '/' : path;
 }
@@ -172,7 +271,8 @@ function LandingPage() {
 
   return (
     <MotionConfig reducedMotion="never">
-      <main className="landing-page relative min-h-[100dvh] overflow-x-hidden bg-white" data-enter={enterState}>
+      <a href="#landing-main" className="skip-link" data-testid="link-skip-to-content">Pular para o conteúdo principal</a>
+      <main id="landing-main" className="landing-page relative min-h-[100dvh] overflow-x-hidden bg-white" data-enter={enterState}>
       <Rays backgroundColor="hsl(var(--background))" style={{ zIndex: 0 }} />
 
       <header ref={navRef} className="landing-nav relative z-20 mx-auto mt-5 flex h-14 max-w-[980px] items-center justify-between rounded-full bg-[#0b1f3b] px-3 pl-5 shadow-[0_16px_36px_rgba(11,31,59,.16)] md:mt-7">
@@ -428,7 +528,7 @@ function Brand({ compact = false, inverse = false }: { compact?: boolean; invers
 function AuthLayout({ children, mode }: { children: ReactNode; mode: 'sign-in' | 'sign-up' }) {
   const isSignIn = mode === 'sign-in';
   return (
-    <main className="relative min-h-[100dvh] overflow-hidden bg-[#f5f7fa] px-4 py-5 sm:px-6 lg:px-8">
+    <main id="auth-main" className="relative min-h-[100dvh] overflow-hidden bg-[#f5f7fa] px-4 py-5 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute -right-28 -top-32 size-[520px] rounded-full bg-[#d7ebff]/70 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-48 -left-24 size-[420px] rounded-full bg-[#ffc107]/10 blur-3xl" />
       <div className="relative mx-auto grid min-h-[calc(100dvh-2.5rem)] max-w-6xl overflow-hidden rounded-[28px] bg-[#f5f7fa] shadow-[0_28px_90px_rgba(11,31,59,.12)] lg:grid-cols-[.9fr_1.1fr]">
@@ -538,6 +638,7 @@ function RoutedErrorBoundary({ children }: { children: ReactNode }) {
 function AppRoutes() {
   const [, setLocation] = useLocation();
   return <ClerkProvider publishableKey={clerkPubKey} proxyUrl={clerkProxyUrl} appearance={clerkAppearance} signInUrl={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} routerPush={(to) => setLocation(stripBase(to))} routerReplace={(to) => setLocation(stripBase(to), { replace: true })} localization={{ signIn: { start: { title: 'Entre na Voltiva', subtitle: 'Acesse seu espaço de energia' } }, signUp: { start: { title: 'Crie sua conta Voltiva', subtitle: 'Comece a organizar suas decisões elétricas' } } }}>
+     <RouteMetadata />
     <QueryClientProvider client={queryClient}>
       <ClerkQueryClientCacheInvalidator />
       <RoutedErrorBoundary>
