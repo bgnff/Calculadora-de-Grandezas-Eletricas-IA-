@@ -7,4 +7,4 @@ The preview environment can report `prefers-reduced-motion: reduce`, so `useRedu
 
 **Why:** This made the landing-page BlurReveal look unimplemented during verification; the browser console explicitly reported reduced motion.
 
-**How to apply:** Preserve reduced-motion behavior by default, but add an explicit opt-in override only for a user-requested showcase animation that must remain visible in this preview. The Voltiva landing is one such explicit showcase surface; keep the override scoped there, not in shared app screens.
+**How to apply:** Preserve reduced-motion behavior by default, but add an explicit opt-in override only for a user-requested showcase animation that must remain visible in this preview. The Voltiva landing is one such explicit showcase surface; keep the override scoped there, not in shared app screens. Never hide essential copy, CTAs, or previews while waiting for a delayed entrance animation; fast screenshots can capture that pending state.

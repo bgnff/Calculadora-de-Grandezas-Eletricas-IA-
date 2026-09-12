@@ -124,7 +124,6 @@ function LandingPage() {
     }
 
     let cancelled = false;
-    let fallbackTimer = 0;
     let finishTimer = 0;
     let firstFrame = 0;
     let secondFrame = 0;
@@ -139,16 +138,10 @@ function LandingPage() {
       });
     };
 
-    fallbackTimer = window.setTimeout(start, 1200);
-    document.fonts?.ready.then(() => {
-      if (cancelled) return;
-      window.clearTimeout(fallbackTimer);
-      start();
-    });
+    start();
 
     return () => {
       cancelled = true;
-      window.clearTimeout(fallbackTimer);
       window.clearTimeout(finishTimer);
       window.cancelAnimationFrame(firstFrame);
       window.cancelAnimationFrame(secondFrame);

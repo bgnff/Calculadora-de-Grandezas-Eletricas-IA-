@@ -526,12 +526,27 @@
 }
 
 .landing-hero-title strong {
+  position: relative;
+  z-index: 0;
   display: inline-block;
   padding: 0.02em 0.09em;
   border-radius: 0.18em;
-  background: var(--voltiva-sky);
-  color: var(--voltiva-navy);
+  background: linear-gradient(115deg, #d7ebff 0%, #bfe8f5 48%, #d7ebff 100%);
+  background-size: 220% 100%;
+  color: var(--voltiva-blue);
   font-weight: inherit;
+  animation: landing-accent-shift 4.8s ease-in-out infinite;
+}
+
+.landing-hero-title strong::after {
+  position: absolute;
+  z-index: -1;
+  inset: 12% -2% 4%;
+  border-radius: 0.18em;
+  background: rgba(255, 255, 255, 0.22);
+  content: '';
+  transform: rotate(-1.5deg);
+  pointer-events: none;
 }
 
 .landing-page #recursos {
@@ -661,6 +676,7 @@
   .landing-hero-section {
     width: 100%;
     max-width: none !important;
+    margin-top: -84px;
     height: calc(100svh + 360px);
     min-height: 860px;
     padding: 0 !important;
@@ -675,7 +691,7 @@
   .landing-hero-copy {
     position: absolute;
     z-index: 2;
-    inset: clamp(72px, 10svh, 110px) 0 auto;
+    inset: clamp(124px, 18svh, 180px) 0 auto;
     width: 100%;
     max-width: none !important;
   }
@@ -683,7 +699,7 @@
   .landing-band {
     position: absolute;
     z-index: 1;
-    top: 440px;
+    top: 520px;
     left: 50%;
     width: 100vw;
     min-height: 680px;
@@ -703,16 +719,23 @@
     min-height: 760px;
   }
 
+  .landing-hero-title {
+    font-size: clamp(2.6rem, 5vw, 4.6rem) !important;
+    line-height: 0.96 !important;
+  }
+
   .landing-hero-copy {
-    top: 48px;
+    top: clamp(116px, 18svh, 132px);
   }
 
   .landing-hero-sub {
-    margin-top: 18px !important;
+    margin-top: 14px !important;
+    font-size: 0.9rem !important;
+    line-height: 1.4 !important;
   }
 
   .landing-hero-actions {
-    margin-top: 20px !important;
+    margin-top: 12px !important;
   }
 
   .landing-hero-proof {
@@ -721,6 +744,13 @@
 
   .landing-band {
     top: 320px;
+    padding-top: 48px;
+  }
+}
+
+@media (min-width: 940px) and (max-width: 1199px) {
+  .landing-product-card {
+    width: min(720px, calc(100vw - 128px));
   }
 }
 
@@ -879,6 +909,24 @@
   }
 }
 
+@keyframes landing-accent-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+    color: #1e6fff;
+  }
+
+  48% {
+    background-position: 100% 50%;
+    color: #087fbb;
+  }
+
+  72% {
+    background-position: 68% 50%;
+    color: #17617a;
+  }
+}
+
 @media (max-width: 1023px) {
   .landing-nav {
     width: calc(100% - 2rem);
@@ -923,9 +971,48 @@
     clip-path: none;
   }
 
+  .landing-hero-title strong {
+    animation: none;
+  }
+
   .landing-mobile-menu,
   .landing-burger span {
     transition: none;
+  }
+}
+
+@media (max-width: 939px) {
+  /* Keep the mobile hero useful even while the desktop entrance sequence is
+     waiting on its first animation frame. The accent still keeps its color
+     treatment, while copy, CTAs and the product preview never disappear. */
+  .landing-page[data-enter='pending'] .landing-hero-title {
+    clip-path: none;
+  }
+
+  .landing-page[data-enter='pending'] .landing-hero-sub,
+  .landing-page[data-enter='pending'] .landing-hero-actions,
+  .landing-page[data-enter='pending'] .landing-hero-proof,
+  .landing-page[data-enter='pending'] .landing-product-card,
+  .landing-page[data-enter='run'] .landing-hero-sub,
+  .landing-page[data-enter='run'] .landing-hero-actions,
+  .landing-page[data-enter='run'] .landing-hero-proof,
+  .landing-page[data-enter='run'] .landing-product-card {
+    opacity: 1;
+    translate: 0 0;
+    animation: none;
+  }
+
+  .landing-page[data-enter='run'] .landing-hero-title {
+    animation: none;
+  }
+
+  .landing-hero-proof {
+    margin-top: 1.5rem !important;
+    padding-top: 1rem !important;
+  }
+
+  .landing-band {
+    margin-top: 2.25rem !important;
   }
 }
 
