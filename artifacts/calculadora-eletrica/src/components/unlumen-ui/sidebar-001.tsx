@@ -204,24 +204,6 @@ export const Sidebar001Item = memo(function Sidebar001Item({
 
   return (
     <div className="relative">
-      {isActive && (
-        <motion.span
-          layoutId="sb001-active-bar"
-          className="pointer-events-none absolute z-10 left-[4px] top-1/2 h-[1.8px] -translate-y-1/2 rounded-full bg-accent-pro"
-          animate={{ width: 23 }}
-          transition={{ type: "spring", stiffness: 800, damping: 40 }}
-        />
-      )}
-
-      <motion.span
-        className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 h-px bg-foreground/50"
-        animate={{ width: isActive ? 0 : isHovered ? 26 : 18 }}
-        transition={{ type: "spring", stiffness: 600, damping: 30 }}
-      />
-      <motion.span className="pointer-events-none absolute w-[13px] left-0 top-1/4 h-px bg-foreground/30" />
-      <motion.span className="pointer-events-none absolute w-[16px] left-0 top-0 h-px bg-foreground/30" />
-      <motion.span className="pointer-events-none absolute w-[13px] left-0 top-3/4 h-px bg-foreground/30" />
-
       <motion.div
         ref={itemRef}
         animate={{ opacity, x }}
