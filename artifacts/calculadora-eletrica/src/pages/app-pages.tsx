@@ -11,6 +11,7 @@ import {
   Download,
   Gauge,
   History,
+  Lightbulb,
   Plus,
   ReceiptText,
   Trash2,
@@ -21,6 +22,7 @@ import type { EnergyProfile } from '@/hooks/use-energy-profile';
 import type { CalculationRecord, EnergyDevice, VoltivaData } from '@/hooks/use-voltiva-data';
 import { deviceMonthlyKwh, totalMonthlyKwh } from '@/hooks/use-voltiva-data';
 import { calculationMeta, formatNumber } from '@/lib/electricity';
+import { createDashboardTips, type DashboardTipKind } from '@/lib/dashboard-tips';
 
 const goalLabels = {
   learn: 'Aprender os fundamentos',
@@ -76,9 +78,26 @@ function StatCard({ label, value, caption, icon: Icon, accent = 'teal' }: { labe
   );
 }
 
+const tipIcons: Record<DashboardTipKind, typeof Lightbulb> = {
+  profile: UserRound,
+  consumption: Activity,
+  goal: Gauge,
+  calculation: Calculator,
+  safety: Lightbulb,
+};
+
 export function DashboardPage({ userName, profile, data }: { userName: string; profile: EnergyProfile | null; data: VoltivaData }) {
   const kwh = totalMonthlyKwh(data.devices);
   const recent = data.calculations.slice(0, 4);
+  const tips = useMemo(
+    () => createDashboardTips({
+      profile,
+      calculations: data.calculations,
+      devices: data.devices,
+      settings: data.settings,
+    }),
+    [data.calculations, data.devices, data.settings, profile],
+  );
 
   return (
     <MotionConfig reducedMotion="never">
@@ -142,6 +161,41 @@ export function DashboardPage({ userName, profile, data }: { userName: string; p
               <StatCard {...card} />
             </motion.div>
           ))}
+        </motion.section>
+
+        <motion.section
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.5 }}
+          className="rounded-[24px] border border-[#c9dcf2] bg-[#eaf2ff] p-5 sm:p-7"
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#004eba]">Dicas para o seu momento</p>
+              <h2 className="mt-2 font-display text-xl font-semibold tracking-[-0.035em] text-[#0b3558]">Próximas ações baseadas no que você fez</h2>
+              <p className="mt-1.5 max-w-2xl text-sm leading-6 text-[#476788]">As recomendações combinam seu perfil, sua meta, os equipamentos cadastrados e os cálculos salvos.</p>
+            </div>
+            <span className="hidden size-10 shrink-0 place-items-center rounded-xl bg-white text-[#1e6fff] shadow-sm sm:grid"><Lightbulb size={18} /></span>
+          </div>
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            {tips.map((tip) => {
+              const Icon = tipIcons[tip.kind];
+              return (
+                <motion.div key={tip.id} whileHover={{ y: -3 }} transition={{ type: 'spring', stiffness: 280, damping: 24 }} className="flex min-h-[188px] flex-col rounded-2xl border border-[#c9dcf2] bg-white p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="grid size-9 place-items-center rounded-lg bg-[#e6f0ff] text-[#1e6fff]"><Icon size={17} /></span>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#7b9ac1]">{tip.eyebrow}</span>
+                  </div>
+                  <h3 className="mt-4 font-display text-base font-semibold leading-5 text-[#0b3558]">{tip.title}</h3>
+                  <p className="mt-2 flex-1 text-xs leading-5 text-[#5c7693]">{tip.text}</p>
+                  <Link href={tip.href} className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#1e6fff] transition hover:text-[#004eba]">
+                    {tip.action} <ArrowRight size={14} />
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
         </motion.section>
 
         <motion.section
@@ -274,7 +328,7 @@ export function SettingsPage({ profile, onEditProfile, data, userEmail, onSignOu
       <PageIntro eyebrow="Conta e preferências" title="Configurações" description="Mantenha seus dados de contexto e preferências de acompanhamento sob controle." />
       <section className="grid gap-5 lg:grid-cols-2">
         <div className="soft-shadow rounded-2xl border border-[hsl(var(--card-border))] bg-white p-6 sm:p-7"><div className="flex items-center gap-3"><span className="grid size-10 place-items-center rounded-xl bg-[#e9f0fb] text-[#37669d]"><UserRound size={18} /></span><div><p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">Conta</p><h2 className="mt-1 font-display text-xl font-semibold">Seu perfil Voltiva</h2></div></div><p className="mt-5 text-sm text-[hsl(var(--muted-foreground))]">{userEmail || 'Conta autenticada'}</p><button onClick={onEditProfile} className="focus-ring mt-5 inline-flex items-center gap-2 rounded-xl border border-[#c4ddda] px-4 py-2.5 text-sm font-bold text-[#287873] transition hover:bg-[#f3fbf9]">Editar perfil energético <ArrowRight size={15} /></button></div>
-        <div className="soft-shadow rounded-2xl border border-[hsl(var(--card-border))] bg-white p-6 sm:p-7"><div className="flex items-center gap-3"><span className="grid size-10 place-items-center rounded-xl bg-[#dff5ff] text-[#16658e]"><Gauge size={18} /></span><div><p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">Preferência</p><h2 className="mt-1 font-display text-xl font-semibold">Meta mensal de consumo</h2></div></div><div className="mt-5 flex items-center gap-3"><input value={goal} onChange={(event) => setGoal(event.target.value)} inputMode="decimal" className="focus-ring h-12 min-w-0 flex-1 rounded-lg border border-[hsl(var(--input))] px-4 font-data text-sm outline-none focus:border-[#1e6fff]" /><span className="font-data text-xs text-[hsl(var(--muted-foreground))]">kWh</span><button onClick={saveGoal} className="focus-ring rounded-lg bg-[hsl(var(--primary))] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#004eba]"><Check size={16} /></button></div><p className="mt-3 text-xs leading-5 text-[hsl(var(--muted-foreground))]">Usada apenas para comparação visual na página Economia.</p></div>
+        <div className="soft-shadow rounded-2xl border border-[hsl(var(--card-border))] bg-white p-6 sm:p-7"><div className="flex items-center gap-3"><span className="grid size-10 place-items-center rounded-xl bg-[#dff5ff] text-[#16658e]"><Gauge size={18} /></span><div><p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">Preferência</p><h2 className="mt-1 font-display text-xl font-semibold">Meta mensal de consumo</h2></div></div><div className="mt-5 flex items-center gap-3"><input value={goal} onChange={(event) => setGoal(event.target.value)} inputMode="decimal" className="focus-ring h-12 min-w-0 flex-1 rounded-lg border border-[hsl(var(--input))] px-4 font-data text-sm outline-none focus:border-[#1e6fff]" /><span className="font-data text-xs text-[hsl(var(--muted-foreground))]">kWh</span><button onClick={saveGoal} className="focus-ring rounded-lg bg-[hsl(var(--primary))] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#004eba]"><Check size={16} /></button></div><p className="mt-3 text-xs leading-5 text-[hsl(var(--muted-foreground))]">Essa meta também orienta as dicas exibidas na sua dashboard e a página Economia.</p></div>
       </section>
       <section className="rounded-2xl border border-[#efd0cd] bg-[#fff7f6] p-6"><p className="text-xs font-bold uppercase tracking-[0.13em] text-[#b04f4c]">Sessão</p><h2 className="mt-2 font-display text-xl font-semibold text-[#763d3b]">Sair da Voltiva</h2><p className="mt-2 text-sm leading-6 text-[#93615f]">Você poderá entrar novamente com seu e-mail e senha. Seus registros locais permanecem neste dispositivo.</p><button onClick={onSignOut} className="focus-ring mt-5 inline-flex items-center gap-2 rounded-xl border border-[#e4b8b5] bg-white px-4 py-2.5 text-sm font-bold text-[#b04f4c] transition hover:bg-[#fff1ef]">Encerrar sessão</button></section>
       {profile && <div className="text-xs text-[hsl(var(--muted-foreground))]">Objetivo: <strong>{goalLabels[profile.goal]}</strong> · {profile.interests.map((interest) => interestLabels[interest]).join(' · ')}</div>}
