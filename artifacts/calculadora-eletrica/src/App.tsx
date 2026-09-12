@@ -154,7 +154,7 @@ function LandingPage() {
               <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Histórico</span>
             </div>
           </Reveal>
-          <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2 overflow-hidden bg-[#1e6fff] px-5 pt-10 sm:px-8 md:mt-16 md:pt-14">
+          <div className="relative -mx-5 mt-14 w-[calc(100%+2.5rem)] overflow-hidden bg-[#1e6fff] px-5 pt-10 sm:-mx-8 sm:w-[calc(100%+4rem)] sm:px-8 md:mt-16 md:pt-14">
             <AnimatedEnergyLines />
             <div className="relative z-10 mx-auto max-w-[1020px]">
               <DashboardPreview banded />
