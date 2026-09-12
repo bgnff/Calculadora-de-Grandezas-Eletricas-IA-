@@ -183,10 +183,10 @@ function SidebarContent({ collapsed, onToggleCollapsed, onEditProfile, activePat
                     ? 'rounded-xl bg-[#1e6fff]/10 font-semibold text-[#0b1f3b]'
                     : 'rounded-xl text-[#687587] hover:text-[#0b1f3b]'}
                   label={(
-                    <>
+                    <span className="flex min-w-0 items-center gap-2">
                       <Icon size={17} strokeWidth={1.8} className={isActive ? 'shrink-0 text-[#1e6fff]' : 'shrink-0 text-[#8b98a8]'} />
                       <span className="truncate">{label}</span>
-                    </>
+                    </span>
                   )}
                 />
               );
