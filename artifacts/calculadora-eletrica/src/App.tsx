@@ -115,6 +115,7 @@ function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [enterState, setEnterState] = useState<'pending' | 'run' | 'done'>('pending');
   const navRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -154,14 +155,19 @@ function LandingPage() {
     };
   }, []);
 
+  const closeMenu = () => {
+    setMenuOpen(false);
+    window.requestAnimationFrame(() => menuButtonRef.current?.focus());
+  };
+
   useEffect(() => {
     const closeOnOutsideClick = (event: MouseEvent) => {
       if (menuOpen && navRef.current && !navRef.current.contains(event.target as Node)) {
-        setMenuOpen(false);
+        closeMenu();
       }
     };
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setMenuOpen(false);
+      if (event.key === 'Escape' && menuOpen) closeMenu();
     };
     document.addEventListener('mousedown', closeOnOutsideClick);
     document.addEventListener('keydown', closeOnEscape);
@@ -170,8 +176,6 @@ function LandingPage() {
       document.removeEventListener('keydown', closeOnEscape);
     };
   }, [menuOpen]);
-
-  const closeMenu = () => setMenuOpen(false);
 
   return (
     <MotionConfig reducedMotion="never">
@@ -194,6 +198,7 @@ function LandingPage() {
            <button
              type="button"
              className="landing-burger"
+              ref={menuButtonRef}
              aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
              aria-expanded={menuOpen}
              aria-controls="landing-nav-menu"
@@ -203,13 +208,13 @@ function LandingPage() {
              <span />
            </button>
         </div>
-        <div id="landing-nav-menu" className="landing-mobile-menu" data-open={menuOpen}>
-          <a href="#recursos" onClick={closeMenu}>Recursos</a>
-          <a href="#como-funciona" onClick={closeMenu}>Como funciona</a>
-          <a href="#plataforma" onClick={closeMenu}>Plataforma</a>
-          <a href="#clareza" onClick={closeMenu}>Clareza dos dados</a>
-          <a href={`${basePath}/sign-up`} onClick={closeMenu} className="landing-mobile-menu__cta">Começar grátis</a>
-        </div>
+         <nav id="landing-nav-menu" className="landing-mobile-menu" data-open={menuOpen} aria-label="Navegação da landing page" aria-hidden={!menuOpen}>
+           <a href="#recursos" onClick={closeMenu} tabIndex={menuOpen ? 0 : -1}>Recursos</a>
+           <a href="#como-funciona" onClick={closeMenu} tabIndex={menuOpen ? 0 : -1}>Como funciona</a>
+           <a href="#plataforma" onClick={closeMenu} tabIndex={menuOpen ? 0 : -1}>Plataforma</a>
+           <a href="#clareza" onClick={closeMenu} tabIndex={menuOpen ? 0 : -1}>Clareza dos dados</a>
+           <a href={`${basePath}/sign-up`} onClick={closeMenu} tabIndex={menuOpen ? 0 : -1} className="landing-mobile-menu__cta">Começar grátis</a>
+         </nav>
       </header>
 
        <section className="landing-hero-section relative z-10 mx-auto max-w-[1180px] px-5 pb-0 pt-16 md:px-8 md:pt-20">
