@@ -20,6 +20,21 @@ const digitColors = [
   { label: 'Branco', color: '#f0f3f2', textColor: '#17232d' },
 ];
 
+const multiplierColors: Record<number, Omit<ColorBand, 'value'>> = {
+  [-2]: { label: 'Prata', color: '#aeb7c2', textColor: '#17232d' },
+  [-1]: { label: 'Dourado', color: '#c9a34b', textColor: '#2b2414' },
+  0: digitColors[0],
+  1: digitColors[1],
+  2: digitColors[2],
+  3: digitColors[3],
+  4: digitColors[4],
+  5: digitColors[5],
+  6: digitColors[6],
+  7: digitColors[7],
+  8: digitColors[8],
+  9: digitColors[9],
+};
+
 const multiplierNames: Record<number, string> = {
   [-2]: 'Centésimos',
   [-1]: 'Décimos',
@@ -102,8 +117,11 @@ export function resistanceToColorBands(resistance: number): {
   second: ColorBand;
   multiplier: ColorBand & { name: string; exponent: number };
   tolerance: ColorBand & { name: string };
-} {
-  const safeResistance = Math.max(resistance, 0.01);
+} | null {
+  // A standard four-band code has two significant digits, with multipliers
+  // from silver (×0.01) through white (×1,000,000,000).
+  if (!Number.isFinite(resistance) || resistance < 0.1 || resistance > 99_000_000_000) return null;
+  const safeResistance = resistance;
   let exponent = Math.floor(Math.log10(safeResistance)) - 1;
   let significant = Math.round(safeResistance / Math.pow(10, exponent));
 
@@ -115,14 +133,14 @@ export function resistanceToColorBands(resistance: number): {
   const firstDigit = Math.min(9, Math.floor(significant / 10));
   const secondDigit = Math.min(9, significant % 10);
   const multiplierIndex = Math.max(-2, Math.min(9, exponent));
-  const multiplierColorIndex = multiplierIndex < 0 ? (multiplierIndex === -2 ? 8 : 9) : multiplierIndex;
+  const multiplierColor = multiplierColors[multiplierIndex] ?? multiplierColors[0];
   const tolerance = { label: 'Dourado', value: 5, color: '#c9a34b', textColor: '#2b2414', name: '±5%' };
 
   return {
     first: { ...digitColors[firstDigit], value: firstDigit },
     second: { ...digitColors[secondDigit], value: secondDigit },
     multiplier: {
-      ...digitColors[multiplierColorIndex],
+      ...multiplierColor,
       value: multiplierIndex,
       name: multiplierNames[multiplierIndex] ?? 'Multiplicador',
       exponent: multiplierIndex,
@@ -133,6 +151,14 @@ export function resistanceToColorBands(resistance: number): {
 
 export function formatNumber(value: number): string {
   if (!Number.isFinite(value)) return '—';
+  const absoluteValue = Math.abs(value);
+  if (absoluteValue > 0 && (absoluteValue < 0.000001 || absoluteValue >= 1_000_000_000_000)) {
+    return value
+      .toExponential(6)
+      .replace('.', ',')
+      .replace('e+', ' × 10^')
+      .replace('e-', ' × 10^-');
+  }
   return new Intl.NumberFormat('pt-BR', {
     maximumFractionDigits: 8,
     useGrouping: true,
@@ -141,7 +167,7 @@ export function formatNumber(value: number): string {
 
 export function parseInput(value: string): number | null {
   const normalized = value.trim().replace(',', '.');
-  if (!normalized || !/^\d+(?:\.\d+)?$/.test(normalized)) return null;
+  if (!normalized || !/^(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(normalized)) return null;
   const parsed = Number(normalized);
   return Number.isFinite(parsed) ? parsed : null;
 }

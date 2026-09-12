@@ -309,7 +309,12 @@ export function ReportsPage({ calculations, devices }: { calculations: Calculati
     const rows = [['tipo', 'resultado', 'unidade', 'formula', 'data'], ...calculations.map((item) => [calculationMeta[item.type].label, String(item.result), item.unit, item.formula, item.createdAt])];
     const csv = rows.map((row) => row.map((cell) => `"${cell.replaceAll('"', '""')}"`).join(',')).join('\n');
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-    const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'voltiva-relatorio.csv'; anchor.click(); URL.revokeObjectURL(url); setMessage('Relatório exportado em CSV.');
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'voltiva-relatorio.csv';
+    anchor.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+    setMessage('Relatório exportado em CSV.');
   };
   return (
     <div className="space-y-8">

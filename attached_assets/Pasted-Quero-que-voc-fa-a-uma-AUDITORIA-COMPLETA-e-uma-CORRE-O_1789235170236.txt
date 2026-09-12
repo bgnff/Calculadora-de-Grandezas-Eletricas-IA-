@@ -1,0 +1,388 @@
+Quero que você faça uma AUDITORIA COMPLETA e uma CORREÇÃO GERAL deste projeto.
+
+IMPORTANTE: não quero apenas que você corrija o primeiro erro encontrado. Quero que você investigue o projeto inteiro, encontre os problemas existentes e deixe a aplicação funcionando de ponta a ponta.
+
+O projeto é uma CALCULADORA DE GRANDEZAS ELÉTRICAS. A aplicação deve ser estável, funcional, responsiva e pronta para continuar sendo desenvolvida.
+
+## 1. PRIMEIRO: FAÇA UM DIAGNÓSTICO
+
+Antes de alterar qualquer código:
+
+1. Analise toda a estrutura do projeto.
+2. Identifique frontend, backend, componentes, serviços, rotas, estilos, arquivos de configuração e dependências.
+3. Verifique o console do navegador.
+4. Verifique os logs do servidor.
+5. Verifique erros de build, runtime e TypeScript/JavaScript.
+6. Verifique imports quebrados ou arquivos inexistentes.
+7. Verifique dependências instaladas e versões incompatíveis.
+8. Verifique problemas de configuração do ambiente Replit.
+9. Verifique chamadas de API que estejam falhando.
+10. Verifique possíveis erros de estado, navegação e renderização.
+11. Verifique se existem funcionalidades parcialmente implementadas.
+12. Verifique se existem funções duplicadas, código morto ou código que nunca é executado.
+13. Verifique se existem warnings importantes que possam virar erros.
+14. Verifique problemas de responsividade em desktop e mobile.
+
+NÃO comece simplesmente reescrevendo a aplicação.
+
+Primeiro descubra a causa dos problemas.
+
+---
+
+# 2. CORRIJA TODOS OS ERROS ENCONTRADOS
+
+Depois do diagnóstico, corrija os problemas encontrados.
+
+Priorize nesta ordem:
+
+1. Erros que impedem a aplicação de iniciar.
+2. Erros de build.
+3. Erros de runtime.
+4. Erros de JavaScript/TypeScript.
+5. Erros de navegação.
+6. Erros de lógica da calculadora.
+7. Problemas de interface.
+8. Problemas de responsividade.
+9. Warnings importantes.
+10. Problemas de organização e manutenção do código.
+
+Não faça alterações desnecessárias em funcionalidades que já estão funcionando.
+
+Preserve o design e a proposta atual da aplicação sempre que possível.
+
+---
+
+# 3. CALCULADORA DE GRANDEZAS ELÉTRICAS
+
+A calculadora precisa funcionar corretamente para:
+
+### Tensão
+
+V = R × I
+
+### Corrente
+
+I = V ÷ R
+
+### Resistência
+
+R = V ÷ I
+
+### Potência
+
+P = V × I
+
+Verifique cuidadosamente:
+
+* unidades;
+* conversões;
+* casas decimais;
+* valores negativos;
+* zero;
+* campos vazios;
+* valores inválidos;
+* divisão por zero;
+* números muito grandes;
+* números muito pequenos;
+* vírgula e ponto decimal;
+* resultados com precisão adequada.
+
+A aplicação não deve produzir NaN, Infinity, undefined ou resultados incorretos para entradas inválidas.
+
+Mostre mensagens de erro claras para o usuário.
+
+---
+
+# 4. RESISTOR
+
+Verifique toda a lógica relacionada ao resistor.
+
+Quando a resistência for calculada, o sistema deve conseguir identificar corretamente o valor do resistor e apresentar:
+
+* valor da resistência;
+* unidade correta (Ω, kΩ, MΩ);
+* bandas de cores;
+* sequência correta das cores;
+* tolerância quando aplicável;
+* representação visual do resistor.
+
+Não quero que o usuário precise selecionar manualmente as cores para descobrir a resistência.
+
+A resistência calculada deve ser utilizada automaticamente para determinar as bandas.
+
+Teste valores como:
+
+10 Ω
+100 Ω
+220 Ω
+330 Ω
+470 Ω
+1 kΩ
+2.2 kΩ
+4.7 kΩ
+10 kΩ
+100 kΩ
+1 MΩ
+
+Confira se os resultados estão matematicamente corretos.
+
+---
+
+# 5. INTERFACE
+
+Faça uma revisão completa da interface.
+
+Verifique:
+
+* botões;
+* inputs;
+* selects;
+* cards;
+* menus;
+* sidebar;
+* navegação;
+* responsividade;
+* espaçamentos;
+* alinhamentos;
+* tipografia;
+* ícones;
+* animações;
+* estados de hover;
+* estados de erro;
+* estados de carregamento;
+* mensagens vazias.
+
+Nenhum botão deve existir apenas visualmente sem executar sua função.
+
+Nenhum link deve levar para uma rota inexistente.
+
+Nenhum elemento deve ficar sobreposto ou quebrado em telas menores.
+
+---
+
+# 6. RESPONSIVIDADE
+
+Teste a aplicação em:
+
+* desktop;
+* notebook;
+* tablet;
+* celular.
+
+Corrija:
+
+* overflow horizontal;
+* elementos cortados;
+* sidebar quebrada;
+* cards ultrapassando a tela;
+* inputs muito grandes;
+* botões difíceis de clicar;
+* textos sobrepostos;
+* problemas de grid/flex;
+* problemas de altura;
+* problemas de scroll.
+
+---
+
+# 7. ESTADO E INTERAÇÕES
+
+Verifique se os estados da aplicação estão funcionando corretamente.
+
+Exemplos:
+
+* limpar calculadora;
+* recalcular;
+* trocar grandeza;
+* alterar valores;
+* atualizar resultado;
+* trocar unidade;
+* navegar entre páginas;
+* voltar para a calculadora;
+* atualizar a página;
+* utilizar a aplicação várias vezes seguidas.
+
+Evite estados inconsistentes ou dados antigos permanecendo na interface.
+
+---
+
+# 8. PERFORMANCE
+
+Procure problemas de performance.
+
+Verifique:
+
+* renders desnecessários;
+* loops;
+* listeners duplicados;
+* chamadas repetidas;
+* componentes pesados;
+* imagens muito grandes;
+* dependências desnecessárias;
+* código duplicado.
+
+Não faça otimizações prematuras. Só altere o que realmente melhorar estabilidade ou desempenho.
+
+---
+
+# 9. SEGURANÇA E CONFIGURAÇÃO
+
+Verifique:
+
+* variáveis de ambiente;
+* secrets;
+* chaves expostas;
+* URLs hardcoded;
+* configurações inadequadas para produção;
+* dependências vulneráveis;
+* informações sensíveis no frontend.
+
+NUNCA coloque secrets diretamente no código.
+
+Não exponha credenciais ou tokens no navegador.
+
+---
+
+# 10. REPLIT
+
+Verifique também a configuração específica do Replit.
+
+Confira:
+
+* package.json;
+* scripts;
+* comando de inicialização;
+* portas;
+* configuração do servidor;
+* variáveis de ambiente;
+* configuração de build;
+* configuração de deployment;
+* dependências.
+
+A aplicação precisa iniciar corretamente usando o fluxo normal do projeto no Replit.
+
+Não crie soluções artificiais apenas para esconder erros.
+
+---
+
+# 11. TESTES
+
+Depois das correções, faça uma bateria de testes.
+
+Teste:
+
+### Cálculos
+
+V = 12 V
+R = 100 Ω
+Resultado esperado:
+I = 0,12 A
+P = 1,44 W
+
+### Outro teste
+
+V = 220 V
+I = 2 A
+Resultado esperado:
+R = 110 Ω
+P = 440 W
+
+### Outro
+
+R = 1000 Ω
+I = 0,5 A
+Resultado esperado:
+V = 500 V
+P = 250 W
+
+Teste também entradas inválidas e casos extremos.
+
+---
+
+# 12. TESTE DE NAVEGAÇÃO
+
+Clique e teste TODOS os elementos interativos da aplicação.
+
+Não considere o trabalho concluído apenas porque a página inicial abriu.
+
+Teste:
+
+* menu;
+* sidebar;
+* links;
+* botões;
+* calculadora;
+* limpeza;
+* alteração de valores;
+* troca de telas;
+* componentes interativos;
+* responsividade.
+
+---
+
+# 13. REGRA IMPORTANTE SOBRE ALTERAÇÕES
+
+NÃO reescreva o projeto inteiro sem necessidade.
+
+Não troque o framework.
+
+Não troque a arquitetura.
+
+Não remova funcionalidades existentes sem motivo.
+
+Não substitua componentes funcionando por versões simplificadas.
+
+Não faça mudanças cosméticas enquanto existirem erros funcionais.
+
+Preserve o que já funciona e corrija o que está quebrado.
+
+Se encontrar uma arquitetura ruim, primeiro avalie se ela realmente está causando problemas antes de refatorar.
+
+---
+
+# 14. CRITÉRIO DE CONCLUSÃO
+
+Você só deve considerar a tarefa concluída quando:
+
+* o projeto inicia sem erros;
+* o build funciona;
+* não existem erros críticos no console;
+* não existem erros críticos no servidor;
+* a calculadora funciona;
+* os cálculos estão corretos;
+* o resistor funciona;
+* a navegação funciona;
+* os botões funcionam;
+* a interface não apresenta elementos quebrados;
+* a aplicação funciona em desktop;
+* a aplicação funciona em mobile;
+* não existem imports quebrados;
+* não existem rotas quebradas;
+* não existem funcionalidades principais incompletas.
+
+IMPORTANTE:
+
+Se você encontrar um erro, não apenas aplique um workaround.
+
+Descubra a causa raiz e corrija a causa.
+
+Depois de corrigir, execute novamente a aplicação e verifique se o problema realmente desapareceu.
+
+Se uma correção gerar outro erro, continue investigando até chegar a uma implementação estável.
+
+---
+
+# 15. RELATÓRIO FINAL
+
+Ao terminar, me entregue um relatório curto contendo:
+
+1. Erros encontrados.
+2. Causa de cada erro.
+3. Arquivos modificados.
+4. Correções realizadas.
+5. Testes executados.
+6. Problemas que permanecem, caso exista algum.
+7. Melhorias recomendadas para a próxima etapa.
+
+NÃO diga que está tudo funcionando sem realmente testar.
+
+Quero uma auditoria técnica real, seguida da correção dos problemas.

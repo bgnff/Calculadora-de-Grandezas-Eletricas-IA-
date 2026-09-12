@@ -488,6 +488,8 @@ function AppRoute() {
   if (!isLoaded) return <LoadingScreen />;
   if (!isSignedIn) return <Redirect to="/" />;
   const section = location.split('/app/')[1]?.split('/')[0] || 'dashboard';
+  const validSections = ['dashboard', 'calculator', 'consumption', 'savings', 'history', 'reports', 'settings'];
+  if (!validSections.includes(section)) return <NotFound />;
   return <AuthenticatedApp section={section} />;
 }
 

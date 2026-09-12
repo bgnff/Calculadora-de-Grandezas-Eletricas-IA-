@@ -64,38 +64,46 @@ export function useVoltivaData(userId: string) {
 
   const saveCalculation = useCallback(
     (record: Omit<CalculationRecord, 'id' | 'createdAt'>) => {
-      const next = [{ ...record, id: makeId(), createdAt: new Date().toISOString() }, ...calculations].slice(0, 100);
-      setCalculations(next);
-      writeStorage(`${prefix}:calculations`, next);
+      setCalculations((current) => {
+        const next = [{ ...record, id: makeId(), createdAt: new Date().toISOString() }, ...current].slice(0, 100);
+        writeStorage(`${prefix}:calculations`, next);
+        return next;
+      });
     },
-    [calculations, prefix],
+    [prefix],
   );
 
   const addDevice = useCallback(
     (device: Omit<EnergyDevice, 'id'>) => {
-      const next = [...devices, { ...device, id: makeId() }];
-      setDevices(next);
-      writeStorage(`${prefix}:devices`, next);
+      setDevices((current) => {
+        const next = [...current, { ...device, id: makeId() }];
+        writeStorage(`${prefix}:devices`, next);
+        return next;
+      });
     },
-    [devices, prefix],
+    [prefix],
   );
 
   const removeDevice = useCallback(
     (id: string) => {
-      const next = devices.filter((device) => device.id !== id);
-      setDevices(next);
-      writeStorage(`${prefix}:devices`, next);
+      setDevices((current) => {
+        const next = current.filter((device) => device.id !== id);
+        writeStorage(`${prefix}:devices`, next);
+        return next;
+      });
     },
-    [devices, prefix],
+    [prefix],
   );
 
   const updateSettings = useCallback(
     (patch: Partial<VoltivaSettings>) => {
-      const next = { ...settings, ...patch };
-      setSettings(next);
-      writeStorage(`${prefix}:settings`, next);
+      setSettings((current) => {
+        const next = { ...current, ...patch };
+        writeStorage(`${prefix}:settings`, next);
+        return next;
+      });
     },
-    [prefix, settings],
+    [prefix],
   );
 
   const clearCalculations = useCallback(() => {

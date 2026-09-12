@@ -97,7 +97,7 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
       }
       const parsedValue = parseInput(values[key]);
       if (parsedValue === null) {
-        nextErrors[key] = 'Use apenas números, com ponto ou vírgula decimal.';
+        nextErrors[key] = 'Use um número não negativo, com ponto, vírgula ou notação científica.';
         return;
       }
       parsed[key] = parsedValue;
@@ -314,8 +314,9 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
                 <p className="mt-4 border-t border-[#cde9e2] pt-3 font-data text-xs text-[#568b88]" data-testid="text-result-context">{calculationMeta[result.type].formula} <span className="mx-1.5 text-[#a7c9c4]">·</span> {contextualLine}</p>
               </div>
 
-              {result.type === 'resistance' && result.bands ? (
-                <div className="mt-6">
+               {result.type === 'resistance' ? (
+                 result.bands ? (
+                   <div className="mt-6">
                   <div className="mb-3 flex items-end justify-between gap-3">
                     <div>
                       <p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">Identificação visual</p>
@@ -325,7 +326,7 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
                   </div>
                   <ResistorVisual bands={result.bands} />
                   <div className="mt-4 grid grid-cols-4 gap-1.5">
-                    {[
+                     {[
                       { title: '1ª', value: result.bands.first },
                       { title: '2ª', value: result.bands.second },
                       { title: 'Mult.', value: result.bands.multiplier },
@@ -333,11 +334,20 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
                     ].map((band) => (
                       <div key={band.title} className="min-w-0 rounded-lg bg-[#f7f9f8] px-1.5 py-2 text-center" data-testid={`text-band-${band.title.toLowerCase()}`}>
                         <span className="block text-[10px] font-bold text-[hsl(var(--muted-foreground))]">{band.title}</span>
-                        <span className="mt-1 block truncate text-[11px] font-semibold text-[hsl(var(--foreground))]">{String('name' in band.value ? band.value.name : band.value.label)}</span>
+                         <span className="mt-1 block truncate text-[11px] font-semibold text-[hsl(var(--foreground))]">
+                           {band.title === 'Mult.' && 'name' in band.value
+                             ? `${band.value.label} · ${band.value.name}`
+                             : band.value.label}
+                         </span>
                       </div>
                     ))}
                   </div>
-                </div>
+                   </div>
+                 ) : (
+                   <div className="mt-6 rounded-xl border border-dashed border-[#e6c98c] bg-[#fffaf0] p-4 text-sm leading-6 text-[#8b650f]">
+                     O valor foi calculado, mas está fora da faixa representável por um código padrão de 4 faixas (0,1 Ω a 99 GΩ).
+                   </div>
+                 )
               ) : (
                <div className="mt-6 rounded-xl border border-dashed border-[#c9dcf2] bg-[#f8fbff] p-4 text-sm leading-6 text-[hsl(var(--muted-foreground))]">
                   O código de cores fica disponível quando o resultado for uma resistência.
