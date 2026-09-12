@@ -212,7 +212,7 @@ function LandingPage() {
         </div>
       </header>
 
-       <section className="relative z-10 mx-auto max-w-[1180px] px-5 pb-0 pt-16 md:px-8 md:pt-20">
+       <section className="landing-hero-section relative z-10 mx-auto max-w-[1180px] px-5 pb-0 pt-16 md:px-8 md:pt-20">
         <div className="flex flex-col items-center">
            <div className="landing-hero-copy max-w-[820px] text-center">
              <h1 className="landing-hero-title max-w-[850px] font-display text-[clamp(2.8rem,5.4vw,5.1rem)] font-semibold leading-[1.02] tracking-[-0.065em] text-[#0b1f3b]">
@@ -231,7 +231,7 @@ function LandingPage() {
               <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-[#1e6fff]" /> Histórico</span>
             </div>
            </div>
-           <div className="landing-band relative -mx-5 mt-14 w-[calc(100%+2.5rem)] overflow-hidden bg-[#0db5ed] px-5 pt-10 sm:-mx-8 sm:w-[calc(100%+4rem)] sm:px-8 md:mt-16 md:pt-14">
+           <div className="landing-band relative -mx-5 mt-14 w-[calc(100%+2.5rem)] overflow-hidden bg-[#1e6fff] px-5 pt-10 sm:-mx-8 sm:w-[calc(100%+4rem)] sm:px-8 md:mt-16 md:pt-14">
              <video
                className="landing-band__video"
                autoPlay

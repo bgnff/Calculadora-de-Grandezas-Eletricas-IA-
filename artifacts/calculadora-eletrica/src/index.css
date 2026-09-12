@@ -512,10 +512,41 @@
 .landing-page {
   --landing-ease-reveal: cubic-bezier(0.22, 1, 0.36, 1);
   --landing-ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --voltiva-navy: #0b1f3b;
+  --voltiva-blue: #1e6fff;
+  --voltiva-cyan: #38c6ec;
+  --voltiva-sky: #d7ebff;
+  --voltiva-yellow: #ffc107;
+  background: #f5f7fa;
+  color: var(--voltiva-navy);
 }
 
 .landing-hero-title > span {
   display: block;
+}
+
+.landing-hero-title strong {
+  display: inline-block;
+  padding: 0.02em 0.09em;
+  border-radius: 0.18em;
+  background: var(--voltiva-sky);
+  color: var(--voltiva-navy);
+  font-weight: inherit;
+}
+
+.landing-page #recursos {
+  border-color: #c9dcf2;
+  background: #eaf2ff;
+}
+
+.landing-page #como-funciona,
+.landing-page #plataforma,
+.landing-page footer {
+  background: #f5f7fa;
+}
+
+.landing-page #cadastro {
+  background: var(--voltiva-sky);
 }
 
 .landing-page[data-enter='pending'] .landing-nav {
@@ -622,6 +653,92 @@
   object-fit: cover;
   object-position: center top;
   pointer-events: none;
+}
+
+/* Keep the hero composition inside the first viewport instead of letting the
+   natural document flow push the animated product card below the fold. */
+@media (min-width: 940px) {
+  .landing-hero-section {
+    width: 100%;
+    max-width: none !important;
+    height: calc(100svh + 360px);
+    min-height: 860px;
+    padding: 0 !important;
+  }
+
+  .landing-hero-section > div {
+    position: relative;
+    display: block;
+    height: 100%;
+  }
+
+  .landing-hero-copy {
+    position: absolute;
+    z-index: 2;
+    inset: clamp(72px, 10svh, 110px) 0 auto;
+    width: 100%;
+    max-width: none !important;
+  }
+
+  .landing-band {
+    position: absolute;
+    z-index: 1;
+    top: 440px;
+    left: 50%;
+    width: 100vw;
+    min-height: 680px;
+    margin: 0;
+    padding: clamp(28px, 4vw, 56px) clamp(20px, 6vw, 80px) 56px;
+    transform: translateX(-50%);
+  }
+
+  .landing-product-card {
+    width: min(1020px, calc(100vw - 80px));
+    transform-origin: top center;
+  }
+}
+
+@media (min-width: 940px) and (max-height: 700px) {
+  .landing-hero-section {
+    min-height: 760px;
+  }
+
+  .landing-hero-copy {
+    top: 48px;
+  }
+
+  .landing-hero-sub {
+    margin-top: 18px !important;
+  }
+
+  .landing-hero-actions {
+    margin-top: 20px !important;
+  }
+
+  .landing-hero-proof {
+    display: none;
+  }
+
+  .landing-band {
+    top: 320px;
+  }
+}
+
+/* The video itself is already bounded by the band dimensions. Let the
+   product preview breathe while its reveal translate finishes. */
+.landing-band {
+  overflow: visible;
+}
+
+.landing-band__video,
+.landing-band > .animated-energy-lines {
+  overflow: hidden;
+}
+
+@media (max-width: 939px) {
+  .landing-band {
+    margin-bottom: 0;
+  }
 }
 
 .landing-burger {
