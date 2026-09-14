@@ -1254,6 +1254,7 @@
   100% {
     transform: rotate(360deg);
   }
+}
 
 .no-scrollbar {
   -ms-overflow-style: none;
