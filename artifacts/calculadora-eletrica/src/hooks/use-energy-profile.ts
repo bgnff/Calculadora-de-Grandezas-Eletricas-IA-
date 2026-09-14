@@ -1,4 +1,5 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { profileService } from '@/services/profileService';
 
 export type EnergyGoal = 'learn' | 'save' | 'plan' | 'diagnose';
 export type EnergyInterest = 'fundamentals' | 'consumption' | 'savings' | 'safety';
@@ -90,7 +91,7 @@ function writeDraft(key: string, draft: EnergyProfileDraft) {
   try {
     currentStorage.setItem(key, JSON.stringify(draft));
   } catch {
-    // Storage can be unavailable or full; the in-memory flow still works.
+    // In-memory state remains usable
   }
 }
 
@@ -100,13 +101,53 @@ export function useEnergyProfile(userId: string) {
   const [profile, setProfile] = useState<EnergyProfile | null>(() => readProfile(profileKey));
   const [draft, setDraft] = useState<EnergyProfileDraft>(() => readDraft(draftKey));
 
+  useEffect(() => {
+    if (!userId) return;
+
+    let isMounted = true;
+
+    async function syncProfile() {
+      try {
+        const [remoteProfile, remoteDraft] = await Promise.all([
+          profileService.getProfile(userId),
+          profileService.getDraft(userId),
+        ]);
+
+        if (!isMounted) return;
+
+        if (remoteProfile) {
+          setProfile(remoteProfile);
+          storage()?.setItem(profileKey, JSON.stringify(remoteProfile));
+        }
+
+        if (remoteDraft && remoteDraft.step > 0) {
+          setDraft(remoteDraft);
+          writeDraft(draftKey, remoteDraft);
+        }
+      } catch (err) {
+        console.error('[Voltiva] Erro ao carregar perfil do Supabase:', err);
+      }
+    }
+
+    syncProfile();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [draftKey, profileKey, userId]);
+
   const updateDraft = useCallback((patch: Partial<EnergyProfileDraft>) => {
     setDraft((current) => {
       const next = { ...current, ...patch };
       writeDraft(draftKey, next);
+
+      if (userId) {
+        profileService.saveDraft(userId, next);
+      }
+
       return next;
     });
-  }, [draftKey]);
+  }, [draftKey, userId]);
 
   const beginEditing = useCallback(() => {
     setDraft((current) => {
@@ -114,9 +155,12 @@ export function useEnergyProfile(userId: string) {
         ? { step: 0, goal: profile.goal, interests: [...profile.interests], knowledge: profile.knowledge }
         : current;
       writeDraft(draftKey, next);
+      if (userId) {
+        profileService.saveDraft(userId, next);
+      }
       return next;
     });
-  }, [draftKey, profile]);
+  }, [draftKey, profile, userId]);
 
   const completeProfile = useCallback((completedDraft: EnergyProfileDraft) => {
     if (!isGoal(completedDraft.goal) || !isKnowledge(completedDraft.knowledge) || !completedDraft.interests.length) return;
@@ -131,11 +175,16 @@ export function useEnergyProfile(userId: string) {
       currentStorage?.setItem(profileKey, JSON.stringify(nextProfile));
       currentStorage?.removeItem(draftKey);
     } catch {
-      // The completed profile remains available for this session.
+      // In-memory update
     }
     setProfile(nextProfile);
     setDraft(emptyEnergyProfileDraft);
-  }, [draftKey, profileKey]);
+
+    if (userId) {
+      profileService.saveProfile(userId, nextProfile);
+      profileService.deleteDraft(userId);
+    }
+  }, [draftKey, profileKey, userId]);
 
   return { profile, draft, updateDraft, beginEditing, completeProfile };
 }

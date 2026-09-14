@@ -417,7 +417,7 @@ export function Sidebar001Content({
 
 // ─── Sidebar001 (with resize) ─────────────────────────────────────────────────
 
-export interface Sidebar001Props {
+export interface Sidebar001Props extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
   className?: string;
   defaultEffectsEnabled?: boolean;
@@ -429,6 +429,7 @@ export interface Sidebar001Props {
   minWidth?: number;
   /** Max resize width in px. Default: 400 */
   maxWidth?: number;
+  transition?: any;
 }
 
 export function Sidebar001({
@@ -440,6 +441,8 @@ export function Sidebar001({
   defaultWidth = 240,
   minWidth = 160,
   maxWidth = 400,
+  transition,
+  ...restProps
 }: Sidebar001Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [internalWidth, setInternalWidth] = useState(defaultWidth);
@@ -478,12 +481,21 @@ export function Sidebar001({
   return (
     <EffectsProvider defaultEnabled={defaultEffectsEnabled}>
       <HoverProvider containerRef={containerRef}>
-        <aside
+        <motion.aside
+          {...(restProps as any)}
           className={cn(
-            "relative flex flex-col h-full shrink-0 bg-background",
+            "relative flex flex-col h-full shrink-0 bg-background overflow-hidden will-change-[width]",
             className,
           )}
-          style={{ width }}
+          animate={{ width }}
+          transition={
+            dragging.current
+              ? { duration: 0 }
+              : transition ?? {
+                  duration: 0.65,
+                  ease: [0.22, 1, 0.36, 1],
+                }
+          }
         >
           {children}
 
@@ -498,7 +510,7 @@ export function Sidebar001({
               <div className="absolute right-0 top-0 h-full w-px bg-border/50 transition-colors duration-150 group-hover/handle:bg-border" />
             </div>
           )}
-        </aside>
+        </motion.aside>
       </HoverProvider>
     </EffectsProvider>
   );

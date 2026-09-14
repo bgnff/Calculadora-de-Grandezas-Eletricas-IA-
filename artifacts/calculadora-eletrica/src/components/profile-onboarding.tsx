@@ -185,7 +185,7 @@ export function ProfileOnboarding({
                             }}
                             role="radio"
                             aria-checked={selected}
-                             className={`focus-ring group rounded-2xl border p-4 text-left transition ${selected ? 'border-[#1e6fff] bg-[#d7ebff] shadow-[inset_0_0_0_1px_#1e6fff]' : 'border-[hsl(var(--border))] bg-[#f5f7fa] hover:border-[#1e6fff] hover:bg-white'}`}
+                             className={`focus-ring group cursor-pointer rounded-2xl border p-4 text-left transition ${selected ? 'border-[#1e6fff] bg-[#d7ebff] shadow-[inset_0_0_0_1px_#1e6fff]' : 'border-[hsl(var(--border))] bg-[#f5f7fa] hover:border-[#1e6fff] hover:bg-white'}`}
                             data-testid={`card-goal-${id}`}
                           >
                              <span className={`mb-4 grid size-10 place-items-center rounded-xl ${selected ? 'bg-[#d7ebff] text-[#004eba]' : 'bg-[#edf4ff] text-[#5d7694]'} transition-colors`}>
@@ -215,7 +215,7 @@ export function ProfileOnboarding({
                             key={id}
                             onClick={() => toggleInterest(id)}
                             aria-pressed={selected}
-                             className={`focus-ring flex items-center justify-between gap-4 rounded-2xl border p-4 text-left transition ${selected ? 'border-[#1e6fff] bg-[#d7ebff] shadow-[inset_0_0_0_1px_#1e6fff]' : 'border-[hsl(var(--border))] bg-[#f5f7fa] hover:border-[#1e6fff] hover:bg-white'}`}
+                             className={`focus-ring flex cursor-pointer items-center justify-between gap-4 rounded-2xl border p-4 text-left transition ${selected ? 'border-[#1e6fff] bg-[#d7ebff] shadow-[inset_0_0_0_1px_#1e6fff]' : 'border-[hsl(var(--border))] bg-[#f5f7fa] hover:border-[#1e6fff] hover:bg-white'}`}
                             data-testid={`card-interest-${id}`}
                           >
                             <span className="flex items-center gap-3">
@@ -252,7 +252,7 @@ export function ProfileOnboarding({
                             }}
                             role="radio"
                             aria-checked={selected}
-                             className={`focus-ring flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition ${selected ? 'border-[#1e6fff] bg-[#d7ebff] shadow-[inset_0_0_0_1px_#1e6fff]' : 'border-[hsl(var(--border))] bg-[#f5f7fa] hover:border-[#1e6fff] hover:bg-white'}`}
+                             className={`focus-ring flex w-full cursor-pointer items-center gap-4 rounded-2xl border p-4 text-left transition ${selected ? 'border-[#1e6fff] bg-[#d7ebff] shadow-[inset_0_0_0_1px_#1e6fff]' : 'border-[hsl(var(--border))] bg-[#f5f7fa] hover:border-[#1e6fff] hover:bg-white'}`}
                             data-testid={`card-knowledge-${id}`}
                           >
                              <span className={`grid size-10 shrink-0 place-items-center rounded-xl text-sm font-data font-medium ${selected ? 'bg-[#d7ebff] text-[#004eba]' : 'bg-[#edf4ff] text-[#5d7694]'}`}>{id === 'beginner' ? '01' : id === 'familiar' ? '02' : '03'}</span>
@@ -292,7 +292,7 @@ export function ProfileOnboarding({
               {step > 0 ? (
                 <button
                   onClick={() => goToStep(step - 1)}
-                  className="focus-ring inline-flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold text-[hsl(var(--muted-foreground))] transition hover:bg-white hover:text-[hsl(var(--foreground))]"
+                  className="focus-ring inline-flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold text-[hsl(var(--muted-foreground))] transition hover:bg-white hover:text-[hsl(var(--foreground))]"
                   data-testid="button-back-onboarding"
                 >
                   <ArrowLeft size={16} /> Voltar
@@ -307,7 +307,7 @@ export function ProfileOnboarding({
               {message && <p className="text-right text-xs font-semibold text-[#b04f4c]" role="alert" data-testid="alert-onboarding-validation">{message}</p>}
               <button
                 onClick={handleContinue}
-                className="focus-ring inline-flex items-center justify-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_18px_hsl(var(--primary)/.18)] transition hover:-translate-y-0.5 hover:bg-[#1557d6] disabled:cursor-not-allowed disabled:opacity-55 disabled:hover:translate-y-0"
+                className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_18px_hsl(var(--primary)/.18)] transition hover:-translate-y-0.5 hover:bg-[#1557d6] disabled:cursor-not-allowed disabled:opacity-55 disabled:hover:translate-y-0"
                 data-testid={step === 2 ? 'button-finish-profile' : 'button-continue-onboarding'}
               >
                 {step === 2 ? (editing ? 'Salvar perfil' : 'Finalizar perfil') : 'Continuar'} <ArrowRight size={17} />

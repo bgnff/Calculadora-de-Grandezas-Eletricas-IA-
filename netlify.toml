@@ -1,0 +1,30 @@
+# Configuração de Deploy para Netlify
+# Projeto: Voltiva — Plataforma de Eficiência Elétrica
+
+[build]
+  command = "pnpm --filter @workspace/calculadora-eletrica run build"
+  publish = "artifacts/calculadora-eletrica/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  PNPM_FLAGS = "--no-frozen-lockfile"
+
+# Regra de rewrite SPA para evitar erro 404 em rotas acessadas diretamente
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Cabeçalhos recomendados de segurança e performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
