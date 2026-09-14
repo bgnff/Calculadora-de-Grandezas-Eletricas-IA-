@@ -902,9 +902,16 @@ export function SettingsPage({ profile, onEditProfile, data, userEmail, onSignOu
             <div><p className="text-xs font-bold uppercase tracking-[0.13em] text-[hsl(var(--muted-foreground))]">Preferência</p><h2 className="mt-1 font-display text-xl font-semibold">Meta mensal de consumo</h2></div>
           </div>
           <div className="mt-5 flex items-center gap-3">
-            <input value={goal} onChange={(event) => setGoal(event.target.value)} inputMode="decimal" className="focus-ring h-12 min-w-0 flex-1 rounded-lg border border-[hsl(var(--input))] px-4 font-data text-sm outline-none focus:border-[#1e6fff]" />
-            <span className="font-data text-xs text-slate-500">kWh</span>
-            <button onClick={saveGoal} className="focus-ring cursor-pointer rounded-lg bg-[hsl(var(--primary))] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#004eba]" title="Salvar meta">
+            <div className="flex h-12 min-w-0 flex-1 items-center rounded-xl border border-[#d0dbe7] bg-white transition-all hover:border-[#9abde3] focus-within:border-[#1e6fff] focus-within:ring-2 focus-within:ring-[#1e6fff]/20 focus-within:shadow-xs">
+              <input
+                value={goal}
+                onChange={(event) => setGoal(event.target.value)}
+                inputMode="decimal"
+                className="h-full min-w-0 flex-1 bg-transparent px-4 font-data text-sm font-semibold text-[#0b1f3b] outline-none focus:outline-none focus:ring-0"
+              />
+              <span className="font-data pr-4 text-xs font-bold text-slate-500 select-none">kWh</span>
+            </div>
+            <button onClick={saveGoal} className="cursor-pointer rounded-xl bg-[hsl(var(--primary))] px-4 py-3 text-sm font-bold text-white shadow-xs transition hover:bg-[#004eba]" title="Salvar meta">
               <Check size={16} />
             </button>
           </div>
@@ -929,10 +936,16 @@ export function SettingsPage({ profile, onEditProfile, data, userEmail, onSignOu
 function Field({ label, value, onChange, placeholder, suffix, inputMode = 'text' }: { label: string; value: string; onChange: (value: string) => void; placeholder: string; suffix?: string; inputMode?: 'text' | 'decimal' | 'numeric' }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-sm font-semibold">{label}</span>
-      <div className="flex h-12 items-center rounded-lg border border-[hsl(var(--input))] bg-white focus-within:border-[#006bff] focus-within:ring-4 focus-within:ring-[#006bff1f]">
-        <input value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} inputMode={inputMode} className="focus-ring h-full min-w-0 flex-1 rounded-lg bg-transparent px-4 text-sm font-semibold outline-none placeholder:text-[#a6bbd1]" />
-        {suffix && <span className="pr-4 font-data text-xs text-[hsl(var(--muted-foreground))]">{suffix}</span>}
+      <span className="mb-2 block text-sm font-semibold text-[#0b1f3b]">{label}</span>
+      <div className="flex h-12 items-center rounded-xl border border-[#d0dbe7] bg-white transition-all duration-200 hover:border-[#9abde3] focus-within:border-[#1e6fff] focus-within:ring-2 focus-within:ring-[#1e6fff]/20 focus-within:shadow-xs">
+        <input
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={placeholder}
+          inputMode={inputMode}
+          className="h-full min-w-0 flex-1 bg-transparent px-4 text-sm font-semibold text-[#0b1f3b] outline-none focus:outline-none focus:ring-0 placeholder:text-[#a6bbd1]"
+        />
+        {suffix && <span className="font-data pr-4 text-xs font-bold text-[#64748b] select-none">{suffix}</span>}
       </div>
     </label>
   );

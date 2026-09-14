@@ -306,12 +306,12 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
                   onClick={() => handleTypeChange(option)}
                   role="radio"
                   aria-checked={selected}
-                   aria-label={`Calcular ${optionMeta.label.toLowerCase()}`}
-                   className={`focus-ring cursor-pointer rounded-lg border px-2 py-3 text-center transition ${selected ? 'border-[#006bff] bg-[#e6f0ff] text-[#004eba] shadow-[inset_0_0_0_1px_#006bff]' : 'border-[hsl(var(--border))] bg-[#fcfdfd] text-[hsl(var(--muted-foreground))] hover:border-[#9bbce0] hover:bg-[#f4f8ff]'}`}
+                  aria-label={`Calcular ${optionMeta.label.toLowerCase()}`}
+                  className={`cursor-pointer rounded-xl border px-2 py-3 text-center transition-all duration-200 ${selected ? 'border-[#006bff] bg-[#e6f0ff] text-[#004eba] shadow-xs ring-1 ring-[#006bff]' : 'border-[#d0dbe7] bg-[#fcfdfd] text-[#64748b] hover:border-[#9bbce0] hover:bg-[#f4f8ff]'}`}
                   data-testid={`button-select-${option}`}
                 >
-                  <span className="font-data block text-[17px] font-medium">{optionMeta.symbol}</span>
-                  <span className="mt-1 block text-[11px] font-semibold">{optionMeta.label}</span>
+                  <span className="font-data block text-[17px] font-bold">{optionMeta.symbol}</span>
+                  <span className="mt-1 block text-[11.5px] font-semibold">{optionMeta.label}</span>
                 </button>
               );
             })}
@@ -335,7 +335,7 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
                     {field.label}
                     <span className="font-data text-xs font-normal text-[hsl(var(--muted-foreground))]">{field.unit}</span>
                   </span>
-                     <div className={`flex h-12 items-center rounded-lg border bg-white transition focus-within:ring-4 ${hasError ? 'border-[#df7774] focus-within:border-[#d85b58] focus-within:ring-[#e36c691c]' : 'border-[hsl(var(--input))] focus-within:border-[#006bff] focus-within:ring-[#006bff1f]'}`}>
+                  <div className={`flex h-12 items-center rounded-xl border bg-white transition-all duration-200 ${hasError ? 'border-[#df7774] focus-within:border-[#d85b58] focus-within:ring-2 focus-within:ring-[#df7774]/20' : 'border-[#d0dbe7] hover:border-[#9abde3] focus-within:border-[#006bff] focus-within:ring-2 focus-within:ring-[#006bff]/20 focus-within:shadow-xs'}`}>
                     <input
                       id={`input-${key}`}
                       type="text"
@@ -346,10 +346,10 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
                       placeholder="0,00"
                       aria-invalid={hasError}
                       aria-describedby={hasError ? `error-${key}` : undefined}
-                      className="focus-ring h-full min-w-0 flex-1 rounded-xl bg-transparent px-4 text-base font-semibold text-[hsl(var(--foreground))] outline-none placeholder:text-[#bdc8c9]"
+                      className="h-full min-w-0 flex-1 bg-transparent px-4 font-data text-base font-semibold text-[#0b1f3b] outline-none focus:outline-none focus:ring-0 placeholder:text-[#a0b0c0]"
                       data-testid={`input-${key}`}
                     />
-                    <span className="pr-4 font-data text-xs text-[hsl(var(--muted-foreground))]">{field.unit}</span>
+                    <span className="font-data pr-4 text-xs font-bold text-[#64748b] select-none">{field.unit}</span>
                   </div>
                   {hasError && <span id={`error-${key}`} className="mt-1.5 block text-xs font-medium text-[#c44e4b]" data-testid={`error-${key}`}>{errors[key]}</span>}
                 </label>
@@ -360,10 +360,10 @@ export default function CalculatorPage({ onSaveCalculation }: CalculatorPageProp
           {formError && <div className="mt-5 rounded-xl border border-[#f0c8c6] bg-[#fff6f5] px-4 py-3 text-sm font-medium text-[#b74d49]" role="alert" data-testid="alert-calculation">{formError}</div>}
 
           <div className="mt-7 flex flex-col-reverse gap-3 border-t border-[hsl(var(--border))] pt-6 sm:flex-row sm:items-center sm:justify-between">
-             <button type="button" onClick={() => reset()} className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold text-[hsl(var(--muted-foreground))] transition hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))]" data-testid="button-clear">
+            <button type="button" onClick={() => reset()} className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-[hsl(var(--muted-foreground))] transition hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))]" data-testid="button-clear">
               <Eraser size={16} /> Limpar
             </button>
-             <button type="submit" className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_18px_hsl(var(--primary)/.18)] transition hover:-translate-y-0.5 hover:bg-[#004eba] active:translate-y-0" data-testid="button-calculate">
+            <button type="submit" className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#006bff] px-6 py-2.5 text-sm font-bold text-white shadow-[0_6px_16px_rgba(0,107,255,0.25)] transition hover:-translate-y-0.5 hover:bg-[#0054cc] active:translate-y-0" data-testid="button-calculate">
               Calcular <ArrowRight size={17} />
             </button>
           </div>

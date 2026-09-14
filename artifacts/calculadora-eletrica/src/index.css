@@ -398,16 +398,8 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   }
 
-  /* Seline reserves the pill shape for interactive controls. */
-  button.rounded-lg,
-  button.rounded-xl,
-  a.rounded-lg,
-  a.rounded-xl {
-    border-radius: 9999px;
-  }
-
   .focus-ring:focus-visible {
-    outline: 3px solid hsl(var(--ring) / 0.34);
+    outline: 2px solid #1e6fff;
     outline-offset: 2px;
   }
 
