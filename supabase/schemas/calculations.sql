@@ -27,19 +27,28 @@ ON public.calculations (user_id, created_at DESC);
 
 ALTER TABLE public.calculations ENABLE ROW LEVEL SECURITY;
 
+-- Permissões básicas para roles autenticadas e anônimas
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+GRANT ALL ON public.calculations TO anon, authenticated;
+
+-- Políticas de RLS (Idempotentes)
+DROP POLICY IF EXISTS "Usuários podem ver seus próprios cálculos" ON public.calculations;
 CREATE POLICY "Usuários podem ver seus próprios cálculos"
 ON public.calculations FOR SELECT
 USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Usuários podem salvar seus próprios cálculos" ON public.calculations;
 CREATE POLICY "Usuários podem salvar seus próprios cálculos"
 ON public.calculations FOR INSERT
 WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Usuários podem atualizar seus próprios cálculos" ON public.calculations;
 CREATE POLICY "Usuários podem atualizar seus próprios cálculos"
 ON public.calculations FOR UPDATE
 USING (auth.uid() = user_id)
 WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Usuários podem excluir seus próprios cálculos" ON public.calculations;
 CREATE POLICY "Usuários podem excluir seus próprios cálculos"
 ON public.calculations FOR DELETE
 USING (auth.uid() = user_id);

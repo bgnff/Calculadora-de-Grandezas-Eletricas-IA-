@@ -10,12 +10,15 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- Função genérica para atualização do timestamp updated_at
 CREATE OR REPLACE FUNCTION public.handle_updated_at()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SET search_path = public
+AS $$
 BEGIN
   NEW.updated_at = timezone('utc'::TEXT, now());
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 -- ----------------------------------------------------------------------------
 -- 1. Tabela: profiles
@@ -32,6 +35,12 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::TEXT, now())
 );
 
+COMMENT ON TABLE public.profiles IS 'Perfil de usuário e preferências energéticas da Voltiva';
+COMMENT ON COLUMN public.profiles.id IS 'ID do usuário correspondente a auth.users(id)';
+COMMENT ON COLUMN public.profiles.goal IS 'Objetivo principal na plataforma';
+COMMENT ON COLUMN public.profiles.interests IS 'Áreas de interesse selecionadas';
+COMMENT ON COLUMN public.profiles.knowledge_level IS 'Nível de conhecimento elétrico';
+
 DROP TRIGGER IF EXISTS set_profiles_updated_at ON public.profiles;
 CREATE TRIGGER set_profiles_updated_at
 BEFORE UPDATE ON public.profiles
@@ -40,7 +49,11 @@ EXECUTE FUNCTION public.handle_updated_at();
 
 -- Trigger automático para vincular novo usuário de auth.users ao profile
 CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
 BEGIN
   INSERT INTO public.profiles (id, full_name, email)
   VALUES (
@@ -49,10 +62,15 @@ BEGIN
     NEW.email
   )
   ON CONFLICT (id) DO UPDATE
-  SET email = EXCLUDED.email;
+  SET email = EXCLUDED.email,
+      full_name = CASE
+        WHEN public.profiles.full_name IS NULL OR public.profiles.full_name = ''
+        THEN EXCLUDED.full_name
+        ELSE public.profiles.full_name
+      END;
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
 
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
@@ -94,6 +112,8 @@ CREATE TABLE IF NOT EXISTS public.energy_profile_drafts (
   knowledge_level TEXT CHECK (knowledge_level IN ('', 'beginner', 'familiar', 'advanced')) DEFAULT '',
   updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::TEXT, now())
 );
+
+COMMENT ON TABLE public.energy_profile_drafts IS 'Rascunho temporário do onboarding energético por usuário';
 
 DROP TRIGGER IF EXISTS set_energy_profile_drafts_updated_at ON public.energy_profile_drafts;
 CREATE TRIGGER set_energy_profile_drafts_updated_at
@@ -138,6 +158,13 @@ CREATE TABLE IF NOT EXISTS public.calculations (
   created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::TEXT, now())
 );
 
+COMMENT ON TABLE public.calculations IS 'Histórico de cálculos elétricos salvos pelo usuário';
+COMMENT ON COLUMN public.calculations.type IS 'Grandeza calculada (voltage, current, resistance, power)';
+COMMENT ON COLUMN public.calculations.result IS 'Valor numérico do resultado obtido';
+COMMENT ON COLUMN public.calculations.unit IS 'Unidade de medida (V, A, Ω, W)';
+COMMENT ON COLUMN public.calculations.formula IS 'Fórmula matemática da lei de Ohm utilizada';
+COMMENT ON COLUMN public.calculations.inputs IS 'JSON com os parâmetros de entrada informados';
+
 CREATE INDEX IF NOT EXISTS idx_calculations_user_created
 ON public.calculations (user_id, created_at DESC);
 
@@ -177,6 +204,12 @@ CREATE TABLE IF NOT EXISTS public.energy_devices (
   created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::TEXT, now()),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::TEXT, now())
 );
+
+COMMENT ON TABLE public.energy_devices IS 'Equipamentos cadastrados no mapa de consumo do usuário';
+COMMENT ON COLUMN public.energy_devices.name IS 'Identificação ou nome do equipamento (ex: Geladeira, Chuveiro)';
+COMMENT ON COLUMN public.energy_devices.watts IS 'Potência nominal em Watts informada pelo usuário';
+COMMENT ON COLUMN public.energy_devices.hours_per_day IS 'Tempo médio de utilização em horas por dia';
+COMMENT ON COLUMN public.energy_devices.days_per_month IS 'Dias de funcionamento por mês';
 
 CREATE INDEX IF NOT EXISTS idx_energy_devices_user_created
 ON public.energy_devices (user_id, created_at DESC);
@@ -220,6 +253,10 @@ CREATE TABLE IF NOT EXISTS public.user_settings (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::TEXT, now())
 );
 
+COMMENT ON TABLE public.user_settings IS 'Preferências e metas de consumo energético por usuário';
+COMMENT ON COLUMN public.user_settings.monthly_goal IS 'Meta de consumo mensal em kWh';
+COMMENT ON COLUMN public.user_settings.currency IS 'Símbolo monetário adotado para estimativas';
+
 DROP TRIGGER IF EXISTS set_user_settings_updated_at ON public.user_settings;
 CREATE TRIGGER set_user_settings_updated_at
 BEFORE UPDATE ON public.user_settings
@@ -248,3 +285,11 @@ DROP POLICY IF EXISTS "Usuários podem remover suas próprias configurações" O
 CREATE POLICY "Usuários podem remover suas próprias configurações"
 ON public.user_settings FOR DELETE
 USING (auth.uid() = user_id);
+
+-- ----------------------------------------------------------------------------
+-- 6. Permissões de Acesso para Supabase Roles
+-- ----------------------------------------------------------------------------
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated;
+GRANT ALL ON ALL ROUTINES IN SCHEMA public TO anon, authenticated;

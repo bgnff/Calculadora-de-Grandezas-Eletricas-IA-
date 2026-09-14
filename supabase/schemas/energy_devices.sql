@@ -3,6 +3,18 @@
 -- Descrição: Equipamentos elétricos cadastrados para estimativa de consumo
 -- ============================================================================
 
+-- Garante que a função de updated_at existe caso este script seja executado isoladamente
+CREATE OR REPLACE FUNCTION public.handle_updated_at()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SET search_path = public
+AS $$
+BEGIN
+  NEW.updated_at = timezone('utc'::TEXT, now());
+  RETURN NEW;
+END;
+$$;
+
 CREATE TABLE IF NOT EXISTS public.energy_devices (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -32,19 +44,28 @@ ON public.energy_devices (user_id, created_at DESC);
 
 ALTER TABLE public.energy_devices ENABLE ROW LEVEL SECURITY;
 
+-- Permissões básicas para roles autenticadas e anônimas
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+GRANT ALL ON public.energy_devices TO anon, authenticated;
+
+-- Políticas de RLS (Idempotentes)
+DROP POLICY IF EXISTS "Usuários podem ver seus próprios equipamentos" ON public.energy_devices;
 CREATE POLICY "Usuários podem ver seus próprios equipamentos"
 ON public.energy_devices FOR SELECT
 USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Usuários podem cadastrar seus próprios equipamentos" ON public.energy_devices;
 CREATE POLICY "Usuários podem cadastrar seus próprios equipamentos"
 ON public.energy_devices FOR INSERT
 WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Usuários podem alterar seus próprios equipamentos" ON public.energy_devices;
 CREATE POLICY "Usuários podem alterar seus próprios equipamentos"
 ON public.energy_devices FOR UPDATE
 USING (auth.uid() = user_id)
 WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Usuários podem remover seus próprios equipamentos" ON public.energy_devices;
 CREATE POLICY "Usuários podem remover seus próprios equipamentos"
 ON public.energy_devices FOR DELETE
 USING (auth.uid() = user_id);
